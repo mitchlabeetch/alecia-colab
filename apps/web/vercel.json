@@ -1,41 +1,14 @@
 {
+  "$schema": "https://vercel.com/schema.json",
   "buildCommand": "cd ../.. && pnpm build",
   "outputDirectory": ".next",
   "installCommand": "cd ../.. && pnpm install",
   "framework": "nextjs",
-  "regions": [
-    "cdg1"
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "ALLOW-FROM https://alecia.fr https://alecia.markets"
-        },
-        {
-          "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'self' https://alecia.fr https://*.alecia.fr https://alecia.markets https://*.alecia.markets"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://alecia.markets"
-        }
-      ]
-    }
-  ],
+  "regions": ["cdg1"],
   "rewrites": [
     {
       "source": "/embed",
       "destination": "/?embed=true"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/home",
-      "permanent": false
     }
   ]
 }
