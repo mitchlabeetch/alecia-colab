@@ -7,9 +7,9 @@ import type { ReactNode } from "react";
 import { ClerkProvider } from '@clerk/nextjs';
 import Providers from "./providers";
 
-const title = "Novel - Notion-style WYSIWYG editor with AI-powered autocompletions";
+const title = "Alecia Colab - M&A Knowledge Base & Collaboration Platform";
 const description =
-  "Novel is a Notion-style WYSIWYG editor with AI-powered autocompletions. Built with Tiptap, OpenAI, and Vercel AI SDK.";
+  "Alecia Colab is a comprehensive M&A knowledge centralization and collaboration platform. Streamline deal workflows, due diligence, and integration planning.";
 
 export const metadata: Metadata = {
   title,
@@ -22,9 +22,9 @@ export const metadata: Metadata = {
     title,
     description,
     card: "summary_large_image",
-    creator: "@steventey",
+    creator: "@alecia",
   },
-  metadataBase: new URL("https://novel.sh"),
+  metadataBase: new URL("https://alecia-colab.vercel.app"),
 };
 
 export const viewport: Viewport = {
