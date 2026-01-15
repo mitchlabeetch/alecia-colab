@@ -3,6 +3,9 @@
   "outputDirectory": ".next",
   "installCommand": "cd ../.. && pnpm install",
   "framework": "nextjs",
+  "regions": [
+    "cdg1"
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -13,11 +16,11 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'self' https://alecia.fr https://*.alecia.fr https://alecia.markets https://*.alecia.markets https://*.vercel.app"
+          "value": "frame-ancestors 'self' https://alecia.fr https://*.alecia.fr https://alecia.markets https://*.alecia.markets"
         },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://alecia.fr"
+          "value": "https://alecia.markets"
         }
       ]
     }
@@ -26,6 +29,13 @@
     {
       "source": "/embed",
       "destination": "/?embed=true"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/home",
+      "permanent": false
     }
   ]
 }
