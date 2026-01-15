@@ -27,7 +27,7 @@ export default clerkMiddleware(async (auth, request) => {
   const response = NextResponse.next();
   
   // Add CORS headers for allowed origins
-  if (origin && allowedOrigins.some(allowed => origin.startsWith(allowed.replace('https://', 'https://')) || origin === allowed)) {
+  if (origin && allowedOrigins.includes(origin)) {
     response.headers.set('Access-Control-Allow-Origin', origin);
     response.headers.set('Access-Control-Allow-Credentials', 'true');
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');

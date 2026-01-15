@@ -2,7 +2,7 @@
 const nextConfig = {
   // Asset prefix for proper static file serving in multi-zone deployment
   assetPrefix: process.env.NODE_ENV === 'production' 
-    ? 'https://colab.alecia.markets' 
+    ? (process.env.NEXT_PUBLIC_ASSET_PREFIX || 'https://colab.alecia.markets')
     : undefined,
   
   // Enable source maps for debugging
