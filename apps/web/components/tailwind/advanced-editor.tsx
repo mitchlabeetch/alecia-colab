@@ -64,9 +64,17 @@ const TailwindAdvancedEditor = () => {
   }, 500);
 
   useEffect(() => {
-    const content = window.localStorage.getItem("novel-content");
-    if (content) setInitialContent(JSON.parse(content));
-    else setInitialContent(defaultEditorContent);
+    try {
+      const content = window.localStorage.getItem("novel-content");
+      if (content) {
+        setInitialContent(JSON.parse(content));
+      } else {
+        setInitialContent(defaultEditorContent);
+      }
+    } catch (error) {
+      console.error("Error loading editor content:", error);
+      setInitialContent(defaultEditorContent);
+    }
   }, []);
 
   if (!initialContent) return null;
