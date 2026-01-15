@@ -59,6 +59,7 @@ const TailwindAdvancedEditor = () => {
     window.localStorage.setItem("html-content", highlightCodeblocks(editor.getHTML()));
     window.localStorage.setItem("novel-content", JSON.stringify(json));
     window.localStorage.setItem("markdown", editor.storage.markdown.getMarkdown());
+    window.localStorage.setItem("alecia-last-saved", new Date().toISOString());
     setSaveStatus("Saved");
   }, 500);
 
@@ -73,7 +74,9 @@ const TailwindAdvancedEditor = () => {
   return (
     <div className="relative w-full max-w-screen-lg">
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2">
-        <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">{saveStatus}</div>
+        <div className={`rounded-lg px-2 py-1 text-sm ${saveStatus === "Saved" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"}`}>
+          {saveStatus}
+        </div>
         <div className={charsCount ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground" : "hidden"}>
           {charsCount} Words
         </div>

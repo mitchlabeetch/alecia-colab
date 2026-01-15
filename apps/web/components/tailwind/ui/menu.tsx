@@ -1,25 +1,22 @@
 "use client";
 
-import { Check, Menu as MenuIcon, Monitor, Moon, SunDim } from "lucide-react";
+import { 
+  Check, 
+  Menu as MenuIcon, 
+  Monitor, 
+  Moon, 
+  SunDim, 
+  FileText, 
+  Briefcase, 
+  Building,
+  Download,
+  Share2,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Separator } from "./separator";
 
-// TODO implement multiple fonts editor
-// const fonts = [
-//   {
-//     font: "Default",
-//     icon: <FontDefault className="h-4 w-4" />,
-//   },
-//   {
-//     font: "Serif",
-//     icon: <FontSerif className="h-4 w-4" />,
-//   },
-//   {
-//     font: "Mono",
-//     icon: <FontMono className="h-4 w-4" />,
-//   },
-// ];
 const appearances = [
   {
     theme: "System",
@@ -34,9 +31,47 @@ const appearances = [
     icon: <Moon className="h-4 w-4" />,
   },
 ];
+
+const quickActions = [
+  {
+    label: "New Deal",
+    icon: <Briefcase className="h-4 w-4" />,
+    action: "deal",
+  },
+  {
+    label: "New Company Profile",
+    icon: <Building className="h-4 w-4" />,
+    action: "company",
+  },
+  {
+    label: "New Document",
+    icon: <FileText className="h-4 w-4" />,
+    action: "document",
+  },
+];
+
 export default function Menu() {
-  // const { font: currentFont, setFont } = useContext(AppContext);
   const { theme: currentTheme, setTheme } = useTheme();
+
+  const handleQuickAction = (action: string) => {
+    // This will be implemented to create new documents based on templates
+    console.log(`Quick action: ${action}`);
+  };
+
+  const handleExport = () => {
+    const content = window.localStorage.getItem("novel-content");
+    const markdown = window.localStorage.getItem("markdown");
+    
+    if (markdown) {
+      const blob = new Blob([markdown], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `alecia-document-${new Date().toISOString().split('T')[0]}.md`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
 
   return (
     <Popover>
@@ -45,27 +80,49 @@ export default function Menu() {
           <MenuIcon width={16} />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-52 p-2" align="end">
-        {/* <div className="p-2">
-          <p className="p-2 text-xs font-medium text-stone-500">Font</p>
-          {fonts.map(({ font, icon }) => (
-            <button
-              key={font}
-              className="flex w-full items-center justify-between rounded px-2 py-1 text-sm text-stone-600 hover:bg-stone-100"
-              onClick={() => {
-                setFont(font);
-              }}
+      <PopoverContent className="w-56 p-2" align="end">
+        <div className="space-y-1">
+          <p className="p-2 text-xs font-medium text-muted-foreground">Quick Actions</p>
+          {quickActions.map(({ label, icon, action }) => (
+            <Button
+              key={action}
+              variant="ghost"
+              className="flex w-full items-center justify-start gap-2 px-2 py-1.5 text-sm"
+              onClick={() => handleQuickAction(action)}
             >
-              <div className="flex items-center space-x-2">
-                <div className="rounded-sm border border-stone-200 p-1">
-                  {icon}
-                </div>
-                <span>{font}</span>
-              </div>
-              {currentFont === font && <Check className="h-4 w-4" />}
-            </button>
+              <div className="rounded-sm border p-1">{icon}</div>
+              <span>{label}</span>
+            </Button>
           ))}
-        </div> */}
+        </div>
+
+        <Separator className="my-2" />
+
+        <div className="space-y-1">
+          <Button
+            variant="ghost"
+            className="flex w-full items-center justify-start gap-2 px-2 py-1.5 text-sm"
+            onClick={handleExport}
+          >
+            <div className="rounded-sm border p-1">
+              <Download className="h-4 w-4" />
+            </div>
+            <span>Export as Markdown</span>
+          </Button>
+          <Button
+            variant="ghost"
+            className="flex w-full items-center justify-start gap-2 px-2 py-1.5 text-sm"
+            disabled
+          >
+            <div className="rounded-sm border p-1">
+              <Share2 className="h-4 w-4" />
+            </div>
+            <span>Share Document</span>
+          </Button>
+        </div>
+
+        <Separator className="my-2" />
+
         <p className="p-2 text-xs font-medium text-muted-foreground">Appearance</p>
         {appearances.map(({ theme, icon }) => (
           <Button
@@ -77,7 +134,7 @@ export default function Menu() {
             }}
           >
             <div className="flex items-center space-x-2">
-              <div className="rounded-sm border  p-1">{icon}</div>
+              <div className="rounded-sm border p-1">{icon}</div>
               <span>{theme}</span>
             </div>
             {currentTheme === theme.toLowerCase() && <Check className="h-4 w-4" />}
