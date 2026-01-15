@@ -67,10 +67,31 @@ export default defineSchema({
       x: v.number(),
       y: v.number(),
     })),
+    // Sprint 4: Custom properties (key = property ID, value = property value)
+    customProperties: v.optional(v.any()),
   })
     .index("by_stage", ["stage"])
     .index("by_user", ["userId"])
     .index("by_updated", ["updatedAt"])
     .index("by_due_date", ["dueDate"]),
-});
 
+  // Sprint 4: Custom property definitions
+  colab_property_definitions: defineTable({
+    name: v.string(),
+    type: v.union(
+      v.literal("text"),
+      v.literal("number"),
+      v.literal("date"),
+      v.literal("select"),
+      v.literal("multiselect"),
+      v.literal("checkbox")
+    ),
+    options: v.optional(v.array(v.object({
+      id: v.string(),
+      label: v.string(),
+      color: v.string(),
+    }))),
+    order: v.number(),
+  })
+    .index("by_order", ["order"]),
+});
