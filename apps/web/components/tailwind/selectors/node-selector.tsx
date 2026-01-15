@@ -26,7 +26,7 @@ export type SelectorItem = {
 
 const items: SelectorItem[] = [
   {
-    name: "Text",
+    name: "Texte",
     icon: TextIcon,
     command: (editor) => editor.chain().focus().clearNodes().run(),
     // I feel like there has to be a more efficient way to do this – feel free to PR if you know how!
@@ -34,43 +34,43 @@ const items: SelectorItem[] = [
       editor.isActive("paragraph") && !editor.isActive("bulletList") && !editor.isActive("orderedList"),
   },
   {
-    name: "Heading 1",
+    name: "Titre 1",
     icon: Heading1,
     command: (editor) => editor.chain().focus().clearNodes().toggleHeading({ level: 1 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 1 }),
   },
   {
-    name: "Heading 2",
+    name: "Titre 2",
     icon: Heading2,
     command: (editor) => editor.chain().focus().clearNodes().toggleHeading({ level: 2 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 2 }),
   },
   {
-    name: "Heading 3",
+    name: "Titre 3",
     icon: Heading3,
     command: (editor) => editor.chain().focus().clearNodes().toggleHeading({ level: 3 }).run(),
     isActive: (editor) => editor.isActive("heading", { level: 3 }),
   },
   {
-    name: "To-do List",
+    name: "Liste de tâches",
     icon: CheckSquare,
     command: (editor) => editor.chain().focus().clearNodes().toggleTaskList().run(),
     isActive: (editor) => editor.isActive("taskItem"),
   },
   {
-    name: "Bullet List",
+    name: "Liste à puces",
     icon: ListOrdered,
     command: (editor) => editor.chain().focus().clearNodes().toggleBulletList().run(),
     isActive: (editor) => editor.isActive("bulletList"),
   },
   {
-    name: "Numbered List",
+    name: "Liste numérotée",
     icon: ListOrdered,
     command: (editor) => editor.chain().focus().clearNodes().toggleOrderedList().run(),
     isActive: (editor) => editor.isActive("orderedList"),
   },
   {
-    name: "Quote",
+    name: "Citation",
     icon: TextQuote,
     command: (editor) => editor.chain().focus().clearNodes().toggleBlockquote().run(),
     isActive: (editor) => editor.isActive("blockquote"),

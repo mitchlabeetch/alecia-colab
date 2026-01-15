@@ -5,22 +5,22 @@ import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
 const options = [
   {
     value: "improve",
-    label: "Improve writing",
+    label: "Améliorer l'écriture",
     icon: RefreshCcwDot,
   },
   {
     value: "fix",
-    label: "Fix grammar",
+    label: "Corriger la grammaire",
     icon: CheckCheck,
   },
   {
     value: "shorter",
-    label: "Make shorter",
+    label: "Raccourcir",
     icon: ArrowDownWideNarrow,
   },
   {
     value: "longer",
-    label: "Make longer",
+    label: "Allonger",
     icon: WrapText,
   },
 ];
@@ -34,7 +34,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
 
   return (
     <>
-      <CommandGroup heading="Edit or review selection">
+      <CommandGroup heading="Modifier ou réviser la sélection">
         {options.map((option) => (
           <CommandItem
             onSelect={(value) => {
@@ -52,7 +52,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
         ))}
       </CommandGroup>
       <CommandSeparator />
-      <CommandGroup heading="Use AI to do more">
+      <CommandGroup heading="Utiliser l'IA pour en faire plus">
         <CommandItem
           onSelect={() => {
             const pos = editor.state.selection.from;
@@ -63,7 +63,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
           className="gap-2 px-4"
         >
           <StepForward className="h-4 w-4 text-purple-500" />
-          Continue writing
+          Continuer à écrire
         </CommandItem>
       </CommandGroup>
     </>

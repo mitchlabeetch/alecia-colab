@@ -31,7 +31,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
     api: "/api/generate",
     onResponse: (response) => {
       if (response.status === 429) {
-        toast.error("You have reached your request limit for the day.");
+        toast.error("Vous avez atteint votre limite de requêtes pour aujourd'hui.");
         return;
       }
     },
@@ -57,7 +57,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
       {isLoading && (
         <div className="flex h-12 w-full items-center px-4 text-sm font-medium text-muted-foreground text-purple-500">
           <Magic className="mr-2 h-4 w-4 shrink-0  " />
-          AI is thinking
+          L'IA réfléchit
           <div className="ml-2 mt-1">
             <CrazySpinner />
           </div>
@@ -70,7 +70,7 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
               value={inputValue}
               onValueChange={setInputValue}
               autoFocus
-              placeholder={hasCompletion ? "Tell AI what to do next" : "Ask AI to edit or generate..."}
+              placeholder={hasCompletion ? "Dites à l'IA quoi faire ensuite" : "Demandez à l'IA de modifier ou générer..."}
               onFocus={() => addAIHighlight(editor)}
             />
             <Button

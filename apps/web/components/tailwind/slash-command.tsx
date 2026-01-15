@@ -18,8 +18,8 @@ import { uploadFn } from "./image-upload";
 
 export const suggestionItems = createSuggestionItems([
   {
-    title: "Send Feedback",
-    description: "Let us know how we can improve.",
+    title: "Envoyer des commentaires",
+    description: "Dites-nous comment nous pouvons nous améliorer.",
     icon: <MessageSquarePlus size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).run();
@@ -27,87 +27,87 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
-    title: "Text",
-    description: "Just start typing with plain text.",
-    searchTerms: ["p", "paragraph"],
+    title: "Texte",
+    description: "Commencez simplement à taper avec du texte brut.",
+    searchTerms: ["p", "paragraph", "paragraphe"],
     icon: <Text size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).toggleNode("paragraph", "paragraph").run();
     },
   },
   {
-    title: "To-do List",
-    description: "Track tasks with a to-do list.",
-    searchTerms: ["todo", "task", "list", "check", "checkbox"],
+    title: "Liste de tâches",
+    description: "Suivez les tâches avec une liste de tâches.",
+    searchTerms: ["todo", "task", "list", "check", "checkbox", "tâche", "liste"],
     icon: <CheckSquare size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).toggleTaskList().run();
     },
   },
   {
-    title: "Heading 1",
-    description: "Big section heading.",
-    searchTerms: ["title", "big", "large"],
+    title: "Titre 1",
+    description: "Grand titre de section.",
+    searchTerms: ["title", "big", "large", "titre", "grand"],
     icon: <Heading1 size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).setNode("heading", { level: 1 }).run();
     },
   },
   {
-    title: "Heading 2",
-    description: "Medium section heading.",
-    searchTerms: ["subtitle", "medium"],
+    title: "Titre 2",
+    description: "Titre de section moyen.",
+    searchTerms: ["subtitle", "medium", "sous-titre", "moyen"],
     icon: <Heading2 size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).setNode("heading", { level: 2 }).run();
     },
   },
   {
-    title: "Heading 3",
-    description: "Small section heading.",
-    searchTerms: ["subtitle", "small"],
+    title: "Titre 3",
+    description: "Petit titre de section.",
+    searchTerms: ["subtitle", "small", "sous-titre", "petit"],
     icon: <Heading3 size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).setNode("heading", { level: 3 }).run();
     },
   },
   {
-    title: "Bullet List",
-    description: "Create a simple bullet list.",
-    searchTerms: ["unordered", "point"],
+    title: "Liste à puces",
+    description: "Créez une simple liste à puces.",
+    searchTerms: ["unordered", "point", "puces"],
     icon: <List size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).toggleBulletList().run();
     },
   },
   {
-    title: "Numbered List",
-    description: "Create a list with numbering.",
-    searchTerms: ["ordered"],
+    title: "Liste numérotée",
+    description: "Créez une liste avec numérotation.",
+    searchTerms: ["ordered", "numérotée", "numéros"],
     icon: <ListOrdered size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).toggleOrderedList().run();
     },
   },
   {
-    title: "Quote",
-    description: "Capture a quote.",
-    searchTerms: ["blockquote"],
+    title: "Citation",
+    description: "Capturez une citation.",
+    searchTerms: ["blockquote", "citation", "quote"],
     icon: <TextQuote size={18} />,
     command: ({ editor, range }) =>
       editor.chain().focus().deleteRange(range).toggleNode("paragraph", "paragraph").toggleBlockquote().run(),
   },
   {
     title: "Code",
-    description: "Capture a code snippet.",
-    searchTerms: ["codeblock"],
+    description: "Capturez un extrait de code.",
+    searchTerms: ["codeblock", "code"],
     icon: <Code size={18} />,
     command: ({ editor, range }) => editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
   },
   {
     title: "Image",
-    description: "Upload an image from your computer.",
-    searchTerms: ["photo", "picture", "media"],
+    description: "Téléchargez une image depuis votre ordinateur.",
+    searchTerms: ["photo", "picture", "media", "image"],
     icon: <ImageIcon size={18} />,
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).run();
@@ -127,11 +127,11 @@ export const suggestionItems = createSuggestionItems([
   },
   {
     title: "Youtube",
-    description: "Embed a Youtube video.",
-    searchTerms: ["video", "youtube", "embed"],
+    description: "Intégrez une vidéo Youtube.",
+    searchTerms: ["video", "youtube", "embed", "vidéo", "intégrer"],
     icon: <Youtube size={18} />,
     command: ({ editor, range }) => {
-      const videoLink = prompt("Please enter Youtube Video Link");
+      const videoLink = prompt("Veuillez entrer le lien de la vidéo Youtube");
       //From https://regexr.com/3dj5t
       const ytregex = new RegExp(
         /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/,
@@ -148,18 +148,18 @@ export const suggestionItems = createSuggestionItems([
           .run();
       } else {
         if (videoLink !== null) {
-          alert("Please enter a correct Youtube Video Link");
+          alert("Veuillez entrer un lien Youtube valide");
         }
       }
     },
   },
   {
     title: "Twitter",
-    description: "Embed a Tweet.",
-    searchTerms: ["twitter", "embed"],
+    description: "Intégrez un Tweet.",
+    searchTerms: ["twitter", "embed", "tweet", "intégrer"],
     icon: <Twitter size={18} />,
     command: ({ editor, range }) => {
-      const tweetLink = prompt("Please enter Twitter Link");
+      const tweetLink = prompt("Veuillez entrer le lien Twitter");
       const tweetRegex = new RegExp(/^https?:\/\/(www\.)?x\.com\/([a-zA-Z0-9_]{1,15})(\/status\/(\d+))?(\/\S*)?$/);
 
       if (tweetRegex.test(tweetLink)) {
@@ -173,7 +173,7 @@ export const suggestionItems = createSuggestionItems([
           .run();
       } else {
         if (tweetLink !== null) {
-          alert("Please enter a correct Twitter Link");
+          alert("Veuillez entrer un lien Twitter valide");
         }
       }
     },

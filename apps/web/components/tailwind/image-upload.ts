@@ -29,12 +29,12 @@ const onUpload = (file: File) => {
           throw new Error("`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead.");
           // Unknown error
         } else {
-          throw new Error("Error uploading image. Please try again.");
+          throw new Error("Erreur lors du téléchargement de l'image. Veuillez réessayer.");
         }
       }),
       {
-        loading: "Uploading image...",
-        success: "Image uploaded successfully.",
+        loading: "Téléchargement de l'image...",
+        success: "Image téléchargée avec succès.",
         error: (e) => {
           reject(e);
           return e.message;
@@ -48,11 +48,11 @@ export const uploadFn = createImageUpload({
   onUpload,
   validateFn: (file) => {
     if (!file.type.includes("image/")) {
-      toast.error("File type not supported.");
+      toast.error("Type de fichier non pris en charge.");
       return false;
     }
     if (file.size / 1024 / 1024 > 20) {
-      toast.error("File size too big (max 20MB).");
+      toast.error("Taille du fichier trop grande (maximum 20 Mo).");
       return false;
     }
     return true;
