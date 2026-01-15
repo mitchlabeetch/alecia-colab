@@ -3,6 +3,13 @@
   "globalDependencies": [
     "**/.env.*local"
   ],
+  "globalEnv": [
+    "NEXT_PUBLIC_CONVEX_URL",
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+    "OPENAI_API_KEY",
+    "CONVEX_DEPLOY_KEY",
+    "BLOB_READ_WRITE_TOKEN"
+  ],
   "tasks": {
     "topo": {
       "dependsOn": [
@@ -18,13 +25,27 @@
         "dist/**",
         ".next/**",
         "!.next/cache/**"
+      ],
+      "env": [
+        "NEXT_PUBLIC_CONVEX_URL",
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "OPENAI_API_KEY",
+        "CONVEX_DEPLOY_KEY",
+        "BLOB_READ_WRITE_TOKEN"
       ]
     },
     "typecheck": {
       "dependsOn": [
         "^topo"
       ],
-      "outputs": []
+      "outputs": [],
+      "env": [
+        "NEXT_PUBLIC_CONVEX_URL",
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "OPENAI_API_KEY",
+        "CONVEX_DEPLOY_KEY",
+        "BLOB_READ_WRITE_TOKEN"
+      ]
     },
     "lint": {
       "dependsOn": [
