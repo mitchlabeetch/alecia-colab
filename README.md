@@ -1,115 +1,181 @@
-<a href="https://novel.sh">
-  <img alt="Novel is a Notion-style WYSIWYG editor with AI-powered autocompletions." src="https://novel.sh/opengraph-image.png">
-  <h1 align="center">Novel</h1>
-</a>
+# Alecia Colab - M&A Knowledge Base & Collaboration Platform
 
 <p align="center">
-  An open-source Notion-style WYSIWYG editor with AI-powered autocompletions. 
+  <img src="https://img.shields.io/badge/Status-Active-success" alt="Status" />
+  <img src="https://img.shields.io/badge/License-Apache--2.0-blue" alt="License" />
 </p>
 
-<p align="center">
-  <a href="https://news.ycombinator.com/item?id=36360789"><img src="https://img.shields.io/badge/Hacker%20News-369-%23FF6600" alt="Hacker News"></a>
-  <a href="https://github.com/steven-tey/novel/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/steven-tey/novel?label=license&logo=github&color=f80&logoColor=fff" alt="License" />
-  </a>
-  <a href="https://github.com/steven-tey/novel"><img src="https://img.shields.io/github/stars/steven-tey/novel?style=social" alt="Novel.sh's GitHub repo"></a>
-</p>
+## Overview
 
-<p align="center">
-  <a href="#introduction"><strong>Introduction</strong></a> ·
-  <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
-  <a href="#setting-up-locally"><strong>Setting Up Locally</strong></a> ·
-  <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
-  <a href="#contributing"><strong>Contributing</strong></a> ·
-  <a href="#license"><strong>License</strong></a>
-</p>
-<br/>
+**Alecia Colab** is a comprehensive M&A knowledge centralization and collaboration platform designed to streamline deal workflows, due diligence processes, and integration planning. Built on modern web technologies, it provides a powerful yet intuitive interface for managing the entire M&A lifecycle.
 
-## Docs (WIP)
+## Features
 
-https://novel.sh/docs/introduction
+### 🎯 Core Capabilities
+- **Rich Text Editor**: Advanced WYSIWYG editor with slash commands, bubble menus, and AI-powered suggestions
+- **M&A Templates**: Pre-built templates for deal pipeline, due diligence, valuation models, and integration planning
+- **Real-time Collaboration**: Secure authentication with Microsoft OAuth via Clerk
+- **Document Management**: Organize and track M&A documents, checklists, and knowledge base articles
+- **AI-Powered Assistance**: Intelligent content suggestions and autocompletion for faster documentation
 
-## Introduction
+### 📊 M&A-Specific Features
+- **Deal Pipeline Tracking**: Monitor opportunities from sourcing to closing
+- **Due Diligence Frameworks**: Comprehensive checklists and questionnaires
+- **Financial Modeling**: Built-in support for LaTeX formulas and calculations
+- **Integration Planning**: Post-merger integration templates and timelines
+- **Knowledge Base**: Centralized repository for M&A best practices and learnings
 
-[Novel](https://novel.sh/) is a Notion-style WYSIWYG editor with AI-powered autocompletions.
+### 🛠️ Technical Features
+- Image uploads (drag & drop, copy & paste)
+- Code syntax highlighting
+- Mathematical expressions with LaTeX
+- Task lists and checklists
+- Auto-save functionality
+- Dark mode support
+- Responsive design
 
-https://github.com/steven-tey/novel/assets/28986134/2099877f-4f2b-4b1c-8782-5d803d63be5c
+## Getting Started
 
-<br />
+### Prerequisites
+- Node.js 18+ and npm
+- Clerk account for authentication
+- OpenAI API key (optional, for AI features)
+- Vercel Blob storage (optional, for image uploads)
 
-## Deploy Your Own
+### Installation
 
-You can deploy your own version of Novel to Vercel with one click:
+1. Clone the repository:
+```bash
+git clone https://github.com/mitchlabeetch/alecia-colab.git
+cd alecia-colab
+```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://stey.me/novel-deploy)
+2. Install dependencies:
+```bash
+npm install
+```
 
-## Setting Up Locally
+3. Set up environment variables:
+Create a `.env` file in the `apps/web` directory with the following:
 
-To set up Novel locally, you'll need to clone the repository and set up the following environment variables:
+```env
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_key
+CLERK_SECRET_KEY=your_clerk_secret
 
-- `OPENAI_API_KEY` – your OpenAI API key (you can get one [here](https://platform.openai.com/account/api-keys))
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` – your Clerk publishable key (get it from [Clerk Dashboard](https://dashboard.clerk.com))
-- `CLERK_SECRET_KEY` – your Clerk secret key (get it from [Clerk Dashboard](https://dashboard.clerk.com))
-- `BLOB_READ_WRITE_TOKEN` – your Vercel Blob read/write token (currently [still in beta](https://vercel.com/docs/storage/vercel-blob/quickstart#quickstart), but feel free to [sign up on this form](https://vercel.fyi/blob-beta) for access)
+# OpenAI (Optional)
+OPENAI_API_KEY=your_openai_key
 
-### Setting up Clerk Authentication
+# Vercel Blob (Optional)
+BLOB_READ_WRITE_TOKEN=your_blob_token
+```
 
-This project uses Clerk for authentication with Microsoft account support:
+4. Run the development server:
+```bash
+npm run dev
+```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Authentication Setup
+
+This application uses Clerk for authentication with Microsoft OAuth support:
 
 1. Create a Clerk account at [clerk.com](https://clerk.com)
 2. Create a new application in the Clerk Dashboard
 3. Enable Microsoft as an OAuth provider in "Social Connections"
-4. Copy your API keys to `.env` file in the `apps/web` directory
-5. Configure Microsoft Azure OAuth credentials in Clerk Dashboard (see [Clerk docs](https://clerk.com/docs/authentication/social-connections/microsoft))
-If you've deployed this to Vercel, you can also use [`vc env pull`](https://vercel.com/docs/cli/env#exporting-development-environment-variables) to pull the environment variables from your Vercel project.
+4. Copy your API keys to the `.env` file
+5. Configure Microsoft Azure OAuth credentials in Clerk Dashboard
 
-To run the app locally, you can run the following commands:
+See [Clerk documentation](https://clerk.com/docs/authentication/social-connections/microsoft) for detailed setup instructions.
 
-```
-pnpm i
-pnpm dev
-```
+## Usage
 
-## Cross-framework support
+### Creating Documents
+1. Click anywhere in the editor to start typing
+2. Use `/` to open the command menu for templates and formatting
+3. Type `++` to activate AI-powered suggestions
+4. Your work is automatically saved to local storage
 
-While Novel is built for React, we also have a few community-maintained packages for non-React frameworks:
+### M&A Templates
+Access specialized templates via the slash command (`/`):
+- Deal Pipeline Template
+- Due Diligence Checklist
+- Valuation Model
+- Integration Planning
+- Meeting Notes
+- And more...
 
-- Svelte: https://novel.sh/svelte
-- Vue: https://novel.sh/vue
-
-## VSCode Extension
-
-Thanks to @bennykok, Novel also has a VSCode Extension: https://novel.sh/vscode
-
-https://github.com/steven-tey/novel/assets/28986134/58ebf7e3-cdb3-43df-878b-119e304f7373
+### Keyboard Shortcuts
+- `/` - Open command menu
+- `++` - Trigger AI suggestions
+- `Cmd/Ctrl + B` - Bold text
+- `Cmd/Ctrl + I` - Italic text
+- `Cmd/Ctrl + K` - Add link
 
 ## Tech Stack
 
-Novel is built on the following stack:
+- **Framework**: [Next.js 15](https://nextjs.org/)
+- **Editor**: [Tiptap](https://tiptap.dev/)
+- **AI**: [OpenAI](https://openai.com/) + [Vercel AI SDK](https://sdk.vercel.ai/docs)
+- **Authentication**: [Clerk](https://clerk.com/)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/)
+- **Storage**: [Vercel Blob](https://vercel.com/docs/storage/vercel-blob)
+- **Rate Limiting**: [Upstash](https://upstash.com/)
 
-- [Next.js](https://nextjs.org/) – framework
-- [Tiptap](https://tiptap.dev/) – text editor
-- [OpenAI](https://openai.com/) - AI completions
-- [Vercel AI SDK](https://sdk.vercel.ai/docs) – AI library
-- [Vercel](https://vercel.com) – deployments
-- [TailwindCSS](https://tailwindcss.com/) – styles
-- [Cal Sans](https://github.com/calcom/font) – font
+## Development
+
+### Project Structure
+```
+alecia-colab/
+├── apps/
+│   └── web/              # Next.js application
+│       ├── app/          # App router pages
+│       ├── components/   # React components
+│       ├── lib/          # Utilities and content
+│       └── styles/       # Global styles
+├── packages/
+│   └── headless/         # Editor core package
+└── docs/                 # Documentation
+```
+
+### Available Scripts
+```bash
+npm run dev         # Start development server
+npm run build       # Build for production
+npm run lint        # Run linter
+npm run format      # Format code
+npm run typecheck   # Type checking
+```
+
+### Code Quality
+This project uses:
+- [Biome](https://biomejs.dev/) for linting and formatting
+- [Husky](https://typicode.github.io/husky/) for git hooks
+- [Commitlint](https://commitlint.js.org/) for commit message conventions
 
 ## Contributing
 
-Here's how you can contribute:
+We welcome contributions! Please follow these guidelines:
 
-- [Open an issue](https://github.com/steven-tey/novel/issues) if you believe you've encountered a bug.
-- Make a [pull request](https://github.com/steven-tey/novel/pull) to add new features/make quality-of-life improvements/fix bugs.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-<a href="https://github.com/steven-tey/novel/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=steven-tey/novel" />
-</a>
+## Security
 
-## Repo Activity
-
-![Novel.sh repo activity – generated by Axiom](https://repobeats.axiom.co/api/embed/2ebdaa143b0ad6e7c2ee23151da7b37f67da0b36.svg)
+For security concerns, please refer to [SECURITY.md](SECURITY.md) or contact the maintainers directly.
 
 ## License
 
-Licensed under the [Apache-2.0 license](https://github.com/steven-tey/novel/blob/main/LICENSE).
+Licensed under the [Apache-2.0 license](LICENSE).
+
+## Acknowledgments
+
+Built with ❤️ for the M&A community. This project utilizes various open-source technologies and frameworks - see package.json for a complete list of dependencies.
+
+---
+
+For more information, visit our [documentation](https://github.com/mitchlabeetch/alecia-colab/wiki) or open an issue.
