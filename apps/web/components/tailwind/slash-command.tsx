@@ -11,7 +11,6 @@ import {
   TextQuote,
   Youtube,
   Briefcase,
-  FileText,
   Calculator,
   ClipboardCheck,
   TrendingUp,
