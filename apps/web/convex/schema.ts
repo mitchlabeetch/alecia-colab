@@ -94,4 +94,20 @@ export default defineSchema({
     order: v.number(),
   })
     .index("by_order", ["order"]),
+
+  // Sprint 5: Presence for real-time collaboration
+  colab_presence: defineTable({
+    resourceType: v.union(v.literal("document"), v.literal("deal")),
+    resourceId: v.string(),
+    userId: v.string(),
+    userName: v.optional(v.string()),
+    userColor: v.optional(v.string()),
+    cursorPosition: v.optional(v.object({
+      x: v.number(),
+      y: v.number(),
+    })),
+    lastActiveAt: v.number(),
+  })
+    .index("by_resource", ["resourceType", "resourceId"])
+    .index("by_resource_user", ["resourceType", "resourceId", "userId"]),
 });

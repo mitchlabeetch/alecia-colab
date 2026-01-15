@@ -11,6 +11,7 @@
 import type * as deals from "../deals.js";
 import type * as documentVersions from "../documentVersions.js";
 import type * as documents from "../documents.js";
+import type * as presence from "../presence.js";
 import type * as propertyDefinitions from "../propertyDefinitions.js";
 
 import type {
@@ -23,6 +24,7 @@ declare const fullApi: ApiFromModules<{
   deals: typeof deals;
   documentVersions: typeof documentVersions;
   documents: typeof documents;
+  presence: typeof presence;
   propertyDefinitions: typeof propertyDefinitions;
 }>;
 
