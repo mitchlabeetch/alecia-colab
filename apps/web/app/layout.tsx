@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css';
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { ClerkProvider } from '@clerk/nextjs';
 import Providers from "./providers";
 
 const title = "Novel - Notion-style WYSIWYG editor with AI-powered autocompletions";
@@ -31,10 +32,18 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const isClerkEnabled = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>{children}</Providers>
+        {isClerkEnabled ? (
+          <ClerkProvider>
+            <Providers>{children}</Providers>
+          </ClerkProvider>
+        ) : (
+          <Providers>{children}</Providers>
+        )}
       </body>
     </html>
   );

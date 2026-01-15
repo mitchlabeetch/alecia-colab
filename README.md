@@ -48,8 +48,19 @@ You can deploy your own version of Novel to Vercel with one click:
 To set up Novel locally, you'll need to clone the repository and set up the following environment variables:
 
 - `OPENAI_API_KEY` – your OpenAI API key (you can get one [here](https://platform.openai.com/account/api-keys))
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` – your Clerk publishable key (get it from [Clerk Dashboard](https://dashboard.clerk.com))
+- `CLERK_SECRET_KEY` – your Clerk secret key (get it from [Clerk Dashboard](https://dashboard.clerk.com))
 - `BLOB_READ_WRITE_TOKEN` – your Vercel Blob read/write token (currently [still in beta](https://vercel.com/docs/storage/vercel-blob/quickstart#quickstart), but feel free to [sign up on this form](https://vercel.fyi/blob-beta) for access)
 
+### Setting up Clerk Authentication
+
+This project uses Clerk for authentication with Microsoft account support:
+
+1. Create a Clerk account at [clerk.com](https://clerk.com)
+2. Create a new application in the Clerk Dashboard
+3. Enable Microsoft as an OAuth provider in "Social Connections"
+4. Copy your API keys to `.env` file in the `apps/web` directory
+5. Configure Microsoft Azure OAuth credentials in Clerk Dashboard (see [Clerk docs](https://clerk.com/docs/authentication/social-connections/microsoft))
 If you've deployed this to Vercel, you can also use [`vc env pull`](https://vercel.com/docs/cli/env#exporting-development-environment-variables) to pull the environment variables from your Vercel project.
 
 To run the app locally, you can run the following commands:
