@@ -52,7 +52,7 @@ To set up Novel locally, you'll need to clone the repository and set up the foll
 - `CLERK_SECRET_KEY` – your Clerk secret key (get it from [Clerk Dashboard](https://dashboard.clerk.com))
 - `BLOB_READ_WRITE_TOKEN` – your Vercel Blob read/write token (currently [still in beta](https://vercel.com/docs/storage/vercel-blob/quickstart#quickstart), but feel free to [sign up on this form](https://vercel.fyi/blob-beta) for access)
 
-n### Setting up Clerk Authentication
+### Setting up Clerk Authentication
 
 This project uses Clerk for authentication with Microsoft account support:
 

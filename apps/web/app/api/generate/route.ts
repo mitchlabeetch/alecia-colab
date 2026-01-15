@@ -9,9 +9,11 @@ import { auth } from '@clerk/nextjs/server';
 export const runtime = "edge";
 
 export async function POST(req: Request): Promise<Response> {
-  // Check authentication if Clerk is configured
+  // Get authentication if Clerk is configured
+  let userId: string | null = null;
   if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
-    const { userId } = await auth();
+    const authResult = await auth();
+    userId = authResult.userId;
     
     if (!userId) {
       return new Response("Unauthorized - Please sign in to use this feature.", {
@@ -28,7 +30,6 @@ export async function POST(req: Request): Promise<Response> {
   }
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
     // Use userId for rate limiting if available, otherwise fall back to IP
-    const { userId } = await auth();
     const identifier = userId || req.headers.get("x-forwarded-for");
     
     const ratelimit = new Ratelimit({
