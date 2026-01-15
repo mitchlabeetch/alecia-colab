@@ -5,6 +5,7 @@ import Menu from "@/components/tailwind/ui/menu";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { BookOpen, GithubIcon } from "lucide-react";
 import Link from "next/link";
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Page() {
   return (
@@ -32,6 +33,14 @@ export default function Page() {
           <Button variant="ghost">Documentation</Button>
         </Link>
         <Menu />
+        <SignedOut>
+          <SignInButton mode="modal">
+            <Button variant="default">Se connecter</Button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </div>
 
       <TailwindAdvancedEditor />

@@ -3,11 +3,21 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
 import { streamText } from "ai";
 import { match } from "ts-pattern";
+import { auth } from '@clerk/nextjs/server';
 
 // IMPORTANT! Set the runtime to edge: https://vercel.com/docs/functions/edge-functions/edge-runtime
 export const runtime = "edge";
 
 export async function POST(req: Request): Promise<Response> {
+  // Check authentication
+  const { userId } = await auth();
+  
+  if (!userId) {
+    return new Response("Unauthorized - Please sign in to use this feature.", {
+      status: 401,
+    });
+  }
+
   // Check if the OPENAI_API_KEY is set, if not return 400
   if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
     return new Response("Missing OPENAI_API_KEY - make sure to add it to your .env file.", {
@@ -15,13 +25,12 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-    const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({
       redis: kv,
       limiter: Ratelimit.slidingWindow(50, "1 d"),
     });
 
-    const { success, limit, reset, remaining } = await ratelimit.limit(`novel_ratelimit_${ip}`);
+    const { success, limit, reset, remaining } = await ratelimit.limit(`novel_ratelimit_${userId}`);
 
     if (!success) {
       return new Response("You have reached your request limit for the day.", {
