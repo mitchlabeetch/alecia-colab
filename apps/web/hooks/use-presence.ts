@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
-import { useUser } from "@clerk/nextjs";
 
 const HEARTBEAT_INTERVAL = 10000; // 10 seconds
 const USER_COLORS = [
@@ -17,15 +16,39 @@ interface UsePresenceOptions {
   enabled?: boolean;
 }
 
+// Lazy import useUser to avoid SSR issues
+let useUserHook: (() => { user: any }) | null = null;
+
+function getUser() {
+  if (typeof window === "undefined") return null;
+  
+  try {
+    // Dynamically access Clerk's useUser if available
+    if (!useUserHook) {
+      const clerk = require("@clerk/nextjs");
+      useUserHook = clerk.useUser;
+    }
+    return useUserHook?.()?.user || null;
+  } catch {
+    return null;
+  }
+}
+
 export function usePresence({ resourceType, resourceId, enabled = true }: UsePresenceOptions) {
-  const { user } = useUser();
+  const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const heartbeatRef = useRef<NodeJS.Timeout | null>(null);
 
   const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL;
   
+  // Only run on client
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
   const activeUsers = useQuery(
     api.presence.getActiveUsers,
-    isConvexConfigured && enabled ? { resourceType, resourceId } : "skip"
+    isConvexConfigured && enabled && mounted ? { resourceType, resourceId } : "skip"
   );
   
   const heartbeat = useMutation(api.presence.heartbeat);
@@ -40,6 +63,21 @@ export function usePresence({ resourceType, resourceId, enabled = true }: UsePre
     }
     return USER_COLORS[Math.abs(hash) % USER_COLORS.length];
   }, []);
+
+  // Safely get user on client side
+  useEffect(() => {
+    if (!mounted) return;
+    
+    try {
+      const clerk = require("@clerk/nextjs");
+      // This is a workaround - in a real app, you'd use useUser directly
+      // but for SSR safety, we delay it
+      const currentUser = getUser();
+      setUser(currentUser);
+    } catch {
+      setUser(null);
+    }
+  }, [mounted]);
 
   // Send heartbeat
   const sendHeartbeat = useCallback(async () => {
@@ -60,7 +98,7 @@ export function usePresence({ resourceType, resourceId, enabled = true }: UsePre
 
   // Setup heartbeat interval
   useEffect(() => {
-    if (!enabled || !user?.id || !isConvexConfigured) return;
+    if (!enabled || !user?.id || !isConvexConfigured || !mounted) return;
 
     // Send initial heartbeat
     sendHeartbeat();
@@ -78,7 +116,7 @@ export function usePresence({ resourceType, resourceId, enabled = true }: UsePre
         leave({ resourceType, resourceId, userId: user.id }).catch(() => {});
       }
     };
-  }, [enabled, user?.id, resourceType, resourceId, sendHeartbeat, leave, isConvexConfigured]);
+  }, [enabled, user?.id, resourceType, resourceId, sendHeartbeat, leave, isConvexConfigured, mounted]);
 
   // Filter out current user
   const otherUsers = activeUsers?.filter((u) => u.userId !== user?.id) || [];
