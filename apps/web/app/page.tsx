@@ -1,5 +1,5 @@
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
-import DealPipeline from "@/components/tailwind/deal-pipeline";
+import DealPipeline from "@/components/deal-pipeline";
 import { Button } from "@/components/tailwind/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/tailwind/ui/dialog";
 import Menu from "@/components/tailwind/ui/menu";

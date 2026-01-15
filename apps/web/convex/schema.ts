@@ -23,6 +23,19 @@ export default defineSchema({
     .index("by_deal", ["dealId"])
     .index("by_updated", ["updatedAt"]),
 
+  // Document version history (Sprint 3)
+  colab_document_versions: defineTable({
+    documentId: v.id("colab_documents"),
+    content: v.string(),
+    markdown: v.optional(v.string()),
+    versionNumber: v.number(),
+    createdBy: v.optional(v.string()),
+    createdAt: v.number(),
+    changeDescription: v.optional(v.string()),
+  })
+    .index("by_document", ["documentId"])
+    .index("by_version", ["documentId", "versionNumber"]),
+
   // M&A Deals for the Deal Pipeline
   colab_deals: defineTable({
     company: v.string(),
@@ -41,8 +54,23 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
     isArchived: v.optional(v.boolean()),
+    // Sprint 1: Multi-view support
+    dueDate: v.optional(v.number()), // Timestamp for calendar view
+    priority: v.optional(v.union(
+      v.literal("high"),
+      v.literal("medium"),
+      v.literal("low")
+    )),
+    tags: v.optional(v.array(v.string())),
+    // Sprint 2: Deal flow visualization
+    nodePosition: v.optional(v.object({
+      x: v.number(),
+      y: v.number(),
+    })),
   })
     .index("by_stage", ["stage"])
     .index("by_user", ["userId"])
-    .index("by_updated", ["updatedAt"]),
+    .index("by_updated", ["updatedAt"])
+    .index("by_due_date", ["dueDate"]),
 });
+
