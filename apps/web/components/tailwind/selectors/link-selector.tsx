@@ -49,7 +49,7 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
               "text-blue-500": editor.isActive("link"),
             })}
           >
-            Link
+            Lien
           </p>
         </Button>
       </PopoverTrigger>
@@ -70,7 +70,7 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
           <input
             ref={inputRef}
             type="text"
-            placeholder="Paste a link"
+            placeholder="Collez un lien"
             className="flex-1 bg-background p-1 text-sm outline-none"
             defaultValue={editor.getAttributes("link").href || ""}
           />

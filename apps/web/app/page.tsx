@@ -19,7 +19,7 @@ export default function Page() {
           <DialogTrigger asChild>
             <Button className="ml gap-2">
               <BookOpen className="h-4 w-4" />
-              Usage in dialog
+              Utilisation dans un dialogue
             </Button>
           </DialogTrigger>
           <DialogContent className="flex max-w-3xl h-[calc(100vh-24px)]">
