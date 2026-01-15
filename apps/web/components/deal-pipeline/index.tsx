@@ -31,6 +31,7 @@ import {
 import { ViewSwitcher, type ViewType } from "./ViewSwitcher";
 import { TableView } from "./TableView";
 import { CalendarView } from "./CalendarView";
+import DealFlowCanvas from "../deal-flow/DealFlowCanvas";
 
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
 
@@ -206,7 +207,7 @@ export default function DealPipeline() {
           <ViewSwitcher 
             currentView={currentView} 
             onViewChange={handleViewChange}
-            showFlowView={false} // Flow view coming in Sprint 2
+            showFlowView={true}
           />
           
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
@@ -364,11 +365,7 @@ export default function DealPipeline() {
       )}
 
       {currentView === "flow" && (
-        <div className="text-center py-12 text-muted-foreground border rounded-lg">
-          <Briefcase className="h-12 w-12 mx-auto mb-4 opacity-50" />
-          <p className="text-lg font-medium">Deal Flow Visualization</p>
-          <p className="text-sm">Coming in Sprint 2</p>
-        </div>
+        <DealFlowCanvas />
       )}
     </div>
   );
