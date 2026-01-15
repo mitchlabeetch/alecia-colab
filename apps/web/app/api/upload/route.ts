@@ -5,13 +5,15 @@ import { auth } from '@clerk/nextjs/server';
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  // Check authentication
-  const { userId } = await auth();
-  
-  if (!userId) {
-    return new Response("Unauthorized - Please sign in to upload files.", {
-      status: 401,
-    });
+  // Check authentication if Clerk is configured
+  if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    const { userId } = await auth();
+    
+    if (!userId) {
+      return new Response("Unauthorized - Please sign in to upload files.", {
+        status: 401,
+      });
+    }
   }
 
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
