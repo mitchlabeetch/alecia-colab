@@ -16,7 +16,7 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  const hasClerk = typeof process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY !== 'undefined';
+  const hasClerk = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   
   if (hasClerk) {
     return (
