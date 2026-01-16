@@ -3,10 +3,11 @@
  * Features: Welcome message, quick actions, recent documents, activity feed
  */
 
+"use client";
+
 // Force dynamic rendering to avoid SSG issues with Clerk
 export const dynamic = "force-dynamic";
 
-import { useUser } from "@clerk/nextjs";
 import { motion } from "motion/react";
 import {
   FileText,
@@ -126,7 +127,9 @@ const stats = [
 ];
 
 export default function DashboardPage() {
-  const { user, isLoaded } = useUser();
+  // Mock user for demo - in production, would use Clerk
+  const user = null;
+  const isLoaded = true;
 
   return (
     <div className="space-y-8">

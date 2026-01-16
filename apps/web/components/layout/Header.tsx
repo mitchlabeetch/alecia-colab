@@ -2,11 +2,10 @@
 
 /**
  * Header Component - Top navigation bar
- * Features: Logo, search, notifications, profile, theme toggle
+ * Features: Logo, search, notifications, profile
  */
 
 import { Bell, Search, Menu } from "lucide-react";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/tailwind/ui/button";
 import { Input } from "@/components/tailwind/ui/input";
 import { Badge } from "@/components/tailwind/ui/badge";
@@ -74,15 +73,12 @@ export function Header({ onMenuClick, className }: HeaderProps) {
             </Badge>
           </Button>
 
-          {/* Profile */}
-          <SignedOut>
-            <SignInButton mode="modal">
-              <Button variant="default">{t("profile.signIn")}</Button>
-            </SignInButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          {/* Profile - Mock user */}
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
+              U
+            </div>
+          </div>
         </div>
       </div>
     </header>
