@@ -1,0 +1,61 @@
+
+> alecia-colab@ dev /app
+> turbo dev
+
+turbo 2.3.3
+
+• Packages in scope: alecia-colab-web, novel, tsconfig
+• Running dev in 3 packages
+• Remote caching disabled
+novel:dev: cache bypass, force executing a55844255e23c8a5
+alecia-colab-web:dev: cache bypass, force executing e7e93c5b11a291a1
+novel:dev:
+novel:dev: > novel@1.0.0 dev /app/packages/headless
+novel:dev: > tsup --watch
+novel:dev:
+alecia-colab-web:dev:
+alecia-colab-web:dev: > alecia-colab-web@0.1.0 dev /app/apps/web
+alecia-colab-web:dev: > next dev
+alecia-colab-web:dev:
+novel:dev: CLI Building entry: src/index.ts
+novel:dev: CLI Using tsconfig: tsconfig.json
+novel:dev: CLI tsup v8.3.5
+novel:dev: CLI Using tsup config: /app/packages/headless/tsup.config.ts
+novel:dev: CLI Running in watch mode
+novel:dev: CLI Target: esnext
+novel:dev: CLI Cleaning output folder
+novel:dev: CJS Build start
+novel:dev: ESM Build start
+novel:dev: CJS dist/index.cjs 15.58 KB
+novel:dev: CJS ⚡️ Build success in 71ms
+novel:dev: ESM dist/index.js 14.46 KB
+novel:dev: ESM ⚡️ Build success in 70ms
+novel:dev: CLI Watching for changes in "."
+novel:dev: CLI Ignoring changes in "**/{.git,node_modules}/**" | "dist"
+alecia-colab-web:dev:    ▲ Next.js 15.1.11
+alecia-colab-web:dev:    - Local:        http://localhost:3000
+alecia-colab-web:dev:    - Network:      http://192.168.0.2:3000
+alecia-colab-web:dev:
+alecia-colab-web:dev:  ✓ Starting...
+alecia-colab-web:dev: Attention: Next.js now collects completely anonymous telemetry regarding usage.
+alecia-colab-web:dev: This information is used to shape Next.js' roadmap and prioritize features.
+alecia-colab-web:dev: You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+alecia-colab-web:dev: https://nextjs.org/telemetry
+alecia-colab-web:dev:
+novel:dev: DTS Build start
+alecia-colab-web:dev:  ✓ Ready in 2s
+novel:dev: DTS ⚡️ Build success in 3476ms
+alecia-colab-web:dev:  ○ Compiling /middleware ...
+alecia-colab-web:dev:  ✓ Compiled /middleware in 2.2s (252 modules)
+alecia-colab-web:dev:  ○ Compiling /dashboard ...
+alecia-colab-web:dev: <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (186kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+alecia-colab-web:dev: Browserslist: browsers data (caniuse-lite) is 13 months old. Please run:
+alecia-colab-web:dev:   npx update-browserslist-db@latest
+alecia-colab-web:dev:   Why you should do it regularly: https://github.com/browserslist/update-db#readme
+alecia-colab-web:dev:  ✓ Compiled /dashboard in 19.6s (2527 modules)
+alecia-colab-web:dev:  GET /dashboard 200 in 21156ms
+alecia-colab-web:dev:  ✓ Compiled in 1797ms (1094 modules)
+ ELIFECYCLE  Command failed.
+alecia-colab-web:dev:  ELIFECYCLE  Command failed.
+novel:dev:  ELIFECYCLE  Command failed.
+ ERROR  run failed: command  exited (1)
