@@ -43,6 +43,14 @@
     --novel-highlight-orange: #faebdd;
     --novel-highlight-pink: #faf1f5;
     --novel-highlight-gray: #f1f1ef;
+
+    /* Alecia Brand Colors */
+    --alecia-midnight: #1a1f36;
+    --alecia-corporate: #1e293b;
+    --alecia-white: #ffffff;
+    --alecia-sky: #38bdf8;
+    --alecia-gold-accent: #fbbf24;
+    --alecia-red: #ef4444;
   }
 
   .dark {

@@ -110,4 +110,87 @@ export default defineSchema({
   })
     .index("by_resource", ["resourceType", "resourceId"])
     .index("by_resource_user", ["resourceType", "resourceId", "userId"]),
+
+  // Batch 12: AI-Powered Presentations
+  colab_presentations: defineTable({
+    title: v.string(),
+    userId: v.string(),
+    workspaceId: v.optional(v.string()),
+    theme: v.string(),
+    language: v.string(), // 'fr-FR' default
+    slides: v.array(v.object({
+      id: v.string(),
+      title: v.string(),
+      content: v.any(), // Block content
+      rootImage: v.optional(v.object({
+        url: v.string(),
+        query: v.string(),
+      })),
+    })),
+    status: v.union(v.literal('draft'), v.literal('generating'), v.literal('complete')),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_workspace", ["workspaceId"]),
+
+  // Batch 13: Advanced Kanban
+  colab_boards: defineTable({
+    name: v.string(),
+    workspaceId: v.optional(v.string()), // Optional for now
+    visibility: v.union(v.literal('private'), v.literal('workspace'), v.literal('public')),
+    backgroundUrl: v.optional(v.string()),
+    createdBy: v.string(),
+    createdAt: v.number(),
+  })
+    .index('by_workspace', ['workspaceId'])
+    .index('by_user', ['createdBy']),
+
+  colab_lists: defineTable({
+    name: v.string(),
+    boardId: v.id('colab_boards'),
+    order: v.number(), // For ordering
+    createdAt: v.number(),
+  }).index('by_board', ['boardId']),
+
+  colab_cards: defineTable({
+    title: v.string(),
+    description: v.optional(v.string()),
+    listId: v.id('colab_lists'),
+    order: v.number(),
+    labelIds: v.optional(v.array(v.id('colab_labels'))),
+    assigneeIds: v.optional(v.array(v.string())),
+    dueDate: v.optional(v.number()),
+    dueDateCompleted: v.optional(v.boolean()),
+    createdBy: v.string(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index('by_list', ['listId']),
+
+  colab_labels: defineTable({
+    name: v.string(),
+    colorCode: v.string(), // Alecia palette colors
+    boardId: v.id('colab_boards'),
+  }).index('by_board', ['boardId']),
+
+  colab_checklists: defineTable({
+    name: v.string(),
+    cardId: v.id('colab_cards'),
+    order: v.number(),
+  }).index('by_card', ['cardId']),
+
+  colab_checklist_items: defineTable({
+    content: v.string(),
+    completed: v.boolean(),
+    checklistId: v.id('colab_checklists'),
+    order: v.number(),
+  }).index('by_checklist', ['checklistId']),
+
+  colab_card_activities: defineTable({
+    cardId: v.id('colab_cards'),
+    userId: v.string(),
+    action: v.string(), // 'created', 'moved', 'label_added', etc.
+    details: v.optional(v.any()),
+    createdAt: v.number(),
+  }).index('by_card', ['cardId']),
 });
