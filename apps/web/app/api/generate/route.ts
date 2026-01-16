@@ -3,7 +3,7 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
 import { streamText } from "ai";
 import { match } from "ts-pattern";
-import { auth } from '@clerk/nextjs/server';
+import { auth } from "@clerk/nextjs/server";
 
 // IMPORTANT! Set the runtime to edge: https://vercel.com/docs/functions/edge-functions/edge-runtime
 export const runtime = "edge";
@@ -14,7 +14,7 @@ export async function POST(req: Request): Promise<Response> {
   if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
     const authResult = await auth();
     userId = authResult.userId;
-    
+
     if (!userId) {
       return new Response("Unauthorized - Please sign in to use this feature.", {
         status: 401,
@@ -31,7 +31,7 @@ export async function POST(req: Request): Promise<Response> {
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
     // Use userId for rate limiting if available, otherwise fall back to IP
     const identifier = userId || req.headers.get("x-forwarded-for");
-    
+
     const ratelimit = new Ratelimit({
       redis: kv,
       limiter: Ratelimit.slidingWindow(50, "1 d"),

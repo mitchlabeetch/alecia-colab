@@ -25,17 +25,12 @@ export function Header({ onMenuClick, className }: HeaderProps) {
         "sticky top-0 z-40 w-full",
         "border-b border-border",
         "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-        className
+        className,
       )}
     >
       <div className="container flex h-16 items-center gap-4 px-4">
         {/* Mobile menu button */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden"
-          onClick={onMenuClick}
-        >
+        <Button variant="ghost" size="icon" className="md:hidden" onClick={onMenuClick}>
           <Menu className="h-5 w-5" />
         </Button>
 
@@ -44,9 +39,7 @@ export function Header({ onMenuClick, className }: HeaderProps) {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
             A
           </div>
-          <span className="hidden sm:inline-block font-semibold">
-            {t("app.name")}
-          </span>
+          <span className="hidden sm:inline-block font-semibold">{t("app.name")}</span>
         </div>
 
         {/* Workspace Switcher */}
@@ -58,11 +51,7 @@ export function Header({ onMenuClick, className }: HeaderProps) {
         <div className="flex-1 max-w-md hidden md:flex">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={t("search.placeholder")}
-              className="pl-10 w-full"
-            />
+            <Input type="search" placeholder={t("search.placeholder")} className="pl-10 w-full" />
           </div>
         </div>
 

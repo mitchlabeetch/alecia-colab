@@ -1,13 +1,13 @@
 "use client";
 
-import { 
-  Check, 
-  Menu as MenuIcon, 
-  Monitor, 
-  Moon, 
-  SunDim, 
-  FileText, 
-  Briefcase, 
+import {
+  Check,
+  Menu as MenuIcon,
+  Monitor,
+  Moon,
+  SunDim,
+  FileText,
+  Briefcase,
   Building,
   Download,
   Share2,
@@ -66,13 +66,13 @@ export default function Menu() {
   const handleExport = () => {
     const content = window.localStorage.getItem("novel-content");
     const markdown = window.localStorage.getItem("markdown");
-    
+
     if (markdown) {
       const blob = new Blob([markdown], { type: "text/markdown" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `alecia-document-${new Date().toISOString().split('T')[0]}.md`;
+      a.download = `alecia-document-${new Date().toISOString().split("T")[0]}.md`;
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -114,11 +114,7 @@ export default function Menu() {
             </div>
             <span>{fr.actions.exportAsMarkdown}</span>
           </Button>
-          <Button
-            variant="ghost"
-            className="flex w-full items-center justify-start gap-2 px-2 py-1.5 text-sm"
-            disabled
-          >
+          <Button variant="ghost" className="flex w-full items-center justify-start gap-2 px-2 py-1.5 text-sm" disabled>
             <div className="rounded-sm border p-1">
               <Share2 className="h-4 w-4" />
             </div>

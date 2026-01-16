@@ -52,7 +52,7 @@ const colabSidebarSections = [
       { icon: Home, label: "Dashboard", href: "/dashboard" },
       { icon: Search, label: "Search", action: "openSearch" },
       { icon: Plus, label: "New Document", href: "/documents" },
-    ]
+    ],
   },
   {
     title: "Documents",
@@ -63,7 +63,7 @@ const colabSidebarSections = [
       { icon: Star, label: "Favorites", href: "/favorites" },
       { icon: FileText, label: "All Documents", href: "/documents" },
       { icon: Trash, label: "Trash", href: "/trash" },
-    ]
+    ],
   },
   {
     title: "Deals & Pipeline",
@@ -73,7 +73,7 @@ const colabSidebarSections = [
       { icon: Briefcase, label: "Active Deals", href: "/deals" },
       { icon: Target, label: "Pipeline", href: "/pipeline" },
       { icon: Building, label: "Companies", href: "/companies" },
-    ]
+    ],
   },
   {
     title: "Admin Panel",
@@ -83,7 +83,7 @@ const colabSidebarSections = [
       { icon: LayoutDashboard, label: "Admin Dashboard", href: "/admin/dashboard", external: true },
       { icon: Users, label: "CRM", href: "/admin/crm", external: true },
       { icon: Settings, label: "Settings", href: "/admin/settings", external: true },
-    ]
+    ],
   },
   {
     title: "External",
@@ -92,8 +92,8 @@ const colabSidebarSections = [
     items: [
       { icon: Globe, label: "Website", href: "https://alecia.markets", external: true },
       { icon: HelpCircle, label: "Documentation", href: "/docs", external: true },
-    ]
-  }
+    ],
+  },
 ];
 
 export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
@@ -103,12 +103,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
   return (
     <>
       {/* Mobile overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
-          onClick={onClose}
-        />
-      )}
+      {isOpen && <div className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden" onClick={onClose} />}
 
       {/* Sidebar */}
       <aside
@@ -118,22 +113,14 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
           "transition-all duration-300",
           collapsed ? "w-16" : "w-64",
           "hidden md:block",
-          className
+          className,
         )}
       >
         <div className="flex h-full flex-col">
           {/* Collapse button */}
           <div className="flex items-center justify-end p-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setCollapsed(!collapsed)}
-            >
-              {collapsed ? (
-                <ChevronRight className="h-4 w-4" />
-              ) : (
-                <ChevronLeft className="h-4 w-4" />
-              )}
+            <Button variant="ghost" size="icon" onClick={() => setCollapsed(!collapsed)}>
+              {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
             </Button>
           </div>
 
@@ -153,10 +140,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                         const isActive = pathname === item.href;
                         return (
                           <Link key={item.href} href={item.href} target={item.external ? "_blank" : undefined}>
-                            <Button
-                              variant={isActive ? "secondary" : "ghost"}
-                              className="w-full justify-start"
-                            >
+                            <Button variant={isActive ? "secondary" : "ghost"} className="w-full justify-start">
                               <Icon className="h-5 w-5" />
                               <span className="ml-3">{item.label}</span>
                             </Button>
@@ -198,7 +182,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
           "fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] w-64",
           "border-r border-border bg-background",
           "transition-transform duration-300 md:hidden",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex h-full flex-col">
@@ -216,11 +200,13 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                       const Icon = item.icon;
                       const isActive = pathname === item.href;
                       return (
-                        <Link key={item.href} href={item.href} onClick={onClose} target={item.external ? "_blank" : undefined}>
-                          <Button
-                            variant={isActive ? "secondary" : "ghost"}
-                            className="w-full justify-start"
-                          >
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={onClose}
+                          target={item.external ? "_blank" : undefined}
+                        >
+                          <Button variant={isActive ? "secondary" : "ghost"} className="w-full justify-start">
                             <Icon className="h-5 w-5" />
                             <span className="ml-3">{item.label}</span>
                           </Button>

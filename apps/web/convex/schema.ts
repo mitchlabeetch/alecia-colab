@@ -3,7 +3,7 @@ import { v } from "convex/values";
 
 /**
  * Alecia Colab Schema
- * 
+ *
  * IMPORTANT: All tables are prefixed with "colab_" to avoid conflicts
  * with existing Alecia Panel tables in the shared Convex database.
  */
@@ -45,7 +45,7 @@ export default defineSchema({
       v.literal("negotiation"),
       v.literal("closing"),
       v.literal("closed-won"),
-      v.literal("closed-lost")
+      v.literal("closed-lost"),
     ),
     valuation: v.optional(v.string()),
     lead: v.optional(v.string()),
@@ -56,17 +56,15 @@ export default defineSchema({
     isArchived: v.optional(v.boolean()),
     // Sprint 1: Multi-view support
     dueDate: v.optional(v.number()), // Timestamp for calendar view
-    priority: v.optional(v.union(
-      v.literal("high"),
-      v.literal("medium"),
-      v.literal("low")
-    )),
+    priority: v.optional(v.union(v.literal("high"), v.literal("medium"), v.literal("low"))),
     tags: v.optional(v.array(v.string())),
     // Sprint 2: Deal flow visualization
-    nodePosition: v.optional(v.object({
-      x: v.number(),
-      y: v.number(),
-    })),
+    nodePosition: v.optional(
+      v.object({
+        x: v.number(),
+        y: v.number(),
+      }),
+    ),
     // Sprint 4: Custom properties (key = property ID, value = property value)
     customProperties: v.optional(v.any()),
   })
@@ -84,16 +82,19 @@ export default defineSchema({
       v.literal("date"),
       v.literal("select"),
       v.literal("multiselect"),
-      v.literal("checkbox")
+      v.literal("checkbox"),
     ),
-    options: v.optional(v.array(v.object({
-      id: v.string(),
-      label: v.string(),
-      color: v.string(),
-    }))),
+    options: v.optional(
+      v.array(
+        v.object({
+          id: v.string(),
+          label: v.string(),
+          color: v.string(),
+        }),
+      ),
+    ),
     order: v.number(),
-  })
-    .index("by_order", ["order"]),
+  }).index("by_order", ["order"]),
 
   // Sprint 5: Presence for real-time collaboration
   colab_presence: defineTable({
@@ -102,10 +103,12 @@ export default defineSchema({
     userId: v.string(),
     userName: v.optional(v.string()),
     userColor: v.optional(v.string()),
-    cursorPosition: v.optional(v.object({
-      x: v.number(),
-      y: v.number(),
-    })),
+    cursorPosition: v.optional(
+      v.object({
+        x: v.number(),
+        y: v.number(),
+      }),
+    ),
     lastActiveAt: v.number(),
   })
     .index("by_resource", ["resourceType", "resourceId"])

@@ -49,16 +49,8 @@ export default function Progress({
       {(title || subtitle || showPercentage) && (
         <div className="flex items-start justify-between">
           <div>
-            {title && (
-              <p className={cn("font-medium text-gray-900 dark:text-white", config.text)}>
-                {title}
-              </p>
-            )}
-            {subtitle && (
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {subtitle}
-              </p>
-            )}
+            {title && <p className={cn("font-medium text-gray-900 dark:text-white", config.text)}>{title}</p>}
+            {subtitle && <p className="text-xs text-gray-500 dark:text-gray-400">{subtitle}</p>}
           </div>
           {showPercentage && (
             <span className={cn("font-medium text-gray-900 dark:text-white", config.text)}>
@@ -68,12 +60,7 @@ export default function Progress({
         </div>
       )}
 
-      <div
-        className={cn(
-          "w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700",
-          config.height
-        )}
-      >
+      <div className={cn("w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700", config.height)}>
         <motion.div
           className={cn("h-full rounded-full", colorClass)}
           initial={{ width: 0 }}
@@ -101,23 +88,9 @@ export function ProgressEtudeMarche({ value }: { value: number }) {
 }
 
 export function ProgressSauvegarde({ value }: { value: number }) {
-  return (
-    <Progress
-      value={value}
-      title="Sauvegarde"
-      subtitle="Enregistrement des modifications"
-      size="sm"
-    />
-  );
+  return <Progress value={value} title="Sauvegarde" subtitle="Enregistrement des modifications" size="sm" />;
 }
 
 export function ProgressIA({ value, task }: { value: number; task: string }) {
-  return (
-    <Progress
-      value={value}
-      title="Analyse IA"
-      subtitle={task}
-      variant={value >= 100 ? "success" : "default"}
-    />
-  );
+  return <Progress value={value} title="Analyse IA" subtitle={task} variant={value >= 100 ? "success" : "default"} />;
 }

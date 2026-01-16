@@ -9,27 +9,19 @@ import { useState } from "react";
 import nextDynamic from "next/dynamic";
 import { Button } from "@/components/tailwind/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tailwind/ui/tabs";
-import {
-  FileText,
-  Briefcase,
-  FolderOpen,
-  Clock,
-  Plus,
-  Users,
-  TrendingUp,
-} from "lucide-react";
+import { FileText, Briefcase, FolderOpen, Clock, Plus, Users, TrendingUp } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 // Dynamic imports for heavy components
-const TailwindAdvancedEditor = nextDynamic(
-  () => import("@/components/tailwind/advanced-editor"),
-  { ssr: false, loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" /> }
-);
+const TailwindAdvancedEditor = nextDynamic(() => import("@/components/tailwind/advanced-editor"), {
+  ssr: false,
+  loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" />,
+});
 
-const DealPipeline = nextDynamic(
-  () => import("@/components/deal-pipeline"),
-  { ssr: false, loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" /> }
-);
+const DealPipeline = nextDynamic(() => import("@/components/deal-pipeline"), {
+  ssr: false,
+  loading: () => <div className="animate-pulse h-64 bg-muted rounded-lg" />,
+});
 
 // Stats
 const stats = [
@@ -60,7 +52,7 @@ export default function ClientHomePage() {
               <Briefcase className="h-6 w-6 text-primary" />
               <span className="text-xl font-semibold">Alecia Colab</span>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <SignedOut>
                 <SignInButton mode="modal">
@@ -83,21 +75,14 @@ export default function ClientHomePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-foreground">
-            Bienvenue sur Alecia Colab
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Votre plateforme M&A de centralisation et collaboration
-          </p>
+          <h1 className="text-2xl font-bold text-foreground">Bienvenue sur Alecia Colab</h1>
+          <p className="text-muted-foreground mt-1">Votre plateforme M&A de centralisation et collaboration</p>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-card border rounded-xl p-4 hover:shadow-md transition-shadow"
-            >
+            <div key={stat.label} className="bg-card border rounded-xl p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center gap-3">
                 <div className={`p-2 rounded-lg bg-muted ${stat.color}`}>
                   <stat.icon className="h-5 w-5" />
@@ -137,15 +122,13 @@ export default function ClientHomePage() {
               </h2>
               <div className="space-y-3">
                 {recentActivity.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between py-2 border-b last:border-0"
-                  >
+                  <div key={index} className="flex items-center justify-between py-2 border-b last:border-0">
                     <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full ${
-                        item.type === "deal" ? "bg-blue-500" :
-                        item.type === "doc" ? "bg-green-500" : "bg-purple-500"
-                      }`} />
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          item.type === "deal" ? "bg-blue-500" : item.type === "doc" ? "bg-green-500" : "bg-purple-500"
+                        }`}
+                      />
                       <span className="text-sm">{item.title}</span>
                     </div>
                     <span className="text-xs text-muted-foreground">{item.time}</span>

@@ -58,7 +58,7 @@ export function PresenceAvatars({ users, maxDisplay = 4, size = "md" }: Presence
             </TooltipContent>
           </Tooltip>
         ))}
-        
+
         {extraCount > 0 && (
           <Tooltip>
             <TooltipTrigger asChild>
@@ -72,7 +72,9 @@ export function PresenceAvatars({ users, maxDisplay = 4, size = "md" }: Presence
               </div>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{extraCount} more user{extraCount > 1 ? "s" : ""}</p>
+              <p>
+                {extraCount} more user{extraCount > 1 ? "s" : ""}
+              </p>
             </TooltipContent>
           </Tooltip>
         )}

@@ -8,7 +8,7 @@ const dealStages = v.union(
   v.literal("negotiation"),
   v.literal("closing"),
   v.literal("closed-won"),
-  v.literal("closed-lost")
+  v.literal("closed-lost"),
 );
 
 // Get all deals
@@ -19,23 +19,20 @@ export const list = query({
   },
   handler: async (ctx, args) => {
     // Fetch all deals and filter in memory for flexibility
-    const allDeals = await ctx.db
-      .query("colab_deals")
-      .order("desc")
-      .collect();
-    
+    const allDeals = await ctx.db.query("colab_deals").order("desc").collect();
+
     let deals = allDeals;
-    
+
     // Filter by stage if provided
     if (args.stage) {
       deals = deals.filter((d) => d.stage === args.stage);
     }
-    
+
     // Filter by user if provided
     if (args.userId) {
       return deals.filter((d) => d.userId === args.userId);
     }
-    
+
     return deals.filter((d) => !d.isArchived);
   },
 });
@@ -56,7 +53,7 @@ export const getByStage = query({
       .query("colab_deals")
       .filter((q) => q.neq(q.field("isArchived"), true))
       .collect();
-    
+
     return {
       sourcing: deals.filter((d) => d.stage === "sourcing"),
       "due-diligence": deals.filter((d) => d.stage === "due-diligence"),

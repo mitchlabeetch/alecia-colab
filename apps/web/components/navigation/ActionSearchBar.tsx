@@ -152,8 +152,7 @@ export default function ActionSearchBar({
 
     const normalizedQuery = debouncedQuery.toLowerCase().trim();
     return actions.filter((action) => {
-      const searchableText =
-        `${action.label} ${action.description || ""}`.toLowerCase();
+      const searchableText = `${action.label} ${action.description || ""}`.toLowerCase();
       return searchableText.includes(normalizedQuery);
     });
   }, [debouncedQuery, actions]);
@@ -166,13 +165,10 @@ export default function ActionSearchBar({
     }
   }, [filteredActions, isFocused]);
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setQuery(e.target.value);
-      setActiveIndex(-1);
-    },
-    []
-  );
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    setActiveIndex(-1);
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -181,15 +177,11 @@ export default function ActionSearchBar({
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
-          setActiveIndex((prev) =>
-            prev < filteredActions.length - 1 ? prev + 1 : 0
-          );
+          setActiveIndex((prev) => (prev < filteredActions.length - 1 ? prev + 1 : 0));
           break;
         case "ArrowUp":
           e.preventDefault();
-          setActiveIndex((prev) =>
-            prev > 0 ? prev - 1 : filteredActions.length - 1
-          );
+          setActiveIndex((prev) => (prev > 0 ? prev - 1 : filteredActions.length - 1));
           break;
         case "Enter":
           e.preventDefault();
@@ -203,7 +195,7 @@ export default function ActionSearchBar({
           break;
       }
     },
-    [filteredActions, activeIndex, onActionSelect]
+    [filteredActions, activeIndex, onActionSelect],
   );
 
   const handleActionClick = useCallback(
@@ -212,17 +204,14 @@ export default function ActionSearchBar({
       setIsFocused(false);
       setQuery("");
     },
-    [onActionSelect]
+    [onActionSelect],
   );
 
   return (
     <div className="w-full max-w-xl mx-auto">
       <div className="relative flex flex-col justify-start items-center min-h-[300px]">
         <div className="w-full max-w-sm sticky top-0 bg-background z-10 pt-4 pb-1">
-          <label
-            className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block"
-            htmlFor="action-search"
-          >
+          <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1 block" htmlFor="action-search">
             Commandes
           </label>
           <div className="relative">
@@ -287,9 +276,7 @@ export default function ActionSearchBar({
                       key={action.id}
                       id={`action-${action.id}`}
                       className={`px-3 py-2 flex items-center justify-between hover:bg-gray-200 dark:hover:bg-zinc-900 cursor-pointer rounded-md ${
-                        activeIndex === index
-                          ? "bg-gray-100 dark:bg-zinc-800"
-                          : ""
+                        activeIndex === index ? "bg-gray-100 dark:bg-zinc-800" : ""
                       }`}
                       variants={ANIMATION_VARIANTS.item}
                       layout
@@ -301,26 +288,12 @@ export default function ActionSearchBar({
                         <span className="text-gray-500" aria-hidden="true">
                           {action.icon}
                         </span>
-                        <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                          {action.label}
-                        </span>
-                        {action.description && (
-                          <span className="text-xs text-gray-400">
-                            {action.description}
-                          </span>
-                        )}
+                        <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{action.label}</span>
+                        {action.description && <span className="text-xs text-gray-400">{action.description}</span>}
                       </div>
                       <div className="flex items-center gap-2">
-                        {action.shortcut && (
-                          <span className="text-xs text-gray-400">
-                            {action.shortcut}
-                          </span>
-                        )}
-                        {action.category && (
-                          <span className="text-xs text-gray-400 text-right">
-                            {action.category}
-                          </span>
-                        )}
+                        {action.shortcut && <span className="text-xs text-gray-400">{action.shortcut}</span>}
+                        {action.category && <span className="text-xs text-gray-400 text-right">{action.category}</span>}
                       </div>
                     </motion.li>
                   ))}

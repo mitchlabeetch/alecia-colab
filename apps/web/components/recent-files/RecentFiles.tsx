@@ -51,9 +51,7 @@ export function RecentFiles({ limit = 5, showCreateButton = true }: RecentFilesP
               <FileText className="h-5 w-5 text-muted-foreground" />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{doc.title}</p>
-                <p className="text-xs text-muted-foreground">
-                  {formatRelativeTime(doc.timestamp)}
-                </p>
+                <p className="text-xs text-muted-foreground">{formatRelativeTime(doc.timestamp)}</p>
               </div>
             </div>
           </Link>
@@ -97,9 +95,7 @@ function RecentFilesEmpty({ showCreateButton }: { showCreateButton: boolean }) {
         <FileText className="h-6 w-6 text-muted-foreground" />
       </div>
       <h3 className="text-sm font-semibold">No recent documents</h3>
-      <p className="text-xs text-muted-foreground mt-1">
-        Your recently accessed documents will appear here
-      </p>
+      <p className="text-xs text-muted-foreground mt-1">Your recently accessed documents will appear here</p>
       {showCreateButton && (
         <Button className="mt-4" size="sm" asChild>
           <Link href="/documents">

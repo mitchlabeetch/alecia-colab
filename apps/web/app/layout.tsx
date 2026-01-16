@@ -1,10 +1,10 @@
 import "@/styles/globals.css";
 import "@/styles/prosemirror.css";
-import 'katex/dist/katex.min.css';
+import "katex/dist/katex.min.css";
 
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProvider } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import Providers from "./providers";
 
@@ -39,18 +39,18 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   const isClerkEnabled = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   const isConvexEnabled = process.env.NEXT_PUBLIC_CONVEX_URL;
-  
+
   // Build the provider tree based on what's configured
   let content = <Providers>{children}</Providers>;
-  
+
   if (isConvexEnabled) {
     content = <ConvexClientProvider>{content}</ConvexClientProvider>;
   }
-  
+
   if (isClerkEnabled) {
     content = <ClerkProvider>{content}</ClerkProvider>;
   }
-  
+
   return (
     <html lang="fr" suppressHydrationWarning>
       <body>{content}</body>

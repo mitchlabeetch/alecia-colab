@@ -5,12 +5,7 @@
  * Adapté pour Alecia Colab - Format français (500 m€)
  */
 
-import {
-  type MotionValue,
-  motion,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { type MotionValue, motion, useSpring, useTransform } from "motion/react";
 import type React from "react";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
@@ -35,10 +30,7 @@ function AnimatedNumber({ mv, number, height }: NumberProps) {
   });
 
   return (
-    <motion.span
-      className="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center"
-      style={{ y }}
-    >
+    <motion.span className="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center" style={{ y }}>
       {number}
     </motion.span>
   );
@@ -53,10 +45,7 @@ interface DigitProps {
 function Digit({ place, value, height }: DigitProps) {
   if (place === ".") {
     return (
-      <span
-        className="relative font-variant-numeric-tabular-nums"
-        style={{ height, width: "0.5ch" }}
-      >
+      <span className="relative font-variant-numeric-tabular-nums" style={{ height, width: "0.5ch" }}>
         ,
       </span>
     );
@@ -73,10 +62,7 @@ function Digit({ place, value, height }: DigitProps) {
   }, [animatedValue, valueRoundedToPlace]);
 
   return (
-    <span
-      className="relative font-variant-numeric-tabular-nums"
-      style={{ height, width: "1ch" }}
-    >
+    <span className="relative font-variant-numeric-tabular-nums" style={{ height, width: "1ch" }}>
       {Array.from({ length: 10 }, (_, i) => (
         <AnimatedNumber key={i} mv={animatedValue} number={i} height={height} />
       ))}
@@ -129,11 +115,7 @@ export default function Counter({
     if (ch === ".") return ".";
     const dotIndex = a.indexOf(".");
     const isInteger = dotIndex === -1;
-    const exponent = isInteger
-      ? a.length - i - 1
-      : i < dotIndex
-      ? dotIndex - i - 1
-      : -(i - dotIndex);
+    const exponent = isInteger ? a.length - i - 1 : i < dotIndex ? dotIndex - i - 1 : -(i - dotIndex);
     return Math.pow(10, exponent);
   });
 
@@ -153,7 +135,10 @@ export default function Counter({
         {places.map((place, index) => (
           <Digit key={`${place}-${index}`} place={place} value={displayValue} height={height} />
         ))}
-        <span className="ml-1">{autoSuffix}{suffix}</span>
+        <span className="ml-1">
+          {autoSuffix}
+          {suffix}
+        </span>
       </span>
     </span>
   );
@@ -181,12 +166,6 @@ export function MoneyCounter({
   const config = sizeConfig[size];
 
   return (
-    <Counter
-      value={value}
-      fontSize={config.fontSize}
-      fontWeight={config.fontWeight}
-      suffix="€"
-      className={className}
-    />
+    <Counter value={value} fontSize={config.fontSize} fontWeight={config.fontWeight} suffix="€" className={className} />
   );
 }

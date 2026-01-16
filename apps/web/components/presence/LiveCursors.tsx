@@ -37,15 +37,23 @@ interface LiveCursorsProps {
 
 // Couleurs par défaut pour les curseurs
 const CURSOR_COLORS = [
-  "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7",
-  "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E9",
+  "#FF6B6B",
+  "#4ECDC4",
+  "#45B7D1",
+  "#96CEB4",
+  "#FFEAA7",
+  "#DDA0DD",
+  "#98D8C8",
+  "#F7DC6F",
+  "#BB8FCE",
+  "#85C1E9",
 ];
 
 // Générer une couleur cohérente basée sur l'ID utilisateur
 function getUserColor(userId: string): string {
   let hash = 0;
   for (let i = 0; i < userId.length; i++) {
-    hash = ((hash << 5) - hash) + userId.charCodeAt(i);
+    hash = (hash << 5) - hash + userId.charCodeAt(i);
     hash |= 0;
   }
   return CURSOR_COLORS[Math.abs(hash) % CURSOR_COLORS.length];
@@ -87,21 +95,15 @@ function Cursor({
         xmlns="http://www.w3.org/2000/svg"
         style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.3))" }}
       >
-        <path
-          d="M5.65376 12.4863L0.185547 5.60416L4.72656 0.5L11.6086 5.97421L5.65376 12.4863Z"
-          fill={color}
-        />
-        <path
-          d="M1 5L5 0L11 5L6 12L1 5Z"
-          fill={color}
-        />
+        <path d="M5.65376 12.4863L0.185547 5.60416L4.72656 0.5L11.6086 5.97421L5.65376 12.4863Z" fill={color} />
+        <path d="M1 5L5 0L11 5L6 12L1 5Z" fill={color} />
       </svg>
 
       {/* Étiquette utilisateur */}
       <motion.div
         className={cn(
           "absolute left-4 top-4 px-2 py-0.5 rounded-md text-xs font-medium text-white whitespace-nowrap",
-          "shadow-sm"
+          "shadow-sm",
         )}
         style={{ backgroundColor: color }}
         initial={{ opacity: 0, y: -5 }}
@@ -134,7 +136,7 @@ export function useLiveCursors({
   // Récupérer les autres curseurs
   const otherCursors = useQuery(
     api.presence.getActiveUsers,
-    isConvexConfigured && enabled ? { resourceType: "document", resourceId: roomId } : "skip"
+    isConvexConfigured && enabled ? { resourceType: "document", resourceId: roomId } : "skip",
   );
 
   // Mutation de présence
@@ -160,7 +162,7 @@ export function useLiveCursors({
         cursorPosition: position ? { x: position.x, y: position.y } : undefined,
       }).catch(() => {});
     },
-    [enabled, isConvexConfigured, throttleMs, roomId, userId, userName, color, updatePresence]
+    [enabled, isConvexConfigured, throttleMs, roomId, userId, userName, color, updatePresence],
   );
 
   // Handler pour les mouvements de souris
@@ -168,7 +170,7 @@ export function useLiveCursors({
     (e: PointerEvent) => {
       updateCursor({ x: e.clientX, y: e.clientY });
     },
-    [updateCursor]
+    [updateCursor],
   );
 
   // Handler pour quand le curseur quitte la zone
@@ -236,7 +238,7 @@ export default function LiveCursors({
               x={cursor.position.x}
               y={cursor.position.y}
             />
-          ) : null
+          ) : null,
         )}
       </AnimatePresence>
     </div>
@@ -274,15 +276,7 @@ export function EditorLiveCursors({
 
   if (!userId) return null;
 
-  return (
-    <LiveCursors
-      roomId={documentId}
-      userId={userId}
-      userName={userName}
-      enabled={true}
-      className={className}
-    />
-  );
+  return <LiveCursors roomId={documentId} userId={userId} userName={userName} enabled={true} className={className} />;
 }
 
 // Import React pour le composant simplifié

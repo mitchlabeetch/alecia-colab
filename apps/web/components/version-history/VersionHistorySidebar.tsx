@@ -7,16 +7,7 @@ import type { Id } from "../../convex/_generated/dataModel";
 import { Button } from "../tailwind/ui/button";
 import { ScrollArea } from "../tailwind/ui/scroll-area";
 import { Badge } from "../tailwind/ui/badge";
-import {
-  History,
-  Clock,
-  User,
-  RotateCcw,
-  Eye,
-  ChevronRight,
-  X,
-  Loader2,
-} from "lucide-react";
+import { History, Clock, User, RotateCcw, Eye, ChevronRight, X, Loader2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -33,21 +24,13 @@ interface VersionHistorySidebarProps {
   onPreviewVersion?: (content: string) => void;
 }
 
-export function VersionHistorySidebar({
-  documentId,
-  isOpen,
-  onClose,
-  onPreviewVersion,
-}: VersionHistorySidebarProps) {
+export function VersionHistorySidebar({ documentId, isOpen, onClose, onPreviewVersion }: VersionHistorySidebarProps) {
   const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
   const [isRestoreDialogOpen, setIsRestoreDialogOpen] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
 
   const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL;
-  const versions = useQuery(
-    api.documentVersions.listVersions,
-    isConvexConfigured ? { documentId } : "skip"
-  );
+  const versions = useQuery(api.documentVersions.listVersions, isConvexConfigured ? { documentId } : "skip");
   const restoreVersion = useMutation(api.documentVersions.restoreVersion);
 
   const handlePreview = (content: string, versionNumber: number) => {
@@ -57,7 +40,7 @@ export function VersionHistorySidebar({
 
   const handleRestore = async () => {
     if (!selectedVersion) return;
-    
+
     setIsRestoring(true);
     try {
       await restoreVersion({
@@ -128,9 +111,10 @@ export function VersionHistorySidebar({
                   key={version._id}
                   className={`
                     p-3 rounded-lg border cursor-pointer transition-all
-                    ${selectedVersion === version.versionNumber 
-                      ? "border-primary bg-primary/5" 
-                      : "hover:border-primary/50"
+                    ${
+                      selectedVersion === version.versionNumber
+                        ? "border-primary bg-primary/5"
+                        : "hover:border-primary/50"
                     }
                   `}
                   onClick={() => handlePreview(version.content, version.versionNumber)}
@@ -141,32 +125,26 @@ export function VersionHistorySidebar({
                         <Badge variant="outline" className="text-xs">
                           v{version.versionNumber}
                         </Badge>
-                        {index === 0 && (
-                          <Badge className="text-xs bg-green-100 text-green-800">
-                            Latest
-                          </Badge>
-                        )}
+                        {index === 0 && <Badge className="text-xs bg-green-100 text-green-800">Latest</Badge>}
                       </div>
-                      
+
                       <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                         <Clock className="h-3 w-3" />
                         <span>{formatDate(version.createdAt)}</span>
                       </div>
-                      
+
                       {version.createdBy && (
                         <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                           <User className="h-3 w-3" />
                           <span className="truncate">{version.createdBy}</span>
                         </div>
                       )}
-                      
+
                       {version.changeDescription && (
-                        <p className="text-xs text-muted-foreground mt-2 line-clamp-2">
-                          {version.changeDescription}
-                        </p>
+                        <p className="text-xs text-muted-foreground mt-2 line-clamp-2">{version.changeDescription}</p>
                       )}
                     </div>
-                    
+
                     <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
                   </div>
                 </div>
@@ -178,20 +156,11 @@ export function VersionHistorySidebar({
         {/* Footer with actions */}
         {selectedVersion && (
           <div className="p-4 border-t flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1"
-              onClick={() => setSelectedVersion(null)}
-            >
+            <Button variant="outline" size="sm" className="flex-1" onClick={() => setSelectedVersion(null)}>
               <Eye className="h-4 w-4 mr-1" />
               Clear Preview
             </Button>
-            <Button
-              size="sm"
-              className="flex-1"
-              onClick={() => setIsRestoreDialogOpen(true)}
-            >
+            <Button size="sm" className="flex-1" onClick={() => setIsRestoreDialogOpen(true)}>
               <RotateCcw className="h-4 w-4 mr-1" />
               Restore v{selectedVersion}
             </Button>
@@ -205,24 +174,16 @@ export function VersionHistorySidebar({
           <DialogHeader>
             <DialogTitle>Restore Version {selectedVersion}?</DialogTitle>
             <DialogDescription>
-              This will replace the current document content with version {selectedVersion}.
-              A new version will be created to preserve the current state.
+              This will replace the current document content with version {selectedVersion}. A new version will be
+              created to preserve the current state.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setIsRestoreDialogOpen(false)}
-              disabled={isRestoring}
-            >
+            <Button variant="outline" onClick={() => setIsRestoreDialogOpen(false)} disabled={isRestoring}>
               Cancel
             </Button>
             <Button onClick={handleRestore} disabled={isRestoring}>
-              {isRestoring ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-1" />
-              ) : (
-                <RotateCcw className="h-4 w-4 mr-1" />
-              )}
+              {isRestoring ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <RotateCcw className="h-4 w-4 mr-1" />}
               Restore
             </Button>
           </DialogFooter>

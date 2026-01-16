@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/tailwind/ui/button";
 import { cn } from "@/lib/utils";
 
-type WorkspaceContext = 'colab' | 'admin';
+type WorkspaceContext = "colab" | "admin";
 
 interface WorkspaceSwitcherProps {
   className?: string;
@@ -21,25 +21,25 @@ interface WorkspaceSwitcherProps {
 
 const workspaces = [
   {
-    id: 'colab',
-    name: 'Alecia Colab',
-    description: 'Documents & Knowledge Base',
+    id: "colab",
+    name: "Alecia Colab",
+    description: "Documents & Knowledge Base",
     icon: FileEdit,
-    href: '/dashboard',
+    href: "/dashboard",
     internal: true,
   },
   {
-    id: 'admin',
-    name: 'Admin Panel',
-    description: 'CRM & Deal Management',
+    id: "admin",
+    name: "Admin Panel",
+    description: "CRM & Deal Management",
     icon: LayoutDashboard,
-    href: '/admin/dashboard',
+    href: "/admin/dashboard",
     internal: false,
   },
 ];
 
 export function WorkspaceSwitcher({ className }: WorkspaceSwitcherProps) {
-  const [currentWorkspace] = useState<WorkspaceContext>('colab');
+  const [currentWorkspace] = useState<WorkspaceContext>("colab");
   const current = workspaces.find((w) => w.id === currentWorkspace);
 
   return (
@@ -59,7 +59,7 @@ export function WorkspaceSwitcher({ className }: WorkspaceSwitcherProps) {
         {workspaces.map((workspace) => {
           const Icon = workspace.icon;
           const isActive = workspace.id === currentWorkspace;
-          
+
           return (
             <DropdownMenuItem key={workspace.id} asChild className="cursor-pointer">
               <a
@@ -71,9 +71,7 @@ export function WorkspaceSwitcher({ className }: WorkspaceSwitcherProps) {
                   <Icon className="h-4 w-4" />
                   <div>
                     <p className="text-sm font-medium">{workspace.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {workspace.description}
-                    </p>
+                    <p className="text-xs text-muted-foreground">{workspace.description}</p>
                   </div>
                 </div>
                 {isActive ? (

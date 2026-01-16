@@ -47,10 +47,7 @@ export function ColabBreadcrumbs() {
         <div key={index} className="flex items-center gap-1">
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
           {crumb.href && index < breadcrumbs.length - 1 ? (
-            <Link
-              href={crumb.href}
-              className="text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <Link href={crumb.href} className="text-muted-foreground hover:text-foreground transition-colors">
               {crumb.label}
             </Link>
           ) : (

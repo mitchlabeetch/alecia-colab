@@ -77,32 +77,35 @@ const TailwindAdvancedEditor = () => {
   };
 
   // Save version to Convex (debounced - every 5 minutes or manual)
-  const saveVersion = useCallback(async (editor: EditorInstance, isManual = false) => {
-    if (!isConvexConfigured) return;
-    
-    const now = Date.now();
-    // Auto-save version every 5 minutes or on manual save
-    if (!isManual && now - lastVersionSaved < 5 * 60 * 1000) return;
-    
-    try {
-      const json = editor.getJSON();
-      const markdown = editor.storage.markdown?.getMarkdown() || "";
-      
-      // Note: In production, use actual document ID from route
-      // For now, this is a placeholder that won't work until you have real document IDs
-      // await saveVersionMutation({
-      //   documentId: documentId as Id<"colab_documents">,
-      //   content: JSON.stringify(json),
-      //   markdown,
-      //   changeDescription: isManual ? "Sauvegarde manuelle" : "Sauvegarde automatique",
-      // });
-      
-      setLastVersionSaved(now);
-      console.log("Version sauvegardée:", isManual ? "manuelle" : "auto");
-    } catch (error) {
-      console.error("Erreur sauvegarde version:", error);
-    }
-  }, [isConvexConfigured, lastVersionSaved, saveVersionMutation]);
+  const saveVersion = useCallback(
+    async (editor: EditorInstance, isManual = false) => {
+      if (!isConvexConfigured) return;
+
+      const now = Date.now();
+      // Auto-save version every 5 minutes or on manual save
+      if (!isManual && now - lastVersionSaved < 5 * 60 * 1000) return;
+
+      try {
+        const json = editor.getJSON();
+        const markdown = editor.storage.markdown?.getMarkdown() || "";
+
+        // Note: In production, use actual document ID from route
+        // For now, this is a placeholder that won't work until you have real document IDs
+        // await saveVersionMutation({
+        //   documentId: documentId as Id<"colab_documents">,
+        //   content: JSON.stringify(json),
+        //   markdown,
+        //   changeDescription: isManual ? "Sauvegarde manuelle" : "Sauvegarde automatique",
+        // });
+
+        setLastVersionSaved(now);
+        console.log("Version sauvegardée:", isManual ? "manuelle" : "auto");
+      } catch (error) {
+        console.error("Erreur sauvegarde version:", error);
+      }
+    },
+    [isConvexConfigured, lastVersionSaved, saveVersionMutation],
+  );
 
   const debouncedUpdates = useDebouncedCallback(async (editor: EditorInstance) => {
     const json = editor.getJSON();
@@ -112,7 +115,7 @@ const TailwindAdvancedEditor = () => {
     window.localStorage.setItem("markdown", editor.storage.markdown.getMarkdown());
     window.localStorage.setItem("alecia-last-saved", new Date().toISOString());
     setSaveStatus("Enregistré");
-    
+
     // Try to save version periodically
     saveVersion(editor, false);
   }, 500);
@@ -149,16 +152,14 @@ const TailwindAdvancedEditor = () => {
       {/* Header avec status, présence et historique */}
       <div className="flex absolute right-5 top-5 z-10 mb-5 gap-2 items-center">
         {/* Indicateur de présence */}
-        {otherUsers.length > 0 && (
-          <PresenceIndicator users={otherUsers} />
-        )}
-        
+        {otherUsers.length > 0 && <PresenceIndicator users={otherUsers} />}
+
         {/* Bouton Historique */}
         <button
           onClick={() => setShowVersionHistory(!showVersionHistory)}
           className={`flex items-center gap-1.5 rounded-lg px-2 py-1 text-sm transition-colors ${
-            showVersionHistory 
-              ? "bg-primary text-primary-foreground" 
+            showVersionHistory
+              ? "bg-primary text-primary-foreground"
               : "bg-muted hover:bg-muted/80 text-muted-foreground"
           }`}
           title="Historique des versions"
@@ -168,15 +169,17 @@ const TailwindAdvancedEditor = () => {
         </button>
 
         {/* Status de sauvegarde */}
-        <div className={`rounded-lg px-2 py-1 text-sm flex items-center gap-1.5 ${
-          saveStatus === "Enregistré" 
-            ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100" 
-            : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
-        }`}>
+        <div
+          className={`rounded-lg px-2 py-1 text-sm flex items-center gap-1.5 ${
+            saveStatus === "Enregistré"
+              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100"
+              : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
+          }`}
+        >
           <Save className="h-3 w-3" />
           {saveStatus}
         </div>
-        
+
         {/* Compteur de mots */}
         <div className={charsCount ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground" : "hidden"}>
           {charsCount} mots
@@ -260,4 +263,3 @@ const TailwindAdvancedEditor = () => {
 };
 
 export default TailwindAdvancedEditor;
-
