@@ -17,34 +17,39 @@ import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Separator } from "./separator";
 
+import { fr } from "@/lib/i18n";
+
 const appearances = [
   {
     theme: "System",
     icon: <Monitor className="h-4 w-4" />,
+    label: fr.theme.system,
   },
   {
     theme: "Light",
     icon: <SunDim className="h-4 w-4" />,
+    label: fr.theme.light,
   },
   {
     theme: "Dark",
     icon: <Moon className="h-4 w-4" />,
+    label: fr.theme.dark,
   },
 ];
 
 const quickActions = [
   {
-    label: "New Deal",
+    label: fr.actions.newDeal,
     icon: <Briefcase className="h-4 w-4" />,
     action: "deal",
   },
   {
-    label: "New Company Profile",
+    label: fr.actions.newCompanyProfile,
     icon: <Building className="h-4 w-4" />,
     action: "company",
   },
   {
-    label: "New Document",
+    label: fr.actions.newDocument,
     icon: <FileText className="h-4 w-4" />,
     action: "document",
   },
@@ -82,7 +87,7 @@ export default function Menu() {
       </PopoverTrigger>
       <PopoverContent className="w-56 p-2" align="end">
         <div className="space-y-1">
-          <p className="p-2 text-xs font-medium text-muted-foreground">Quick Actions</p>
+          <p className="p-2 text-xs font-medium text-muted-foreground">{fr.actions.quickActions}</p>
           {quickActions.map(({ label, icon, action }) => (
             <Button
               key={action}
@@ -107,7 +112,7 @@ export default function Menu() {
             <div className="rounded-sm border p-1">
               <Download className="h-4 w-4" />
             </div>
-            <span>Export as Markdown</span>
+            <span>{fr.actions.exportAsMarkdown}</span>
           </Button>
           <Button
             variant="ghost"
@@ -117,14 +122,14 @@ export default function Menu() {
             <div className="rounded-sm border p-1">
               <Share2 className="h-4 w-4" />
             </div>
-            <span>Share Document</span>
+            <span>{fr.actions.shareDocument}</span>
           </Button>
         </div>
 
         <Separator className="my-2" />
 
-        <p className="p-2 text-xs font-medium text-muted-foreground">Appearance</p>
-        {appearances.map(({ theme, icon }) => (
+        <p className="p-2 text-xs font-medium text-muted-foreground">{fr.theme.appearance}</p>
+        {appearances.map(({ theme, icon, label }) => (
           <Button
             variant="ghost"
             key={theme}
@@ -135,7 +140,7 @@ export default function Menu() {
           >
             <div className="flex items-center space-x-2">
               <div className="rounded-sm border p-1">{icon}</div>
-              <span>{theme}</span>
+              <span>{label}</span>
             </div>
             {currentTheme === theme.toLowerCase() && <Check className="h-4 w-4" />}
           </Button>

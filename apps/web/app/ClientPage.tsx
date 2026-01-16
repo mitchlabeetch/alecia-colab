@@ -13,6 +13,7 @@ import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tailwind/ui/tabs";
 import { BookOpen, Briefcase, FileText } from "lucide-react";
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { fr } from "@/lib/i18n";
 
 // Dynamic imports to avoid SSR issues with Convex/Clerk hooks
 const TailwindAdvancedEditor = nextDynamic(
@@ -31,13 +32,13 @@ export default function ClientPage() {
       <div className="flex w-full max-w-screen-lg items-center gap-2 px-4 sm:mb-[calc(10vh)]">
         <div className="flex items-center gap-2 mr-4">
           <Briefcase className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-semibold">Alecia Colab</h1>
+          <h1 className="text-xl font-semibold">{fr.app.name}</h1>
         </div>
         <Dialog>
           <DialogTrigger asChild>
             <Button className="gap-2" variant="outline">
               <BookOpen className="h-4 w-4" />
-              Note rapide
+              {fr.actions.quickNote}
             </Button>
           </DialogTrigger>
           <DialogContent className="flex max-w-3xl h-[calc(100vh-24px)]">
@@ -50,7 +51,7 @@ export default function ClientPage() {
         <div className="ml-auto flex items-center gap-2">
           <SignedOut>
             <SignInButton mode="modal">
-              <Button variant="default">Connexion</Button>
+              <Button variant="default">{fr.profile.signIn}</Button>
             </SignInButton>
           </SignedOut>
           <SignedIn>
@@ -64,11 +65,11 @@ export default function ClientPage() {
           <TabsList className="grid w-full grid-cols-2 max-w-md">
             <TabsTrigger value="editor" className="gap-2">
               <FileText className="h-4 w-4" />
-              Éditeur
+              {fr.tabs.editor}
             </TabsTrigger>
             <TabsTrigger value="pipeline" className="gap-2">
               <Briefcase className="h-4 w-4" />
-              Pipeline
+              {fr.tabs.pipeline}
             </TabsTrigger>
           </TabsList>
           
