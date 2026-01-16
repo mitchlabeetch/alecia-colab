@@ -144,8 +144,24 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                       {section.items.map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname === item.href;
+                        if (item.action) {
+                          return (
+                            <Button
+                              key={item.label}
+                              variant="ghost"
+                              className="w-full justify-start"
+                              onClick={() => {
+                                // TODO: Handle action
+                                console.log("Action:", item.action);
+                              }}
+                            >
+                              <Icon className="h-5 w-5" />
+                              <span className="ml-3">{item.label}</span>
+                            </Button>
+                          );
+                        }
                         return (
-                          <Link key={item.href} href={item.href} target={item.external ? "_blank" : undefined}>
+                          <Link key={item.label} href={item.href || "#"} target={item.external ? "_blank" : undefined}>
                             <Button variant={isActive ? "secondary" : "ghost"} className="w-full justify-start">
                               <Icon className="h-5 w-5" />
                               <span className="ml-3">{item.label}</span>
@@ -164,8 +180,23 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                 {colabSidebarSections[0].items.map((item) => {
                   const Icon = item.icon;
                   const isActive = pathname === item.href;
+                  if (item.action) {
+                    return (
+                      <Button
+                        key={item.label}
+                        variant="ghost"
+                        className="w-full justify-center px-2"
+                        title={item.label}
+                        onClick={() => {
+                          console.log("Action:", item.action);
+                        }}
+                      >
+                        <Icon className="h-5 w-5" />
+                      </Button>
+                    );
+                  }
                   return (
-                    <Link key={item.href} href={item.href}>
+                    <Link key={item.label} href={item.href || "#"}>
                       <Button
                         variant={isActive ? "secondary" : "ghost"}
                         className="w-full justify-center px-2"
@@ -205,10 +236,26 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                     {section.items.map((item) => {
                       const Icon = item.icon;
                       const isActive = pathname === item.href;
+                      if (item.action) {
+                        return (
+                          <Button
+                            key={item.label}
+                            variant="ghost"
+                            className="w-full justify-start"
+                            onClick={() => {
+                              console.log("Action:", item.action);
+                              onClose?.();
+                            }}
+                          >
+                            <Icon className="h-5 w-5" />
+                            <span className="ml-3">{item.label}</span>
+                          </Button>
+                        );
+                      }
                       return (
                         <Link
-                          key={item.href}
-                          href={item.href}
+                          key={item.label}
+                          href={item.href || "#"}
                           onClick={onClose}
                           target={item.external ? "_blank" : undefined}
                         >
