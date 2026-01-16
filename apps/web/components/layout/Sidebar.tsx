@@ -121,7 +121,12 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
         <div className="flex h-full flex-col">
           {/* Collapse button */}
           <div className="flex items-center justify-end p-2">
-            <Button variant="ghost" size="icon" onClick={() => setCollapsed(!collapsed)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setCollapsed(!collapsed)}
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
               {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
             </Button>
           </div>
@@ -184,6 +189,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                         variant="ghost"
                         className="w-full justify-center px-2"
                         title={item.label}
+                        aria-label={item.label}
                         onClick={() => {
                           if (item.action === "openSearch") {
                             setOpen(true);
@@ -200,6 +206,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                         variant={isActive ? "secondary" : "ghost"}
                         className="w-full justify-center px-2"
                         title={item.label}
+                        aria-label={item.label}
                       >
                         <Icon className="h-5 w-5" />
                       </Button>
