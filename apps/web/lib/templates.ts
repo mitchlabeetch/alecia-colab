@@ -100,7 +100,7 @@ export const templates: Template[] = [
         {
           type: "paragraph",
           content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Revenue: " },
+            { type: "text", marks: [{ type: "bold" }], text: "Chiffre d'Affaires: " },
             { type: "text", text: "$[Amount]" },
           ],
         },

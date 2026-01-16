@@ -4,33 +4,57 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* ========================================
+     * ALECIA DESIGN SYSTEM - OFFICIAL PALETTE
+     * ======================================== */
+    /* PRIMARY BLUES */
+    --alecia-blue-midnight: #061A40; /* Primary Brand Color */
+    --alecia-blue-corporate: #163E64;
+    --alecia-blue-mid: #4370A7;
+    --alecia-blue-light: #749AC7;
+    --alecia-blue-pale: #BFD7EA;
+    --alecia-blue-ice: #E3F2FD;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* ACCENT */
+    --alecia-red-accent: #B80C09;
+    --alecia-taupe: #AFABAB;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* NEUTRALS */
+    --alecia-grey-titanium: #6F7A8F;
+    --alecia-grey-stone: #AAB1BE;
+    --alecia-grey-silver: #C8CCD5;
+    --alecia-grey-cloud: #E6E8EC;
+    --alecia-off-white: #FAFAFC;
 
-    --primary: 210 90% 48%;
-    --primary-foreground: 210 40% 98%;
+    /* SHADCN MAPPINGS */
+    --primary: var(--alecia-blue-midnight);
+    --primary-foreground: white;
+    --accent: var(--alecia-blue-mid);
+    --destructive: var(--alecia-red-accent);
+    --muted: var(--alecia-grey-cloud);
+    --muted-foreground: var(--alecia-grey-titanium);
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Original Shadcn variables (overridden by Alecia where applicable) */
+    /* Using hsl() wrapper because tailwind.config.ts was updated to remove it */
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(222.2 84% 4.9%);
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(222.2 84% 4.9%);
 
-    --accent: 210 90% 95%;
-    --accent-foreground: 210 90% 48%;
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(222.2 84% 4.9%);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --secondary: hsl(210 40% 96.1%);
+    --secondary-foreground: hsl(222.2 47.4% 11.2%);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 210 90% 48%;
+    --accent-foreground: hsl(210 90% 48%);
+
+    --destructive-foreground: hsl(210 40% 98%);
+
+    --border: hsl(214.3 31.8% 91.4%);
+    --input: hsl(214.3 31.8% 91.4%);
+    --ring: hsl(210 90% 48%);
 
     --radius: 0.5rem;
 
@@ -46,33 +70,36 @@
   }
 
   .dark {
-    --background: 224 15% 12%;
-    --foreground: 210 40% 98%;
+    /* Need to ensure these are full colors if we remove hsl() from config */
+    /* Assuming tailwind.config.ts will be updated to remove hsl() wrappers */
 
-    --card: 224 15% 14%;
-    --card-foreground: 210 40% 98%;
+    --background: hsl(224 15% 12%);
+    --foreground: hsl(210 40% 98%);
 
-    --popover: 224 15% 14%;
-    --popover-foreground: 210 40% 98%;
+    --card: hsl(224 15% 14%);
+    --card-foreground: hsl(210 40% 98%);
 
-    --primary: 213 94% 55%;
-    --primary-foreground: 0 0% 100%;
+    --popover: hsl(224 15% 14%);
+    --popover-foreground: hsl(210 40% 98%);
 
-    --secondary: 224 15% 18%;
-    --secondary-foreground: 210 40% 98%;
+    --primary: hsl(213 94% 55%);
+    --primary-foreground: hsl(0 0% 100%);
 
-    --muted: 224 15% 18%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --secondary: hsl(224 15% 18%);
+    --secondary-foreground: hsl(210 40% 98%);
 
-    --accent: 224 15% 20%;
-    --accent-foreground: 210 40% 98%;
+    --muted: hsl(224 15% 18%);
+    --muted-foreground: hsl(215 20.2% 65.1%);
 
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --accent: hsl(224 15% 20%);
+    --accent-foreground: hsl(210 40% 98%);
 
-    --border: 224 15% 22%;
-    --input: 224 15% 20%;
-    --ring: 213 94% 55%;
+    --destructive: hsl(0 62.8% 50%);
+    --destructive-foreground: hsl(0 0% 100%);
+
+    --border: hsl(224 15% 22%);
+    --input: hsl(224 15% 20%);
+    --ring: hsl(213 94% 55%);
 
     --novel-highlight-default: #000000;
     --novel-highlight-purple: #3f2c4b;
