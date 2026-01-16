@@ -41,6 +41,7 @@ interface SidebarProps {
   isOpen?: boolean;
   onClose?: () => void;
   className?: string;
+  onAction?: (action: string) => void;
 }
 
 const colabSidebarSections = [
@@ -102,7 +103,7 @@ const colabSidebarSections = [
   },
 ];
 
-export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
+export function Sidebar({ isOpen = true, onClose, className, onAction }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
 
@@ -151,8 +152,9 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                               variant="ghost"
                               className="w-full justify-start"
                               onClick={() => {
-                                // TODO: Handle action
-                                console.log("Action:", item.action);
+                                if (item.action && onAction) {
+                                  onAction(item.action);
+                                }
                               }}
                             >
                               <Icon className="h-5 w-5" />
@@ -188,7 +190,9 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                         className="w-full justify-center px-2"
                         title={item.label}
                         onClick={() => {
-                          console.log("Action:", item.action);
+                          if (item.action && onAction) {
+                            onAction(item.action);
+                          }
                         }}
                       >
                         <Icon className="h-5 w-5" />
@@ -243,7 +247,9 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                             variant="ghost"
                             className="w-full justify-start"
                             onClick={() => {
-                              console.log("Action:", item.action);
+                              if (item.action && onAction) {
+                                onAction(item.action);
+                              }
                               onClose?.();
                             }}
                           >
