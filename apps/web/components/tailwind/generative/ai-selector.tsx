@@ -1,113 +1,102 @@
-"use client";
 
-import { Command, CommandInput } from "@/components/tailwind/ui/command";
-
-import { useCompletion } from "ai/react";
-import { ArrowUp } from "lucide-react";
-import { useEditor } from "novel";
-import { addAIHighlight } from "novel";
+import type { Editor } from "@tiptap/core";
 import { useState } from "react";
-import Markdown from "react-markdown";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/tailwind/ui/popover";
+import { Button } from "@/components/tailwind/ui/button";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/tailwind/ui/command";
+import { AI_ACTIONS } from "../ai/ai-actions";
+import { Sparkles } from "lucide-react";
+import { useCompletion } from "ai/react";
 import { toast } from "sonner";
-import { Button } from "../ui/button";
-import CrazySpinner from "../ui/icons/crazy-spinner";
-import Magic from "../ui/icons/magic";
-import { ScrollArea } from "../ui/scroll-area";
-import AICompletionCommands from "./ai-completion-command";
-import AISelectorCommands from "./ai-selector-commands";
-//TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
+  editor: Editor;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export function AISelector({ onOpenChange }: AISelectorProps) {
-  const { editor } = useEditor();
-  const [inputValue, setInputValue] = useState("");
-
-  const { completion, complete, isLoading } = useCompletion({
-    // id: "novel",
+export function AISelector({ editor, open, onOpenChange }: AISelectorProps) {
+  const { complete, isLoading } = useCompletion({
     api: "/api/generate",
     onResponse: (response) => {
       if (response.status === 429) {
-        toast.error("Vous avez atteint votre limite de requêtes pour aujourd'hui.");
+        toast.error("Limite de débit atteinte.");
         return;
       }
     },
     onError: (e) => {
       toast.error(e.message);
     },
+    onFinish: (prompt, completion) => {
+        // Replace selection with completion or handle it
+        // For now, we will just insert it.
+        // But novel usually handles this with completion updates.
+        // Let's insert it at selection
+        const selection = editor.state.selection;
+        editor.chain().focus().insertContentAt({ from: selection.from, to: selection.to }, completion).run();
+    }
   });
 
-  const hasCompletion = completion.length > 0;
+  const [inputValue, setInputValue] = useState("");
+
+  const handleAction = async (action: typeof AI_ACTIONS[number]) => {
+    const selection = editor.state.selection;
+    const text = editor.state.doc.textBetween(
+      selection.from,
+      selection.to,
+      " "
+    );
+
+    if (!text) {
+      toast.error("Veuillez sélectionner du texte pour utiliser l'IA.");
+      return;
+    }
+
+    const prompt = `${action.prompt}:\n"${text}"`;
+
+    complete(prompt);
+
+    toast.info(`IA: ${action.label}...`);
+    onOpenChange(false);
+  };
 
   return (
-    <Command className="w-[350px]">
-      {hasCompletion && (
-        <div className="flex max-h-[400px]">
-          <ScrollArea>
-            <div className="prose p-2 px-4 prose-sm">
-              <Markdown>{completion}</Markdown>
-            </div>
-          </ScrollArea>
-        </div>
-      )}
-
-      {isLoading && (
-        <div className="flex h-12 w-full items-center px-4 text-sm font-medium text-muted-foreground text-purple-500">
-          <Magic className="mr-2 h-4 w-4 shrink-0  " />
-          L'IA réfléchit
-          <div className="ml-2 mt-1">
-            <CrazySpinner />
-          </div>
-        </div>
-      )}
-      {!isLoading && (
-        <>
-          <div className="relative">
-            <CommandInput
-              value={inputValue}
-              onValueChange={setInputValue}
-              autoFocus
-              placeholder={
-                hasCompletion ? "Dites à l'IA quoi faire ensuite" : "Demandez à l'IA de modifier ou générer..."
-              }
-              onFocus={() => addAIHighlight(editor)}
-            />
-            <Button
-              size="icon"
-              className="absolute right-2 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full bg-purple-500 hover:bg-purple-900"
-              onClick={() => {
-                if (completion)
-                  return complete(completion, {
-                    body: { option: "zap", command: inputValue },
-                  }).then(() => setInputValue(""));
-
-                const slice = editor.state.selection.content();
-                const text = editor.storage.markdown.serializer.serialize(slice.content);
-
-                complete(text, {
-                  body: { option: "zap", command: inputValue },
-                }).then(() => setInputValue(""));
-              }}
-            >
-              <ArrowUp className="h-4 w-4" />
-            </Button>
-          </div>
-          {hasCompletion ? (
-            <AICompletionCommands
-              onDiscard={() => {
-                editor.chain().unsetHighlight().focus().run();
-                onOpenChange(false);
-              }}
-              completion={completion}
-            />
-          ) : (
-            <AISelectorCommands onSelect={(value, option) => complete(value, { body: { option } })} />
-          )}
-        </>
-      )}
-    </Command>
+    <Popover open={open} onOpenChange={onOpenChange}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          className="gap-2 rounded-none border-none text-purple-500 hover:text-purple-600"
+          size="sm"
+        >
+          <Sparkles className="h-4 w-4" />
+          IA
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-72 p-0" align="start">
+        <Command>
+          <CommandInput
+            placeholder="Demander à l'IA..."
+            value={inputValue}
+            onValueChange={setInputValue}
+            autoFocus
+          />
+          <CommandList>
+            <CommandEmpty>Aucune action trouvée.</CommandEmpty>
+            <CommandGroup heading="Actions IA">
+              {AI_ACTIONS.map((action) => (
+                <CommandItem
+                  key={action.value}
+                  onSelect={() => handleAction(action)}
+                  className="flex cursor-pointer items-center gap-2"
+                >
+                  {action.icon}
+                  <span>{action.label}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }
