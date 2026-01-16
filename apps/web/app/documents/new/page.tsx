@@ -14,8 +14,7 @@ export const runtime = "nodejs";
 
 export default function NewDocumentPage() {
   const router = useRouter();
-  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-  const { user, isLoaded } = isClerkEnabled ? useUser() : { user: null, isLoaded: true };
+  const { user, isLoaded } = useUser();
   const createDocument = useMutation(api.documents.create);
 
   useEffect(() => {

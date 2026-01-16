@@ -30,8 +30,9 @@ export const runtime = "nodejs";
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-  const { user } = isClerkEnabled ? useUser() : { user: null };
+  
+  // Always call hooks unconditionally - but the provider handles missing config
+  const { user } = useUser();
   const { documents, isLoading, isConvexAvailable } = useDocuments(user?.id);
 
   const filteredDocuments = documents

@@ -18,8 +18,7 @@ export const runtime = "nodejs";
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
-  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-  const { user } = isClerkEnabled ? useUser() : { user: null };
+  const { user } = useUser();
   const [notifications, setNotifications] = useState(true);
 
   return (
