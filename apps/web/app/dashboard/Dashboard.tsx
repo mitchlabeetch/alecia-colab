@@ -10,7 +10,6 @@ import {
   FileText,
   Briefcase,
   Building,
-  TrendingUp,
   Clock,
   Users,
   CheckCircle2,
@@ -19,7 +18,6 @@ import {
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { Button } from "@/components/tailwind/ui/button";
-import { Badge } from "@/components/tailwind/ui/badge";
 import { Separator } from "@/components/tailwind/ui/separator";
 import { fr } from "@/lib/i18n";
 
