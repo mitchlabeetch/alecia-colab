@@ -8,6 +8,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import {
   Home,
   FileText,
@@ -21,6 +22,7 @@ import {
 import { Button } from "@/components/tailwind/ui/button";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { Separator } from "@/components/tailwind/ui/separator";
+import { useDocuments } from "@/hooks/use-convex";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
@@ -38,15 +40,47 @@ const navItems = [
   { icon: Settings, label: "nav.settings", href: "/settings" },
 ];
 
-const recentItems = [
-  { name: "Q4 Financial Report", href: "#", date: "2h ago" },
-  { name: "TechVenture Due Diligence", href: "#", date: "5h ago" },
-  { name: "Integration Plan Template", href: "#", date: "1d ago" },
-];
+const formatRelativeTime = (timestamp?: number) => {
+  if (!timestamp) return t("loader.loading");
+  const diff = Math.max(Date.now() - timestamp, 0);
+  const minutes = Math.floor(diff / 60000);
+
+  if (minutes < 1) return "À l'instant";
+  if (minutes < 60) return `Il y a ${minutes} minute${minutes > 1 ? "s" : ""}`;
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `Il y a ${hours} heure${hours > 1 ? "s" : ""}`;
+
+  const days = Math.floor(hours / 24);
+  return `Il y a ${days} jour${days > 1 ? "s" : ""}`;
+};
 
 export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+  const { user } = isClerkEnabled ? useUser() : { user: null };
+  const {
+    documents,
+    isLoading: documentsLoading,
+    isConvexAvailable: isDocumentsAvailable,
+  } = useDocuments(user?.id);
+  const isDocumentsLoading = documentsLoading && isDocumentsAvailable;
+  const recentItems = documents
+    .filter((document) => !document.isArchived)
+    .map((document) => {
+      const timestamp =
+        document.updatedAt ?? document.createdAt ?? document._creationTime;
+      return {
+        id: document._id,
+        name: document.title || t("editor.untitled"),
+        href: `/documents/${document._id}`,
+        date: formatRelativeTime(timestamp),
+        timestamp: timestamp ?? 0,
+      };
+    })
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 3);
 
   return (
     <>
@@ -117,13 +151,22 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
 
                 {/* Recently opened */}
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
-                    <Clock className="h-3 w-3" />
-                    {t("nav.recentlyOpened")}
-                  </div>
-                  <div className="space-y-1">
-                    {recentItems.map((item, index) => (
-                      <Link key={index} href={item.href}>
+                <div className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
+                  <Clock className="h-3 w-3" />
+                  {t("nav.recentlyOpened")}
+                </div>
+                <div className="space-y-1">
+                  {isDocumentsLoading ? (
+                    <p className="px-3 text-xs text-muted-foreground">
+                      {t("loader.loading")}
+                    </p>
+                  ) : recentItems.length === 0 ? (
+                    <p className="px-3 text-xs text-muted-foreground">
+                      Aucun document récent.
+                    </p>
+                  ) : (
+                    recentItems.map((item) => (
+                      <Link key={item.id} href={item.href}>
                         <Button
                           variant="ghost"
                           className="w-full justify-start text-sm h-auto py-2"
@@ -138,11 +181,12 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                           </div>
                         </Button>
                       </Link>
-                    ))}
-                  </div>
+                    ))
+                  )}
                 </div>
-              </>
-            )}
+              </div>
+            </>
+          )}
           </ScrollArea>
         </div>
       </aside>
@@ -186,23 +230,33 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                 {t("nav.recentlyOpened")}
               </div>
               <div className="space-y-1">
-                {recentItems.map((item, index) => (
-                  <Link key={index} href={item.href} onClick={onClose}>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start text-sm h-auto py-2"
-                    >
-                      <div className="flex flex-col items-start">
-                        <span className="truncate max-w-[180px]">
-                          {item.name}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {item.date}
-                        </span>
-                      </div>
-                    </Button>
-                  </Link>
-                ))}
+                {isDocumentsLoading ? (
+                  <p className="px-3 text-xs text-muted-foreground">
+                    {t("loader.loading")}
+                  </p>
+                ) : recentItems.length === 0 ? (
+                  <p className="px-3 text-xs text-muted-foreground">
+                    Aucun document récent.
+                  </p>
+                ) : (
+                  recentItems.map((item) => (
+                    <Link key={item.id} href={item.href} onClick={onClose}>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-start text-sm h-auto py-2"
+                      >
+                        <div className="flex flex-col items-start">
+                          <span className="truncate max-w-[180px]">
+                            {item.name}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {item.date}
+                          </span>
+                        </div>
+                      </Button>
+                    </Link>
+                  ))
+                )}
               </div>
             </div>
           </ScrollArea>

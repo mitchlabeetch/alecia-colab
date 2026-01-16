@@ -6,6 +6,7 @@
  */
 
 import { motion } from "motion/react";
+import { useUser } from "@clerk/nextjs";
 import {
   FileText,
   Briefcase,
@@ -19,6 +20,7 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { Button } from "@/components/tailwind/ui/button";
 import { Separator } from "@/components/tailwind/ui/separator";
+import { useDeals, useDocuments } from "@/hooks/use-convex";
 import { fr } from "@/lib/i18n";
 
 const quickActions = [
@@ -48,83 +50,172 @@ const quickActions = [
   },
 ];
 
-const recentDocuments = [
-  {
-    title: "Q4 Financial Report",
-    description: "Rapport financier trimestriel",
-    date: "Il y a 2 heures",
-    collaborators: 3,
-  },
-  {
-    title: "TechVenture Due Diligence",
-    description: "Documents de due diligence",
-    date: "Il y a 5 heures",
-    collaborators: 5,
-  },
-  {
-    title: "Integration Plan Template",
-    description: "Modèle de plan d'intégration",
-    date: "Il y a 1 jour",
-    collaborators: 2,
-  },
-];
+const formatRelativeTime = (timestamp?: number) => {
+  if (!timestamp) return fr.loader.loading;
+  const diff = Math.max(Date.now() - timestamp, 0);
+  const minutes = Math.floor(diff / 60000);
 
-const activityFeed = [
-  {
-    user: "Marie Dubois",
-    action: "a créé un nouveau deal",
-    target: "HealthTech Solutions",
-    time: "Il y a 30 minutes",
-  },
-  {
-    user: "Jean Martin",
-    action: "a modifié le document",
-    target: "Q4 Financial Report",
-    time: "Il y a 1 heure",
-  },
-  {
-    user: "Sophie Bernard",
-    action: "a commenté sur",
-    target: "TechVenture Due Diligence",
-    time: "Il y a 2 heures",
-  },
-];
+  if (minutes < 1) return "À l'instant";
+  if (minutes < 60) return `Il y a ${minutes} minute${minutes > 1 ? "s" : ""}`;
 
-const stats = [
-  {
-    label: fr.dashboard.stats.dealsInProgress,
-    value: "12",
-    icon: Briefcase,
-    trend: "+3 ce mois",
-    color: "text-blue-500",
-  },
-  {
-    label: fr.dashboard.stats.documentsCreated,
-    value: "48",
-    icon: FileText,
-    trend: "+8 cette semaine",
-    color: "text-green-500",
-  },
-  {
-    label: fr.dashboard.stats.teamMembers,
-    value: "15",
-    icon: Users,
-    trend: "+2 nouveaux",
-    color: "text-purple-500",
-  },
-  {
-    label: fr.dashboard.stats.tasksCompleted,
-    value: "34",
-    icon: CheckCircle2,
-    trend: "85% terminé",
-    color: "text-orange-500",
-  },
-];
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `Il y a ${hours} heure${hours > 1 ? "s" : ""}`;
+
+  const days = Math.floor(hours / 24);
+  return `Il y a ${days} jour${days > 1 ? "s" : ""}`;
+};
+
+const getTimestamp = (timestamp?: number, fallback?: number) =>
+  timestamp ?? fallback ?? 0;
 
 export default function Dashboard() {
-  // Mock user for demo - in production, would use Clerk
-  const user = null;
-  const isLoaded = true;
+  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+  const { user, isLoaded } = isClerkEnabled
+    ? useUser()
+    : { user: null, isLoaded: true };
+  const {
+    documents,
+    isLoading: documentsLoading,
+    isConvexAvailable: isDocumentsAvailable,
+  } = useDocuments(user?.id);
+  const {
+    deals,
+    isLoading: dealsLoading,
+    isConvexAvailable: isDealsAvailable,
+  } = useDeals(user?.id);
+
+  const isDocumentsLoading = documentsLoading && isDocumentsAvailable;
+  const isDealsLoading = dealsLoading && isDealsAvailable;
+  const isDataLoading = !isLoaded || isDocumentsLoading || isDealsLoading;
+  const activeDocuments = documents.filter((document) => !document.isArchived);
+  const activeDeals = deals.filter((deal) => !deal.isArchived);
+  const inProgressDeals = activeDeals.filter(
+    (deal) => !["closed-won", "closed-lost"].includes(deal.stage)
+  );
+  const closedDeals = activeDeals.filter((deal) =>
+    ["closed-won", "closed-lost"].includes(deal.stage)
+  );
+  const displayName =
+    user?.fullName || user?.firstName || user?.username || "Utilisateur";
+
+  const memberIds = new Set<string>();
+  if (user?.id) {
+    memberIds.add(user.id);
+  }
+  activeDocuments.forEach((document) => {
+    if (document.userId) {
+      memberIds.add(document.userId);
+    }
+  });
+  activeDeals.forEach((deal) => {
+    if (deal.userId) {
+      memberIds.add(deal.userId);
+    }
+  });
+
+  const getDocumentTimestamp = (document: (typeof documents)[number]) =>
+    getTimestamp(document.updatedAt, document.createdAt ?? document._creationTime);
+  const getDealTimestamp = (deal: (typeof deals)[number]) =>
+    getTimestamp(deal.updatedAt, deal.createdAt ?? deal._creationTime);
+
+  const recentDocuments = activeDocuments
+    .map((document) => {
+      const timestamp = getDocumentTimestamp(document);
+      return {
+        id: document._id,
+        title: document.title || fr.editor.untitled,
+        description: document.dealId
+          ? "Document lié à un deal"
+          : "Document de collaboration",
+        time: formatRelativeTime(timestamp),
+        collaborators: document.userId ? 1 : 0,
+        href: `/documents/${document._id}`,
+        timestamp,
+      };
+    })
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 3);
+
+  const activityFeed = [
+    ...activeDocuments.map((document) => {
+      const timestamp = getDocumentTimestamp(document);
+      return {
+        id: `document-${document._id}`,
+        user: document.userId === user?.id ? displayName : "Collaborateur",
+        action: "a mis à jour le document",
+        target: document.title || fr.editor.untitled,
+        time: formatRelativeTime(timestamp),
+        timestamp,
+      };
+    }),
+    ...activeDeals.map((deal) => {
+      const timestamp = getDealTimestamp(deal);
+      return {
+        id: `deal-${deal._id}`,
+        user:
+          deal.lead ||
+          (deal.userId === user?.id ? displayName : "Équipe"),
+        action:
+          deal.updatedAt === deal.createdAt
+            ? "a créé le deal"
+            : "a mis à jour le deal",
+        target: deal.company,
+        time: formatRelativeTime(timestamp),
+        timestamp,
+      };
+    }),
+  ]
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 5);
+
+  const stats = [
+    {
+      id: "deals",
+      label: fr.dashboard.stats.dealsInProgress,
+      value: isDataLoading ? "—" : inProgressDeals.length.toString(),
+      icon: Briefcase,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : `${activeDeals.length} au total`,
+      color: "text-blue-500",
+    },
+    {
+      id: "documents",
+      label: fr.dashboard.stats.documentsCreated,
+      value: isDataLoading ? "—" : activeDocuments.length.toString(),
+      icon: FileText,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : recentDocuments[0]
+          ? `Dernière mise à jour ${recentDocuments[0].time}`
+          : "Aucun document",
+      color: "text-green-500",
+    },
+    {
+      id: "members",
+      label: fr.dashboard.stats.teamMembers,
+      value: isDataLoading ? "—" : memberIds.size.toString(),
+      icon: Users,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : memberIds.size > 0
+          ? "Équipe active"
+          : "Aucun membre",
+      color: "text-purple-500",
+    },
+    {
+      id: "tasks",
+      label: fr.dashboard.stats.tasksCompleted,
+      value: isDataLoading ? "—" : closedDeals.length.toString(),
+      icon: CheckCircle2,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : closedDeals.length > 0
+          ? `${closedDeals.length} deals clôturés`
+          : "Aucun deal clôturé",
+      color: "text-orange-500",
+    },
+  ];
 
   return (
     <div className="space-y-8">
@@ -152,10 +243,10 @@ export default function Dashboard() {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
       >
-        {stats.map((stat, index) => {
+        {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={index}>
+            <Card key={stat.id}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   {stat.label}
@@ -179,10 +270,10 @@ export default function Dashboard() {
       >
         <h2 className="text-2xl font-bold mb-4">{fr.dashboard.quickActions}</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {quickActions.map((action, index) => {
+          {quickActions.map((action) => {
             const Icon = action.icon;
             return (
-              <Link key={index} href={action.href}>
+              <Link key={action.href} href={action.href}>
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <CardHeader>
                     <div className={`w-12 h-12 rounded-lg ${action.bgColor} flex items-center justify-center mb-4`}>
@@ -219,38 +310,51 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentDocuments.map((doc, index) => (
-                  <div key={index}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3">
-                        <div className="rounded-lg bg-primary/10 p-2">
-                          <FileText className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">{doc.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {doc.description}
-                          </p>
-                          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {doc.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Users className="h-3 w-3" />
-                              {doc.collaborators} collaborateurs
-                            </span>
+              {isDocumentsLoading ? (
+                <p className="text-sm text-muted-foreground">
+                  {fr.loader.loading}
+                </p>
+              ) : recentDocuments.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  Aucun document récent.
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {recentDocuments.map((doc, index) => (
+                    <div key={doc.id}>
+                      <Link href={doc.href} className="block">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-3">
+                            <div className="rounded-lg bg-primary/10 p-2">
+                              <FileText className="h-4 w-4 text-primary" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium">{doc.title}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {doc.description}
+                              </p>
+                              <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {doc.time}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Users className="h-3 w-3" />
+                                  {doc.collaborators} collaborateur
+                                  {doc.collaborators > 1 ? "s" : ""}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
+                      {index < recentDocuments.length - 1 && (
+                        <Separator className="mt-4" />
+                      )}
                     </div>
-                    {index < recentDocuments.length - 1 && (
-                      <Separator className="mt-4" />
-                    )}
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
@@ -266,27 +370,37 @@ export default function Dashboard() {
               <CardTitle>{fr.dashboard.activityFeed}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {activityFeed.map((activity, index) => (
-                  <div key={index} className="flex gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                      {activity.user.split(" ").map(n => n[0]).join("")}
+              {isDataLoading ? (
+                <p className="text-sm text-muted-foreground">
+                  {fr.loader.loading}
+                </p>
+              ) : activityFeed.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  Aucune activité récente.
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {activityFeed.map((activity) => (
+                    <div key={activity.id} className="flex gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                        {activity.user.split(" ").map(n => n[0]).join("")}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm">
+                          <span className="font-medium">{activity.user}</span>{" "}
+                          <span className="text-muted-foreground">
+                            {activity.action}
+                          </span>{" "}
+                          <span className="font-medium">{activity.target}</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {activity.time}
+                        </p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm">
-                        <span className="font-medium">{activity.user}</span>{" "}
-                        <span className="text-muted-foreground">
-                          {activity.action}
-                        </span>{" "}
-                        <span className="font-medium">{activity.target}</span>
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {activity.time}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
