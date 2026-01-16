@@ -1,8 +1,8 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Trash2 } from "lucide-react";
 
 export default function TrashPage() {
   return (

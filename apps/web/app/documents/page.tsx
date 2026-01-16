@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { Plus, Search, FileText, MoreVertical, Trash, Star, Clock } from "lucide-react";
+import { Clock, FileText, MoreVertical, Plus, Search, Star, Trash } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/tailwind/ui/button";
-import { Input } from "@/components/tailwind/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import {
   DropdownMenu,
@@ -17,11 +16,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/tailwind/ui/dropdown-menu";
+import { Input } from "@/components/tailwind/ui/input";
 import { Skeleton } from "@/components/tailwind/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
-import { t, fr } from "@/lib/i18n";
+import { t } from "@/lib/i18n";
 
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,10 +32,7 @@ export default function DocumentsPage() {
 
   const filteredDocuments = documents
     .filter((doc) => !doc.isArchived)
-    .filter((doc) => 
-      doc.title?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      searchQuery === ""
-    )
+    .filter((doc) => doc.title?.toLowerCase().includes(searchQuery.toLowerCase()) || searchQuery === "")
     .sort((a, b) => {
       const timestampA = a.updatedAt ?? a.createdAt ?? a._creationTime ?? 0;
       const timestampB = b.updatedAt ?? b.createdAt ?? b._creationTime ?? 0;
@@ -97,18 +94,25 @@ export default function DocumentsPage() {
   );
 }
 
-function DocumentCard({ document }: { document: any }) {
+interface Document {
+  _id: string;
+  title?: string;
+  updatedAt?: number;
+  createdAt?: number;
+  _creationTime?: number;
+  isArchived?: boolean;
+}
+
+function DocumentCard({ document }: { document: Document }) {
   const timestamp = document.updatedAt ?? document.createdAt ?? document._creationTime;
-  
+
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
       <Link href={`/documents/${document._id}`}>
         <Card className="hover:shadow-md transition-shadow cursor-pointer group">
           <CardHeader className="flex flex-row items-start justify-between space-y-0">
             <div className="space-y-1">
-              <CardTitle className="text-base line-clamp-1">
-                {document.title || t("editor.untitled")}
-              </CardTitle>
+              <CardTitle className="text-base line-clamp-1">{document.title || t("editor.untitled")}</CardTitle>
               <CardDescription className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
                 {formatRelativeTime(timestamp)}
@@ -148,7 +152,8 @@ function DocumentListSkeleton() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 6 }).map((_, i) => (
-        <Card key={i}>
+        // biome-ignore lint/suspicious/noArrayIndexKey: Static skeleton components don't reorder
+        <Card key={`skeleton-${i}`}>
           <CardHeader>
             <Skeleton className="h-5 w-3/4" />
             <Skeleton className="h-4 w-1/2 mt-2" />

@@ -1,8 +1,8 @@
 "use client";
 
-import { CalendarDays } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { EmptyState } from "@/components/ui/empty-state";
+import { CalendarDays } from "lucide-react";
 
 export default function CalendarPage() {
   return (

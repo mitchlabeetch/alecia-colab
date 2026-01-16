@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Moon, Sun, Monitor, Bell, Shield, User, Palette } from "lucide-react";
+import { Bell, Monitor, Moon, Palette, Shield, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useState } from "react";
 
 import { AppShell } from "@/components/layout/AppShell";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { Button } from "@/components/tailwind/ui/button";
-import { Switch } from "@/components/tailwind/ui/switch";
-import { Separator } from "@/components/tailwind/ui/separator";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { Label } from "@/components/tailwind/ui/label";
+import { Separator } from "@/components/tailwind/ui/separator";
+import { Switch } from "@/components/tailwind/ui/switch";
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
@@ -44,19 +44,11 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button
-                  variant={theme === "light" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setTheme("light")}
-                >
+                <Button variant={theme === "light" ? "default" : "outline"} size="sm" onClick={() => setTheme("light")}>
                   <Sun className="h-4 w-4 mr-2" />
                   Clair
                 </Button>
-                <Button
-                  variant={theme === "dark" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setTheme("dark")}
-                >
+                <Button variant={theme === "dark" ? "default" : "outline"} size="sm" onClick={() => setTheme("dark")}>
                   <Moon className="h-4 w-4 mr-2" />
                   Sombre
                 </Button>

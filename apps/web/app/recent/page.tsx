@@ -1,9 +1,9 @@
 "use client";
 
-import { Clock } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { RecentFiles } from "@/components/recent-files/RecentFiles";
 import { fr } from "@/lib/i18n";
+import { Clock } from "lucide-react";
 
 export default function RecentPage() {
   return (

@@ -1,10 +1,10 @@
 "use client";
 
-import { Building, Plus, ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Button } from "@/components/tailwind/ui/button";
-import { EmptyState } from "@/components/ui/empty-state";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Building, ExternalLink } from "lucide-react";
 
 export default function CompaniesPage() {
   return (
@@ -35,7 +35,8 @@ export default function CompaniesPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Accédez au CRM pour créer, modifier et gérer vos profils d'entreprises, leurs contacts, et historique de transactions.
+              Accédez au CRM pour créer, modifier et gérer vos profils d'entreprises, leurs contacts, et historique de
+              transactions.
             </p>
             <Button variant="outline" asChild>
               <a href="/admin/crm" target="_blank" rel="noopener noreferrer">

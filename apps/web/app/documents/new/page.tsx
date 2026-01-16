@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function NewDocumentPage() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function NewDocumentPage() {
 
   useEffect(() => {
     if (!isLoaded) return;
-    
+
     const create = async () => {
       try {
         const docId = await createDocument({

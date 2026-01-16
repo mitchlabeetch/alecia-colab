@@ -1,8 +1,8 @@
 "use client";
 
-import { Star } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Star } from "lucide-react";
 
 export default function FavoritesPage() {
   return (
