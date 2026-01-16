@@ -1,5 +1,5 @@
-import { PresentationDashboard } from '@/components/presentations/PresentationDashboard';
+import { PresentationList } from '@/components/presentations/PresentationList';
 
 export default function PresentationsPage() {
-  return <PresentationDashboard />;
+  return <PresentationList />;
 }
