@@ -141,8 +141,8 @@ export default function Dashboard() {
       const timestamp = getDocumentTimestamp(document);
       return {
         id: `document-${document._id}`,
-        user: document.userId === user?.id ? displayName : "Collaborateur",
-        action: "a mis à jour le document",
+        user: document.userId === user?.id ? displayName : fr.common.collaborator,
+        action: fr.activity.updatedDocument,
         target: document.title || fr.editor.untitled,
         time: formatRelativeTime(timestamp),
         timestamp,
@@ -154,11 +154,11 @@ export default function Dashboard() {
         id: `deal-${deal._id}`,
         user:
           deal.lead ||
-          (deal.userId === user?.id ? displayName : "Équipe"),
+          (deal.userId === user?.id ? displayName : fr.common.team),
         action:
           deal.updatedAt === deal.createdAt
-            ? "a créé le deal"
-            : "a mis à jour le deal",
+            ? fr.activity.createdDeal
+            : fr.activity.updatedDeal,
         target: deal.company,
         time: formatRelativeTime(timestamp),
         timestamp,
@@ -176,7 +176,7 @@ export default function Dashboard() {
       icon: Briefcase,
       trend: isDataLoading
         ? fr.loader.loading
-        : `${activeDeals.length} au total`,
+        : `${activeDeals.length} ${fr.common.total}`,
       color: "text-blue-500",
     },
     {
@@ -187,8 +187,8 @@ export default function Dashboard() {
       trend: isDataLoading
         ? fr.loader.loading
         : recentDocuments[0]
-          ? `Dernière mise à jour ${recentDocuments[0].time}`
-          : "Aucun document",
+          ? `${fr.dashboard.lastUpdate} ${recentDocuments[0].time}`
+          : fr.dashboard.noDocuments,
       color: "text-green-500",
     },
     {
@@ -199,8 +199,8 @@ export default function Dashboard() {
       trend: isDataLoading
         ? fr.loader.loading
         : memberIds.size > 0
-          ? "Équipe active"
-          : "Aucun membre",
+          ? fr.dashboard.activeTeam
+          : fr.dashboard.noMembers,
       color: "text-purple-500",
     },
     {
@@ -211,8 +211,8 @@ export default function Dashboard() {
       trend: isDataLoading
         ? fr.loader.loading
         : closedDeals.length > 0
-          ? `${closedDeals.length} deals clôturés`
-          : "Aucun deal clôturé",
+          ? `${closedDeals.length} ${fr.dashboard.dealsClosed}`
+          : fr.dashboard.noClosedDeals,
       color: "text-orange-500",
     },
   ];
@@ -316,7 +316,7 @@ export default function Dashboard() {
                 </p>
               ) : recentDocuments.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
-                  Aucun document récent.
+                  {fr.nav.noRecentDocuments}
                 </p>
               ) : (
                 <div className="space-y-4">
@@ -376,7 +376,7 @@ export default function Dashboard() {
                 </p>
               ) : activityFeed.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
-                  Aucune activité récente.
+                  {fr.dashboard.noRecentActivity}
                 </p>
               ) : (
                 <div className="space-y-4">

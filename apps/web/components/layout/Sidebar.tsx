@@ -162,7 +162,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                     </p>
                   ) : recentItems.length === 0 ? (
                     <p className="px-3 text-xs text-muted-foreground">
-                      Aucun document récent.
+                      {t("nav.noRecentDocuments")}
                     </p>
                   ) : (
                     recentItems.map((item) => (
@@ -236,7 +236,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                   </p>
                 ) : recentItems.length === 0 ? (
                   <p className="px-3 text-xs text-muted-foreground">
-                    Aucun document récent.
+                    {t("nav.noRecentDocuments")}
                   </p>
                 ) : (
                   recentItems.map((item) => (
