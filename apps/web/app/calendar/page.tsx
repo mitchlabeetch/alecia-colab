@@ -7,7 +7,6 @@ import { CalendarDays } from "lucide-react";
 
 // Prevent static generation
 export const dynamic = "force-dynamic";
-export const runtime = "nodejs";
 
 export default function CalendarPage() {
   return (
