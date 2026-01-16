@@ -82,12 +82,7 @@ const contextConfigs: Record<string, ToolbarItem[]> = {
   ],
 };
 
-export default function Toolbar({
-  items,
-  context = "default",
-  className,
-  onItemClick,
-}: ToolbarProps) {
+export default function Toolbar({ items, context = "default", className, onItemClick }: ToolbarProps) {
   const [selected, setSelected] = React.useState<string | null>(null);
 
   const toolbarItems = items || contextConfigs[context] || contextConfigs.default;
@@ -107,7 +102,7 @@ export default function Toolbar({
         "rounded-xl border border-gray-200 dark:border-gray-800",
         "shadow-sm",
         "transition-all duration-200",
-        className
+        className,
       )}
     >
       {toolbarItems.map((item) => (
@@ -118,7 +113,7 @@ export default function Toolbar({
             "font-medium text-sm transition-colors duration-200",
             selected === item.id
               ? "bg-primary text-primary-foreground"
-              : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
+              : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white",
           )}
           onClick={() => handleItemClick(item.id)}
           animate="animate"

@@ -14,21 +14,8 @@ import {
   type SpringOptions,
   AnimatePresence,
 } from "motion/react";
-import React, {
-  Children,
-  cloneElement,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {
-  Home,
-  Briefcase,
-  FileText,
-  Settings,
-  type LucideIcon,
-} from "lucide-react";
+import React, { Children, cloneElement, useEffect, useMemo, useRef, useState } from "react";
+import { Home, Briefcase, FileText, Settings, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface DockItemData {
@@ -80,11 +67,7 @@ function DockItem({
     return val - rect.x - baseItemSize / 2;
   });
 
-  const targetSize = useTransform(
-    mouseDistance,
-    [-distance, 0, distance],
-    [baseItemSize, magnification, baseItemSize]
-  );
+  const targetSize = useTransform(mouseDistance, [-distance, 0, distance], [baseItemSize, magnification, baseItemSize]);
   const size = useSpring(targetSize, spring);
 
   return (
@@ -102,18 +85,15 @@ function DockItem({
         "border border-gray-200 dark:border-gray-700",
         "shadow-sm cursor-pointer outline-none",
         "hover:shadow-md transition-shadow duration-200",
-        className
+        className,
       )}
       tabIndex={0}
       role="button"
     >
       {Children.map(children, (child) =>
         React.isValidElement(child)
-          ? cloneElement(
-              child as React.ReactElement<{ isHovered?: MotionValue<number> }>,
-              { isHovered }
-            )
-          : child
+          ? cloneElement(child as React.ReactElement<{ isHovered?: MotionValue<number> }>, { isHovered })
+          : child,
       )}
     </motion.div>
   );
@@ -151,7 +131,7 @@ function DockLabel({ children, className = "", isHovered }: DockLabelProps) {
             "bg-white dark:bg-gray-900 px-2 py-1",
             "text-xs font-medium text-gray-900 dark:text-white",
             "shadow-sm",
-            className
+            className,
           )}
           role="tooltip"
         >
@@ -169,13 +149,7 @@ interface DockIconProps {
 
 function DockIcon({ children, className = "" }: DockIconProps) {
   return (
-    <div
-      className={cn(
-        "flex items-center justify-center",
-        "text-gray-600 dark:text-gray-400",
-        className
-      )}
-    >
+    <div className={cn("flex items-center justify-center", "text-gray-600 dark:text-gray-400", className)}>
       {children}
     </div>
   );
@@ -219,16 +193,13 @@ export default function Dock({
 
   const maxHeight = useMemo(
     () => Math.max(panelHeight + 20, magnification + magnification / 2 + 4),
-    [magnification, panelHeight]
+    [magnification, panelHeight],
   );
   const heightRow = useTransform(isHovered, [0, 1], [panelHeight, maxHeight]);
   const height = useSpring(heightRow, spring);
 
   return (
-    <motion.div
-      style={{ height }}
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
-    >
+    <motion.div style={{ height }} className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
       <motion.div
         onMouseMove={({ pageX }) => {
           isHovered.set(1);
@@ -243,7 +214,7 @@ export default function Dock({
           "rounded-2xl border border-gray-200 dark:border-gray-700",
           "bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg",
           "shadow-lg",
-          className
+          className,
         )}
         style={{ height: panelHeight }}
         role="toolbar"

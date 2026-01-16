@@ -3,7 +3,7 @@ import { mutation, query } from "./_generated/server";
 
 /**
  * Custom Property Definitions
- * 
+ *
  * Manages dynamic property schemas for deals.
  * Each property can be text, number, date, select, multiselect, or checkbox.
  */
@@ -22,7 +22,7 @@ const propertyTypeValidator = v.union(
   v.literal("date"),
   v.literal("select"),
   v.literal("multiselect"),
-  v.literal("checkbox")
+  v.literal("checkbox"),
 );
 
 // Create a new property definition
@@ -34,13 +34,9 @@ export const createProperty = mutation({
   },
   handler: async (ctx, args) => {
     // Get the highest order to append at end
-    const existingProps = await ctx.db
-      .query("colab_property_definitions")
-      .collect();
-    
-    const maxOrder = existingProps.length > 0 
-      ? Math.max(...existingProps.map(p => p.order)) 
-      : 0;
+    const existingProps = await ctx.db.query("colab_property_definitions").collect();
+
+    const maxOrder = existingProps.length > 0 ? Math.max(...existingProps.map((p) => p.order)) : 0;
 
     const propertyId = await ctx.db.insert("colab_property_definitions", {
       name: args.name,
@@ -57,10 +53,8 @@ export const createProperty = mutation({
 export const listProperties = query({
   args: {},
   handler: async (ctx) => {
-    const properties = await ctx.db
-      .query("colab_property_definitions")
-      .collect();
-    
+    const properties = await ctx.db.query("colab_property_definitions").collect();
+
     return properties.sort((a, b) => a.order - b.order);
   },
 });
@@ -76,7 +70,7 @@ export const updateProperty = mutation({
     const updates: Record<string, unknown> = {};
     if (args.name !== undefined) updates.name = args.name;
     if (args.options !== undefined) updates.options = args.options;
-    
+
     await ctx.db.patch(args.id, updates);
   },
 });
@@ -112,7 +106,7 @@ export const addPropertyOption = mutation({
   handler: async (ctx, args) => {
     const property = await ctx.db.get(args.propertyId);
     if (!property) throw new Error("Property not found");
-    
+
     const currentOptions = property.options || [];
     await ctx.db.patch(args.propertyId, {
       options: [...currentOptions, args.option],

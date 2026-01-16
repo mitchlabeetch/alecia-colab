@@ -67,10 +67,7 @@ export function TypingIndicator({ users, className }: TypingIndicatorProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 10 }}
-        className={cn(
-          "flex items-center gap-2 text-sm text-muted-foreground",
-          className
-        )}
+        className={cn("flex items-center gap-2 text-sm text-muted-foreground", className)}
       >
         {/* Avatars des utilisateurs qui écrivent */}
         <div className="flex -space-x-2">
@@ -104,12 +101,12 @@ export function useTypingIndicator() {
 
   const startTyping = React.useCallback(() => {
     setIsTyping(true);
-    
+
     // Reset timeout si déjà en cours
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     // Arrêter après 2 secondes d'inactivité
     timeoutRef.current = setTimeout(() => {
       setIsTyping(false);

@@ -49,11 +49,7 @@ function DealNode({ data, selected }: DealNodeProps) {
       `}
     >
       {/* Input handle (top) */}
-      <Handle
-        type="target"
-        position={Position.Top}
-        className="w-3 h-3 !bg-gray-400"
-      />
+      <Handle type="target" position={Position.Top} className="w-3 h-3 !bg-gray-400" />
 
       {/* Company name with icon */}
       <div className="flex items-center gap-2 mb-2">
@@ -67,9 +63,7 @@ function DealNode({ data, selected }: DealNodeProps) {
       </div>
 
       {/* Stage badge */}
-      <Badge className={`${stageStyle} text-xs mb-2`}>
-        {data.stage.replace("-", " ")}
-      </Badge>
+      <Badge className={`${stageStyle} text-xs mb-2`}>{data.stage.replace("-", " ")}</Badge>
 
       {/* Details */}
       <div className="space-y-1 text-xs text-muted-foreground">
@@ -94,11 +88,7 @@ function DealNode({ data, selected }: DealNodeProps) {
       </div>
 
       {/* Output handle (bottom) */}
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        className="w-3 h-3 !bg-gray-400"
-      />
+      <Handle type="source" position={Position.Bottom} className="w-3 h-3 !bg-gray-400" />
     </div>
   );
 }

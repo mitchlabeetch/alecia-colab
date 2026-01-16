@@ -44,30 +44,30 @@ export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
   const { calendarDays, dealsOnDate } = useMemo(() => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    
+
     // First day of month
     const firstDay = new Date(year, month, 1);
     const startingDay = firstDay.getDay();
-    
+
     // Days in month
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    
+
     // Create calendar grid
     const days: (number | null)[] = [];
-    
+
     // Empty cells before first day
     for (let i = 0; i < startingDay; i++) {
       days.push(null);
     }
-    
+
     // Days of the month
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(i);
     }
-    
+
     // Map deals to dates (by dueDate or createdAt)
     const dealsByDate: Record<string, Deal[]> = {};
-    
+
     deals.forEach((deal) => {
       const dateToUse = deal.dueDate || deal.createdAt;
       const date = new Date(dateToUse);
@@ -79,7 +79,7 @@ export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
         dealsByDate[key].push(deal);
       }
     });
-    
+
     return { calendarDays: days, dealsOnDate: dealsByDate };
   }, [currentDate, deals]);
 
@@ -96,9 +96,8 @@ export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
   };
 
   const today = new Date();
-  const isCurrentMonth = 
-    today.getFullYear() === currentDate.getFullYear() && 
-    today.getMonth() === currentDate.getMonth();
+  const isCurrentMonth =
+    today.getFullYear() === currentDate.getFullYear() && today.getMonth() === currentDate.getMonth();
 
   return (
     <div className="space-y-4">
@@ -125,10 +124,7 @@ export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
         {/* Day headers */}
         <div className="grid grid-cols-7 bg-muted/50">
           {DAYS.map((day) => (
-            <div
-              key={day}
-              className="px-2 py-2 text-center text-sm font-medium text-muted-foreground border-b"
-            >
+            <div key={day} className="px-2 py-2 text-center text-sm font-medium text-muted-foreground border-b">
               {day}
             </div>
           ))}
@@ -143,17 +139,13 @@ export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
             return (
               <div
                 key={index}
-                className={`min-h-[100px] border-b border-r p-1 ${
-                  day ? "bg-background" : "bg-muted/20"
-                }`}
+                className={`min-h-[100px] border-b border-r p-1 ${day ? "bg-background" : "bg-muted/20"}`}
               >
                 {day && (
                   <>
                     <div
                       className={`text-sm font-medium mb-1 w-6 h-6 flex items-center justify-center rounded-full ${
-                        isToday
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground"
+                        isToday ? "bg-primary text-primary-foreground" : "text-muted-foreground"
                       }`}
                     >
                       {day}
@@ -167,20 +159,14 @@ export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
                         >
                           <CardContent className="p-1.5">
                             <div className="flex items-center gap-1">
-                              <div
-                                className={`w-2 h-2 rounded-full ${stageColors[deal.stage]}`}
-                              />
-                              <span className="text-xs truncate flex-1">
-                                {deal.company}
-                              </span>
+                              <div className={`w-2 h-2 rounded-full ${stageColors[deal.stage]}`} />
+                              <span className="text-xs truncate flex-1">{deal.company}</span>
                             </div>
                           </CardContent>
                         </Card>
                       ))}
                       {dayDeals.length > 3 && (
-                        <div className="text-xs text-muted-foreground text-center">
-                          +{dayDeals.length - 3} more
-                        </div>
+                        <div className="text-xs text-muted-foreground text-center">+{dayDeals.length - 3} more</div>
                       )}
                     </div>
                   </>

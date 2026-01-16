@@ -6,13 +6,7 @@
  */
 
 import { motion, AnimatePresence } from "motion/react";
-import {
-  AlertCircle,
-  CheckCircle2,
-  Info,
-  AlertTriangle,
-  X,
-} from "lucide-react";
+import { AlertCircle, CheckCircle2, Info, AlertTriangle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -84,19 +78,12 @@ export default function Alert({
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2 }}
           role="alert"
-          className={cn(
-            "relative flex gap-3 rounded-lg border p-4",
-            config.bg,
-            config.border,
-            className
-          )}
+          className={cn("relative flex gap-3 rounded-lg border p-4", config.bg, config.border, className)}
         >
           <Icon className={cn("h-5 w-5 flex-shrink-0 mt-0.5", config.iconColor)} />
 
           <div className="flex-1">
-            {title && (
-              <h5 className={cn("font-medium mb-1", config.text)}>{title}</h5>
-            )}
+            {title && <h5 className={cn("font-medium mb-1", config.text)}>{title}</h5>}
             <div className={cn("text-sm", config.text)}>{children}</div>
           </div>
 
@@ -107,7 +94,7 @@ export default function Alert({
                 "flex-shrink-0 p-1 rounded-md",
                 "hover:bg-black/5 dark:hover:bg-white/5",
                 "transition-colors duration-150",
-                config.text
+                config.text,
               )}
               aria-label="Fermer l'alerte"
             >

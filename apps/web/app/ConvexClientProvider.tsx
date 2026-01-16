@@ -11,7 +11,7 @@ const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 export function ConvexClientProvider({ children }: { children: ReactNode }) {
   // Use Clerk auth if available for authenticated Convex access
   const isClerkEnabled = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  
+
   if (isClerkEnabled) {
     return (
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
@@ -19,7 +19,7 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
       </ConvexProviderWithClerk>
     );
   }
-  
+
   // Fallback for development without Clerk
   return <ConvexProvider client={convex}>{children}</ConvexProvider>;
 }

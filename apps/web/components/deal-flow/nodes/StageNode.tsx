@@ -38,21 +38,13 @@ function StageNode({ data, selected }: StageNodeProps) {
       `}
     >
       {/* Input handle (left) */}
-      <Handle
-        type="target"
-        position={Position.Left}
-        className="w-3 h-3 !bg-white"
-      />
+      <Handle type="target" position={Position.Left} className="w-3 h-3 !bg-white" />
 
       <div className="font-bold text-lg">{data.label}</div>
       <div className="text-sm opacity-90">{data.count} deals</div>
 
       {/* Output handle (right) */}
-      <Handle
-        type="source"
-        position={Position.Right}
-        className="w-3 h-3 !bg-white"
-      />
+      <Handle type="source" position={Position.Right} className="w-3 h-3 !bg-white" />
     </div>
   );
 }

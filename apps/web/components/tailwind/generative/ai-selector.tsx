@@ -70,7 +70,9 @@ export function AISelector({ onOpenChange }: AISelectorProps) {
               value={inputValue}
               onValueChange={setInputValue}
               autoFocus
-              placeholder={hasCompletion ? "Dites à l'IA quoi faire ensuite" : "Demandez à l'IA de modifier ou générer..."}
+              placeholder={
+                hasCompletion ? "Dites à l'IA quoi faire ensuite" : "Demandez à l'IA de modifier ou générer..."
+              }
               onFocus={() => addAIHighlight(editor)}
             />
             <Button

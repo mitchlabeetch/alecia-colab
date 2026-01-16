@@ -24,12 +24,7 @@ export function Loader({ message, size = "md", className }: LoaderProps) {
   };
 
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center gap-4",
-        className
-      )}
-    >
+    <div className={cn("flex flex-col items-center justify-center gap-4", className)}>
       <motion.div
         animate={{ rotate: 360 }}
         transition={{
@@ -55,21 +50,9 @@ export function Loader({ message, size = "md", className }: LoaderProps) {
 }
 
 export function ConfiguringLoader({ className }: { className?: string }) {
-  return (
-    <Loader
-      message={t("loader.configuringAccount")}
-      size="lg"
-      className={className}
-    />
-  );
+  return <Loader message={t("loader.configuringAccount")} size="lg" className={className} />;
 }
 
 export function ProcessingLoader({ className }: { className?: string }) {
-  return (
-    <Loader
-      message={t("loader.processing")}
-      size="md"
-      className={className}
-    />
-  );
+  return <Loader message={t("loader.processing")} size="md" className={className} />;
 }

@@ -12,19 +12,19 @@ import Menu from "@/components/tailwind/ui/menu";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tailwind/ui/tabs";
 import { BookOpen, Briefcase, FileText } from "lucide-react";
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { fr } from "@/lib/i18n";
 
 // Dynamic imports to avoid SSR issues with Convex/Clerk hooks
-const TailwindAdvancedEditor = nextDynamic(
-  () => import("@/components/tailwind/advanced-editor"),
-  { ssr: false, loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" /> }
-);
+const TailwindAdvancedEditor = nextDynamic(() => import("@/components/tailwind/advanced-editor"), {
+  ssr: false,
+  loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" />,
+});
 
-const DealPipeline = nextDynamic(
-  () => import("@/components/deal-pipeline"),
-  { ssr: false, loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" /> }
-);
+const DealPipeline = nextDynamic(() => import("@/components/deal-pipeline"), {
+  ssr: false,
+  loading: () => <div className="animate-pulse h-96 bg-muted rounded-lg" />,
+});
 
 export default function ClientPage() {
   return (
@@ -72,11 +72,11 @@ export default function ClientPage() {
               {fr.tabs.pipeline}
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="editor" className="mt-6">
             <TailwindAdvancedEditor />
           </TabsContent>
-          
+
           <TabsContent value="pipeline" className="mt-6">
             <DealPipeline />
           </TabsContent>

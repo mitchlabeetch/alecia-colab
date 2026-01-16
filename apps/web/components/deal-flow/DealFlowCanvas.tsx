@@ -50,10 +50,10 @@ interface DealFlowCanvasProps {
 
 export default function DealFlowCanvas({ onDealClick }: DealFlowCanvasProps) {
   const [viewMode, setViewMode] = useState<"stages" | "deals">("stages");
-  
+
   const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL;
   const convexDeals = useQuery(api.deals.list, isConvexConfigured ? {} : "skip");
-  
+
   const isLoading = isConvexConfigured && convexDeals === undefined;
   const deals = convexDeals ?? [];
 
@@ -83,21 +83,24 @@ export default function DealFlowCanvas({ onDealClick }: DealFlowCanvasProps) {
       return { initialNodes: stageNodes, initialEdges: stageEdges };
     } else {
       // Deal-focused view: show individual deals
-      const dealsByStage = pipelineStages.reduce((acc, stage) => {
-        acc[stage] = deals.filter((d) => d.stage === stage);
-        return acc;
-      }, {} as Record<DealStage, typeof deals>);
+      const dealsByStage = pipelineStages.reduce(
+        (acc, stage) => {
+          acc[stage] = deals.filter((d) => d.stage === stage);
+          return acc;
+        },
+        {} as Record<DealStage, typeof deals>,
+      );
 
       const dealNodes: Node[] = [];
-      
+
       pipelineStages.forEach((stage, stageIndex) => {
         dealsByStage[stage].forEach((deal, dealIndex) => {
           dealNodes.push({
             id: deal._id,
             type: "deal",
-            position: deal.nodePosition || { 
-              x: stageIndex * 280, 
-              y: 50 + dealIndex * 160 
+            position: deal.nodePosition || {
+              x: stageIndex * 280,
+              y: 50 + dealIndex * 160,
             },
             data: {
               company: deal.company,
@@ -120,7 +123,7 @@ export default function DealFlowCanvas({ onDealClick }: DealFlowCanvasProps) {
 
   const onConnect: OnConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),
-    [setEdges]
+    [setEdges],
   );
 
   const onNodeClick = useCallback(
@@ -129,7 +132,7 @@ export default function DealFlowCanvas({ onDealClick }: DealFlowCanvasProps) {
         onDealClick(node.id as Id<"colab_deals">);
       }
     },
-    [onDealClick]
+    [onDealClick],
   );
 
   // Update nodes when data changes
@@ -179,17 +182,13 @@ export default function DealFlowCanvas({ onDealClick }: DealFlowCanvasProps) {
             <LayoutGrid className="h-4 w-4 mr-1" />
             Stages
           </Button>
-          <Button
-            size="sm"
-            variant={viewMode === "deals" ? "default" : "outline"}
-            onClick={() => setViewMode("deals")}
-          >
+          <Button size="sm" variant={viewMode === "deals" ? "default" : "outline"} onClick={() => setViewMode("deals")}>
             <GitBranch className="h-4 w-4 mr-1" />
             Deals
           </Button>
         </Panel>
         <Controls />
-        <MiniMap 
+        <MiniMap
           nodeStrokeColor="#888"
           nodeColor={(node) => {
             if (node.type === "stage") return "#3b82f6";

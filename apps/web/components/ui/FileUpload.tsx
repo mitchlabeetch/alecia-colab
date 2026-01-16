@@ -84,13 +84,7 @@ export function FileUpload({
 
   return (
     <div className={cn("w-full", className)}>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept={accept}
-        onChange={handleFileChange}
-        className="hidden"
-      />
+      <input ref={fileInputRef} type="file" accept={accept} onChange={handleFileChange} className="hidden" />
 
       <AnimatePresence mode="wait">
         {!selectedFile ? (
@@ -109,7 +103,7 @@ export function FileUpload({
               isDragging
                 ? "border-primary bg-primary/5"
                 : "border-muted-foreground/25 hover:border-primary hover:bg-accent/50",
-              "flex flex-col items-center justify-center gap-4"
+              "flex flex-col items-center justify-center gap-4",
             )}
           >
             <div className="rounded-full bg-primary/10 p-4">
@@ -117,12 +111,9 @@ export function FileUpload({
             </div>
             <div className="text-center">
               <p className="text-sm font-medium">
-                {t("upload.dragDrop")}{" "}
-                <span className="text-primary">{t("upload.uploadFile")}</span>
+                {t("upload.dragDrop")} <span className="text-primary">{t("upload.uploadFile")}</span>
               </p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {t("upload.dragDropHere")}
-              </p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("upload.dragDropHere")}</p>
             </div>
           </motion.div>
         ) : (
@@ -140,9 +131,7 @@ export function FileUpload({
                 </div>
                 <div>
                   <p className="text-sm font-medium">{selectedFile.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {(selectedFile.size / 1024).toFixed(2)} KB
-                  </p>
+                  <p className="text-xs text-muted-foreground">{(selectedFile.size / 1024).toFixed(2)} KB</p>
                 </div>
               </div>
               <Button variant="ghost" size="icon" onClick={handleRemove}>

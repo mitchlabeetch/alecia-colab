@@ -8,24 +8,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
-import { 
-  Briefcase, 
-  Building, 
-  Calendar, 
-  DollarSign, 
+import {
+  Briefcase,
+  Building,
+  Calendar,
+  DollarSign,
   TrendingUp,
   ArrowRight,
   MoreVertical,
   Plus,
   Loader2,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
 
@@ -99,13 +93,10 @@ export default function DealPipeline() {
 
   // Try to use Convex, fallback to mock data
   const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL;
-  
+
   // Convex queries - will skip if not configured
-  const convexDeals = useQuery(
-    api.deals.list,
-    isConvexConfigured ? {} : "skip"
-  );
-  
+  const convexDeals = useQuery(api.deals.list, isConvexConfigured ? {} : "skip");
+
   const createDeal = useMutation(api.deals.create);
   const moveDealStage = useMutation(api.deals.moveStage);
 
@@ -117,14 +108,17 @@ export default function DealPipeline() {
     ? deals.filter((deal) => deal.stage === selectedStage)
     : deals.filter((deal) => !["closed-won", "closed-lost"].includes(deal.stage));
 
-  const dealsByStage = pipelineStages.reduce((acc, stage) => {
-    acc[stage] = deals.filter((d) => d.stage === stage).length;
-    return acc;
-  }, {} as Record<DealStage, number>);
+  const dealsByStage = pipelineStages.reduce(
+    (acc, stage) => {
+      acc[stage] = deals.filter((d) => d.stage === stage).length;
+      return acc;
+    },
+    {} as Record<DealStage, number>,
+  );
 
   const handleCreateDeal = async () => {
     if (!newDealCompany.trim()) return;
-    
+
     try {
       await createDeal({
         company: newDealCompany,
@@ -144,7 +138,7 @@ export default function DealPipeline() {
   const handleMoveToNextStage = async (deal: Deal) => {
     const currentIndex = pipelineStages.indexOf(deal.stage);
     if (currentIndex === -1 || currentIndex >= pipelineStages.length - 1) return;
-    
+
     const nextStage = pipelineStages[currentIndex + 1];
     try {
       await moveDealStage({
@@ -175,7 +169,9 @@ export default function DealPipeline() {
           <Briefcase className="h-6 w-6" />
           Deal Pipeline
           {!isConvexConfigured && (
-            <Badge variant="outline" className="ml-2 text-xs">Demo Mode</Badge>
+            <Badge variant="outline" className="ml-2 text-xs">
+              Demo Mode
+            </Badge>
           )}
         </h2>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
@@ -239,9 +235,7 @@ export default function DealPipeline() {
             onClick={() => setSelectedStage(selectedStage === stage ? null : stage)}
           >
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">
-                {stageLabels[stage]}
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">{stageLabels[stage]}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{dealsByStage[stage] || 0}</div>
@@ -255,7 +249,8 @@ export default function DealPipeline() {
         <div className="space-y-3">
           {filteredDeals.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              No deals found. {isConvexConfigured ? "Create a new deal to get started." : "Configure Convex to enable persistence."}
+              No deals found.{" "}
+              {isConvexConfigured ? "Create a new deal to get started." : "Configure Convex to enable persistence."}
             </div>
           ) : (
             filteredDeals.map((deal) => (
@@ -267,7 +262,7 @@ export default function DealPipeline() {
                         <Building className="h-4 w-4 text-muted-foreground" />
                         <h3 className="font-semibold">{deal.company}</h3>
                       </div>
-                      
+
                       <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
                         {deal.valuation && (
                           <div className="flex items-center gap-1">
@@ -287,15 +282,13 @@ export default function DealPipeline() {
                         </div>
                       </div>
 
-                      <Badge className={stageColors[deal.stage]}>
-                        {stageLabels[deal.stage]}
-                      </Badge>
+                      <Badge className={stageColors[deal.stage]}>{stageLabels[deal.stage]}</Badge>
                     </div>
 
                     <div className="flex gap-2">
                       {isConvexConfigured && pipelineStages.indexOf(deal.stage) < pipelineStages.length - 1 && (
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           size="icon"
                           onClick={() => handleMoveToNextStage(deal)}
                           title="Move to next stage"

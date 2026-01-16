@@ -18,24 +18,14 @@ const views: { value: ViewType; label: string; icon: React.ReactNode }[] = [
   { value: "flow", label: "Flow", icon: <GitBranch className="h-4 w-4" /> },
 ];
 
-export function ViewSwitcher({ 
-  currentView, 
-  onViewChange, 
-  showFlowView = true 
-}: ViewSwitcherProps) {
-  const visibleViews = showFlowView 
-    ? views 
-    : views.filter(v => v.value !== "flow");
+export function ViewSwitcher({ currentView, onViewChange, showFlowView = true }: ViewSwitcherProps) {
+  const visibleViews = showFlowView ? views : views.filter((v) => v.value !== "flow");
 
   return (
     <Tabs value={currentView} onValueChange={(v) => onViewChange(v as ViewType)}>
       <TabsList className="grid grid-cols-4 w-[300px]">
         {visibleViews.map((view) => (
-          <TabsTrigger
-            key={view.value}
-            value={view.value}
-            className="flex items-center gap-1.5 text-xs"
-          >
+          <TabsTrigger key={view.value} value={view.value} className="flex items-center gap-1.5 text-xs">
             {view.icon}
             <span className="hidden sm:inline">{view.label}</span>
           </TabsTrigger>

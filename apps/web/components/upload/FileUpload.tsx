@@ -7,13 +7,7 @@
 
 import { UploadCloud } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import {
-  type DragEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type DragEvent, useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type FileStatus = "idle" | "dragging" | "uploading" | "error" | "success";
@@ -87,12 +81,7 @@ const UploadIllustration = () => (
           y1="45"
           y2="60"
         >
-          <animate
-            attributeName="y2"
-            dur="2s"
-            repeatCount="indefinite"
-            values="60;55;60"
-          />
+          <animate attributeName="y2" dur="2s" repeatCount="indefinite" values="60;55;60" />
         </line>
         <polyline
           className="stroke-blue-500 dark:stroke-blue-400"
@@ -135,7 +124,7 @@ export default function FileUpload({
         clearInterval(uploadIntervalRef.current);
       }
     },
-    []
+    [],
   );
 
   const validateFileSize = useCallback(
@@ -148,7 +137,7 @@ export default function FileUpload({
       }
       return null;
     },
-    [maxFileSize]
+    [maxFileSize],
   );
 
   const validateFileType = useCallback(
@@ -171,7 +160,7 @@ export default function FileUpload({
       }
       return null;
     },
-    [acceptedFileTypes]
+    [acceptedFileTypes],
   );
 
   const handleError = useCallback(
@@ -185,7 +174,7 @@ export default function FileUpload({
         setStatus("idle");
       }, 3000);
     },
-    [onUploadError]
+    [onUploadError],
   );
 
   const simulateUpload = useCallback(
@@ -215,10 +204,10 @@ export default function FileUpload({
             setProgress(currentProgress);
           }
         },
-        uploadDelay / (100 / UPLOAD_STEP_SIZE)
+        uploadDelay / (100 / UPLOAD_STEP_SIZE),
       );
     },
-    [onUploadSuccess, uploadDelay]
+    [onUploadSuccess, uploadDelay],
   );
 
   const handleFileSelect = useCallback(
@@ -244,7 +233,7 @@ export default function FileUpload({
       setProgress(0);
       simulateUpload(selectedFile);
     },
-    [simulateUpload, validateFileSize, validateFileType, handleError]
+    [simulateUpload, validateFileSize, validateFileType, handleError],
   );
 
   const handleDragOver = useCallback((e: DragEvent<HTMLDivElement>) => {
@@ -268,7 +257,7 @@ export default function FileUpload({
       const droppedFile = e.dataTransfer.files?.[0];
       if (droppedFile) handleFileSelect(droppedFile);
     },
-    [status, handleFileSelect]
+    [status, handleFileSelect],
   );
 
   const handleFileInputChange = useCallback(
@@ -277,7 +266,7 @@ export default function FileUpload({
       handleFileSelect(selectedFile || null);
       if (e.target) e.target.value = "";
     },
-    [handleFileSelect]
+    [handleFileSelect],
   );
 
   const triggerFileInput = useCallback(() => {
@@ -306,7 +295,7 @@ export default function FileUpload({
             className={cn(
               "relative mx-auto w-full overflow-hidden rounded-lg border border-gray-100 bg-white dark:border-white/[0.08] dark:bg-black/50",
               error ? "border-red-500/50" : "",
-              status === "dragging" ? "border-blue-500" : ""
+              status === "dragging" ? "border-blue-500" : "",
             )}
           >
             <div className="relative h-[200px]">
@@ -348,9 +337,7 @@ export default function FileUpload({
                       <UploadCloud className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
                     </button>
 
-                    <p className="mt-3 text-gray-500 text-xs dark:text-gray-400">
-                      ou glissez votre fichier ici
-                    </p>
+                    <p className="mt-3 text-gray-500 text-xs dark:text-gray-400">ou glissez votre fichier ici</p>
 
                     <input
                       accept={acceptedFileTypes?.join(",")}
@@ -387,12 +374,8 @@ export default function FileUpload({
                         {file?.name}
                       </h3>
                       <div className="flex items-center justify-center gap-2 text-xs">
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {formatBytes(file?.size || 0)}
-                        </span>
-                        <span className="font-medium text-blue-500">
-                          {Math.round(progress)}%
-                        </span>
+                        <span className="text-gray-500 dark:text-gray-400">{formatBytes(file?.size || 0)}</span>
+                        <span className="font-medium text-blue-500">{Math.round(progress)}%</span>
                       </div>
                     </div>
 
@@ -416,9 +399,7 @@ export default function FileUpload({
                   exit={{ opacity: 0, y: -10 }}
                   initial={{ opacity: 0, y: 10 }}
                 >
-                  <p className="text-red-500 text-sm dark:text-red-400">
-                    {error.message}
-                  </p>
+                  <p className="text-red-500 text-sm dark:text-red-400">{error.message}</p>
                 </motion.div>
               )}
             </AnimatePresence>

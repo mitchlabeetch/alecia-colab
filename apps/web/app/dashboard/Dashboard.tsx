@@ -16,11 +16,14 @@ import {
   Users,
   CheckCircle2,
   ArrowRight,
+  LayoutDashboard,
+  Globe,
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { Button } from "@/components/tailwind/ui/button";
 import { Separator } from "@/components/tailwind/ui/separator";
+import { RecentFiles } from "@/components/recent-files";
 import { useDeals, useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { fr, t } from "@/lib/i18n";
@@ -52,8 +55,7 @@ const quickActions = [
   },
 ];
 
-const getTimestamp = (timestamp?: number, fallback?: number) =>
-  timestamp ?? fallback ?? 0;
+const getTimestamp = (timestamp?: number, fallback?: number) => timestamp ?? fallback ?? 0;
 
 const isDealNew = (deal: { updatedAt?: number; createdAt?: number }) =>
   !deal.updatedAt || deal.updatedAt === deal.createdAt;
@@ -72,45 +74,24 @@ const getInitials = (name?: string) => {
 
 export default function Dashboard() {
   const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-  const { user, isLoaded } = isClerkEnabled
-    ? useUser()
-    : { user: null, isLoaded: true };
-  const {
-    documents,
-    isLoading: documentsLoading,
-    isConvexAvailable: isDocumentsAvailable,
-  } = useDocuments(user?.id);
-  const {
-    deals,
-    isLoading: dealsLoading,
-    isConvexAvailable: isDealsAvailable,
-  } = useDeals(user?.id);
+  const { user, isLoaded } = isClerkEnabled ? useUser() : { user: null, isLoaded: true };
+  const { documents, isLoading: documentsLoading, isConvexAvailable: isDocumentsAvailable } = useDocuments(user?.id);
+  const { deals, isLoading: dealsLoading, isConvexAvailable: isDealsAvailable } = useDeals(user?.id);
 
   const isDocumentsLoading = documentsLoading && isDocumentsAvailable;
   const isDealsLoading = dealsLoading && isDealsAvailable;
   const isDataLoading = !isLoaded || isDocumentsLoading || isDealsLoading;
-  const activeDocuments = useMemo(
-    () => documents.filter((document) => !document.isArchived),
-    [documents]
-  );
-  const activeDeals = useMemo(
-    () => deals.filter((deal) => !deal.isArchived),
-    [deals]
-  );
+  const activeDocuments = useMemo(() => documents.filter((document) => !document.isArchived), [documents]);
+  const activeDeals = useMemo(() => deals.filter((deal) => !deal.isArchived), [deals]);
   const inProgressDeals = useMemo(
-    () => activeDeals.filter(
-      (deal) => !["closed-won", "closed-lost"].includes(deal.stage)
-    ),
-    [activeDeals]
+    () => activeDeals.filter((deal) => !["closed-won", "closed-lost"].includes(deal.stage)),
+    [activeDeals],
   );
   const closedDeals = useMemo(
-    () => activeDeals.filter((deal) =>
-      ["closed-won", "closed-lost"].includes(deal.stage)
-    ),
-    [activeDeals]
+    () => activeDeals.filter((deal) => ["closed-won", "closed-lost"].includes(deal.stage)),
+    [activeDeals],
   );
-  const displayName =
-    user?.fullName || user?.firstName || user?.username || "Utilisateur";
+  const displayName = user?.fullName || user?.firstName || user?.username || "Utilisateur";
 
   const memberIds = useMemo(() => {
     const ids = new Set<string>();
@@ -143,9 +124,7 @@ export default function Dashboard() {
           return {
             id: document._id,
             title: document.title || t("editor.untitled"),
-            description: document.dealId
-              ? fr.dashboard.documentLinkedToDeal
-              : fr.dashboard.documentCollaboration,
+            description: document.dealId ? fr.dashboard.documentLinkedToDeal : fr.dashboard.documentCollaboration,
             time: formatRelativeTime(timestamp),
             collaborators: document.userId ? 1 : 0,
             href: `/documents/${document._id}`,
@@ -154,7 +133,7 @@ export default function Dashboard() {
         })
         .sort((a, b) => b.timestamp - a.timestamp)
         .slice(0, 3),
-    [activeDocuments]
+    [activeDocuments],
   );
 
   const activityFeed = useMemo(
@@ -176,9 +155,7 @@ export default function Dashboard() {
           const isNewDeal = isDealNew(deal);
           return {
             id: `deal-${deal._id}`,
-            user:
-              deal.lead ||
-              (deal.userId === user?.id ? displayName : fr.common.team),
+            user: deal.lead || (deal.userId === user?.id ? displayName : fr.common.team),
             action: isNewDeal ? fr.activity.createdDeal : fr.activity.updatedDeal,
             target: deal.company,
             time: formatRelativeTime(timestamp),
@@ -188,7 +165,7 @@ export default function Dashboard() {
       ]
         .sort((a, b) => b.timestamp - a.timestamp)
         .slice(0, 5),
-    [activeDeals, activeDocuments, displayName, user?.id]
+    [activeDeals, activeDocuments, displayName, user?.id],
   );
 
   const stats = [
@@ -197,9 +174,7 @@ export default function Dashboard() {
       label: fr.dashboard.stats.dealsInProgress,
       value: isDataLoading ? "—" : inProgressDeals.length.toString(),
       icon: Briefcase,
-      trend: isDataLoading
-        ? fr.loader.loading
-        : `${activeDeals.length} ${fr.common.total}`,
+      trend: isDataLoading ? fr.loader.loading : `${activeDeals.length} ${fr.common.total}`,
       color: "text-blue-500",
     },
     {
@@ -219,11 +194,7 @@ export default function Dashboard() {
       label: fr.dashboard.stats.teamMembers,
       value: isDataLoading ? "—" : memberIds.size.toString(),
       icon: Users,
-      trend: isDataLoading
-        ? fr.loader.loading
-        : memberIds.size > 0
-          ? fr.dashboard.activeTeam
-          : fr.dashboard.noMembers,
+      trend: isDataLoading ? fr.loader.loading : memberIds.size > 0 ? fr.dashboard.activeTeam : fr.dashboard.noMembers,
       color: "text-purple-500",
     },
     {
@@ -243,20 +214,12 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
         <h1 className="text-4xl font-bold">
           {fr.dashboard.welcomeBack}
-          {isLoaded && user && (
-            <span className="text-primary">, {user.firstName || user.username}</span>
-          )}
+          {isLoaded && user && <span className="text-primary">, {user.firstName || user.username}</span>}
         </h1>
-        <p className="mt-2 text-muted-foreground">
-          Gérez vos deals, documents et collaborations en un seul endroit
-        </p>
+        <p className="mt-2 text-muted-foreground">Gérez vos deals, documents et collaborations en un seul endroit</p>
       </motion.div>
 
       {/* Stats Grid */}
@@ -271,9 +234,7 @@ export default function Dashboard() {
           return (
             <Card key={stat.id}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {stat.label}
-                </CardTitle>
+                <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
                 <Icon className={`h-4 w-4 ${stat.color}`} />
               </CardHeader>
               <CardContent>
@@ -312,6 +273,59 @@ export default function Dashboard() {
         </div>
       </motion.div>
 
+      {/* Recent Files & Quick Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+      >
+        {/* Recent Files Card */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Recent Documents</CardTitle>
+            <CardDescription>Pick up where you left off</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RecentFiles limit={5} showCreateButton={true} />
+          </CardContent>
+        </Card>
+
+        {/* Quick Navigation Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Navigation</CardTitle>
+            <CardDescription>Jump to frequently used areas</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="/admin/dashboard" target="_blank" rel="noopener noreferrer">
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                Admin Dashboard
+              </a>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="/admin/crm/contacts" target="_blank" rel="noopener noreferrer">
+                <Users className="h-4 w-4 mr-2" />
+                CRM Contacts
+              </a>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="/admin/crm/companies" target="_blank" rel="noopener noreferrer">
+                <Building className="h-4 w-4 mr-2" />
+                Companies
+              </a>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="https://alecia.markets" target="_blank" rel="noopener noreferrer">
+                <Globe className="h-4 w-4 mr-2" />
+                Website
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
+      </motion.div>
+
       {/* Main Content Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent Documents */}
@@ -334,13 +348,9 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               {isDocumentsLoading ? (
-                <p className="text-sm text-muted-foreground">
-                  {fr.loader.loading}
-                </p>
+                <p className="text-sm text-muted-foreground">{fr.loader.loading}</p>
               ) : recentDocuments.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  {fr.nav.noRecentDocuments}
-                </p>
+                <p className="text-sm text-muted-foreground">{fr.nav.noRecentDocuments}</p>
               ) : (
                 <div className="space-y-4">
                   {recentDocuments.map((doc, index) => (
@@ -353,9 +363,7 @@ export default function Dashboard() {
                             </div>
                             <div>
                               <h4 className="font-medium">{doc.title}</h4>
-                              <p className="text-sm text-muted-foreground">
-                                {doc.description}
-                              </p>
+                              <p className="text-sm text-muted-foreground">{doc.description}</p>
                               <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
                                 <span className="flex items-center gap-1">
                                   <Clock className="h-3 w-3" />
@@ -373,9 +381,7 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </Link>
-                      {index < recentDocuments.length - 1 && (
-                        <Separator className="mt-4" />
-                      )}
+                      {index < recentDocuments.length - 1 && <Separator className="mt-4" />}
                     </div>
                   ))}
                 </div>
@@ -396,13 +402,9 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               {isDataLoading ? (
-                <p className="text-sm text-muted-foreground">
-                  {fr.loader.loading}
-                </p>
+                <p className="text-sm text-muted-foreground">{fr.loader.loading}</p>
               ) : activityFeed.length === 0 ? (
-                <p className="text-sm text-muted-foreground">
-                  {fr.dashboard.noRecentActivity}
-                </p>
+                <p className="text-sm text-muted-foreground">{fr.dashboard.noRecentActivity}</p>
               ) : (
                 <div className="space-y-4">
                   {activityFeed.map((activity) => {
@@ -415,14 +417,10 @@ export default function Dashboard() {
                         <div className="flex-1">
                           <p className="text-sm">
                             <span className="font-medium">{activity.user}</span>{" "}
-                            <span className="text-muted-foreground">
-                              {activity.action}
-                            </span>{" "}
+                            <span className="text-muted-foreground">{activity.action}</span>{" "}
                             <span className="font-medium">{activity.target}</span>
                           </p>
-                          <p className="text-xs text-muted-foreground">
-                            {activity.time}
-                          </p>
+                          <p className="text-xs text-muted-foreground">{activity.time}</p>
                         </div>
                       </div>
                     );

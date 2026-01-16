@@ -8,12 +8,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Users, Eye, Edit3 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/tailwind/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/tailwind/ui/tooltip";
 
 interface RoomUser {
   id: string;
@@ -80,7 +75,7 @@ function UserAvatar({
           <div
             className={cn(
               config.avatar,
-              "rounded-full flex items-center justify-center font-medium text-white ring-2 ring-background"
+              "rounded-full flex items-center justify-center font-medium text-white ring-2 ring-background",
             )}
             style={{ backgroundColor: user.color }}
           >
@@ -93,7 +88,7 @@ function UserAvatar({
               className={cn(
                 "absolute -bottom-0.5 -right-0.5 rounded-full p-0.5",
                 status.color,
-                "ring-2 ring-background"
+                "ring-2 ring-background",
               )}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -107,9 +102,7 @@ function UserAvatar({
       <TooltipContent side="bottom">
         <div className="text-center">
           <p className="font-medium">{user.name}</p>
-          {showStatus && status && (
-            <p className="text-xs text-muted-foreground">{status.label}</p>
-          )}
+          {showStatus && status && <p className="text-xs text-muted-foreground">{status.label}</p>}
         </div>
       </TooltipContent>
     </Tooltip>
@@ -144,12 +137,7 @@ export default function RoomPresence({
         <div className="flex -space-x-2">
           <AnimatePresence mode="popLayout">
             {visibleUsers.map((user) => (
-              <UserAvatar
-                key={user.id}
-                user={user}
-                size={size}
-                showStatus={showStatus}
-              />
+              <UserAvatar key={user.id} user={user} size={size} showStatus={showStatus} />
             ))}
           </AnimatePresence>
 
@@ -162,7 +150,7 @@ export default function RoomPresence({
                     sizeConfig[size].avatar,
                     "rounded-full flex items-center justify-center font-medium",
                     "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300",
-                    "ring-2 ring-background cursor-pointer"
+                    "ring-2 ring-background cursor-pointer",
                   )}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
@@ -205,7 +193,7 @@ export function CompactRoomPresence({
             className={cn(
               "flex items-center gap-1.5 px-2 py-1 rounded-md",
               "bg-muted/50 hover:bg-muted transition-colors cursor-pointer",
-              className
+              className,
             )}
           >
             <div className="flex -space-x-1.5">
@@ -219,19 +207,14 @@ export function CompactRoomPresence({
                 </div>
               ))}
             </div>
-            <span className="text-xs text-muted-foreground">
-              {users.length} en ligne
-            </span>
+            <span className="text-xs text-muted-foreground">{users.length} en ligne</span>
           </div>
         </TooltipTrigger>
         <TooltipContent side="bottom">
           <div className="space-y-1">
             {users.map((user) => (
               <div key={user.id} className="flex items-center gap-2">
-                <div
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: user.color }}
-                />
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: user.color }} />
                 <span className="text-sm">{user.name}</span>
               </div>
             ))}

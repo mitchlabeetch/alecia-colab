@@ -48,13 +48,7 @@ export default function Loader({
   const config = sizeConfig[size];
 
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center justify-center gap-8 p-8",
-        className
-      )}
-      {...props}
-    >
+    <div className={cn("flex flex-col items-center justify-center gap-8 p-8", className)} {...props}>
       {/* Loader Monochrome avec shimmer */}
       <motion.div
         className={cn("relative", config.container)}
@@ -181,7 +175,7 @@ export default function Loader({
         <motion.h1
           className={cn(
             config.titleClass,
-            "text-black/90 dark:text-white/90 font-medium tracking-[-0.02em] leading-[1.15] antialiased"
+            "text-black/90 dark:text-white/90 font-medium tracking-[-0.02em] leading-[1.15] antialiased",
           )}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -206,7 +200,7 @@ export default function Loader({
         <motion.p
           className={cn(
             config.subtitleClass,
-            "text-black/60 dark:text-white/60 font-normal tracking-[-0.01em] leading-[1.45] antialiased"
+            "text-black/60 dark:text-white/60 font-normal tracking-[-0.01em] leading-[1.45] antialiased",
           )}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}

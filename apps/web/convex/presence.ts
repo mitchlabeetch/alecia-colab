@@ -3,7 +3,7 @@ import { mutation, query } from "./_generated/server";
 
 /**
  * Presence System
- * 
+ *
  * Tracks active users viewing/editing documents and deals.
  * Uses Convex's real-time capabilities for live updates.
  */
@@ -15,10 +15,12 @@ const presenceValidator = {
   userId: v.string(),
   userName: v.optional(v.string()),
   userColor: v.optional(v.string()),
-  cursorPosition: v.optional(v.object({
-    x: v.number(),
-    y: v.number(),
-  })),
+  cursorPosition: v.optional(
+    v.object({
+      x: v.number(),
+      y: v.number(),
+    }),
+  ),
   lastActiveAt: v.number(),
 };
 
@@ -30,19 +32,19 @@ export const heartbeat = mutation({
     userId: v.string(),
     userName: v.optional(v.string()),
     userColor: v.optional(v.string()),
-    cursorPosition: v.optional(v.object({
-      x: v.number(),
-      y: v.number(),
-    })),
+    cursorPosition: v.optional(
+      v.object({
+        x: v.number(),
+        y: v.number(),
+      }),
+    ),
   },
   handler: async (ctx, args) => {
     // Find existing presence entry
     const existing = await ctx.db
       .query("colab_presence")
-      .withIndex("by_resource_user", (q) => 
-        q.eq("resourceType", args.resourceType)
-         .eq("resourceId", args.resourceId)
-         .eq("userId", args.userId)
+      .withIndex("by_resource_user", (q) =>
+        q.eq("resourceType", args.resourceType).eq("resourceId", args.resourceId).eq("userId", args.userId),
       )
       .first();
 
@@ -79,12 +81,10 @@ export const getActiveUsers = query({
   },
   handler: async (ctx, args) => {
     const cutoff = Date.now() - 30000; // 30 seconds ago
-    
+
     const presences = await ctx.db
       .query("colab_presence")
-      .withIndex("by_resource", (q) => 
-        q.eq("resourceType", args.resourceType).eq("resourceId", args.resourceId)
-      )
+      .withIndex("by_resource", (q) => q.eq("resourceType", args.resourceType).eq("resourceId", args.resourceId))
       .collect();
 
     // Filter to only active users
@@ -102,10 +102,8 @@ export const leave = mutation({
   handler: async (ctx, args) => {
     const existing = await ctx.db
       .query("colab_presence")
-      .withIndex("by_resource_user", (q) => 
-        q.eq("resourceType", args.resourceType)
-         .eq("resourceId", args.resourceId)
-         .eq("userId", args.userId)
+      .withIndex("by_resource_user", (q) =>
+        q.eq("resourceType", args.resourceType).eq("resourceId", args.resourceId).eq("userId", args.userId),
       )
       .first();
 
@@ -120,10 +118,8 @@ export const cleanupStale = mutation({
   args: {},
   handler: async (ctx) => {
     const cutoff = Date.now() - 60000; // 1 minute ago
-    
-    const staleEntries = await ctx.db
-      .query("colab_presence")
-      .collect();
+
+    const staleEntries = await ctx.db.query("colab_presence").collect();
 
     let cleaned = 0;
     for (const entry of staleEntries) {

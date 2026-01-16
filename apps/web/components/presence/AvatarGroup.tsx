@@ -6,12 +6,7 @@
  */
 
 import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/tailwind/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/tailwind/ui/tooltip";
 
 interface AvatarData {
   id: string;
@@ -63,10 +58,7 @@ function Avatar({
       <img
         src={avatar.imageUrl}
         alt={avatar.name || "Avatar"}
-        className={cn(
-          sizeClass,
-          "rounded-full object-cover ring-2 ring-white dark:ring-gray-900"
-        )}
+        className={cn(sizeClass, "rounded-full object-cover ring-2 ring-white dark:ring-gray-900")}
       />
     );
   }
@@ -75,7 +67,7 @@ function Avatar({
     <div
       className={cn(
         sizeClass,
-        "rounded-full flex items-center justify-center font-medium text-white ring-2 ring-white dark:ring-gray-900"
+        "rounded-full flex items-center justify-center font-medium text-white ring-2 ring-white dark:ring-gray-900",
       )}
       style={{ backgroundColor: avatar.color || "#6366f1" }}
     >
@@ -121,7 +113,7 @@ export default function AvatarGroup({
                   sizeConfig[size],
                   "rounded-full flex items-center justify-center",
                   "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300",
-                  "font-medium ring-2 ring-white dark:ring-gray-900"
+                  "font-medium ring-2 ring-white dark:ring-gray-900",
                 )}
               >
                 +{hiddenCount}
@@ -148,7 +140,7 @@ export function usePresenceAvatars(
     userId: string;
     userName?: string;
     userColor?: string;
-  }>
+  }>,
 ): AvatarData[] {
   return presenceUsers.map((user) => ({
     id: user.userId,

@@ -3,7 +3,7 @@ import { mutation, query } from "./_generated/server";
 
 /**
  * Document Version History
- * 
+ *
  * CRUD operations for colab_document_versions table.
  * Provides version tracking with auto-increment and restore capabilities.
  */
@@ -25,9 +25,7 @@ export const saveVersion = mutation({
       .order("desc")
       .take(1);
 
-    const nextVersionNumber = existingVersions.length > 0 
-      ? existingVersions[0].versionNumber + 1 
-      : 1;
+    const nextVersionNumber = existingVersions.length > 0 ? existingVersions[0].versionNumber + 1 : 1;
 
     const versionId = await ctx.db.insert("colab_document_versions", {
       documentId: args.documentId,
@@ -66,9 +64,7 @@ export const getVersion = query({
   handler: async (ctx, args) => {
     const versions = await ctx.db
       .query("colab_document_versions")
-      .withIndex("by_version", (q) => 
-        q.eq("documentId", args.documentId).eq("versionNumber", args.versionNumber)
-      )
+      .withIndex("by_version", (q) => q.eq("documentId", args.documentId).eq("versionNumber", args.versionNumber))
       .take(1);
 
     return versions[0] ?? null;
@@ -86,9 +82,7 @@ export const restoreVersion = mutation({
     // Get the version to restore
     const versions = await ctx.db
       .query("colab_document_versions")
-      .withIndex("by_version", (q) => 
-        q.eq("documentId", args.documentId).eq("versionNumber", args.versionNumber)
-      )
+      .withIndex("by_version", (q) => q.eq("documentId", args.documentId).eq("versionNumber", args.versionNumber))
       .take(1);
 
     if (versions.length === 0) {
@@ -111,9 +105,7 @@ export const restoreVersion = mutation({
       .order("desc")
       .take(1);
 
-    const nextVersionNumber = existingVersions.length > 0 
-      ? existingVersions[0].versionNumber + 1 
-      : 1;
+    const nextVersionNumber = existingVersions.length > 0 ? existingVersions[0].versionNumber + 1 : 1;
 
     await ctx.db.insert("colab_document_versions", {
       documentId: args.documentId,

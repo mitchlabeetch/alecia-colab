@@ -1,7 +1,6 @@
 import { fr } from "@/lib/i18n";
 
-const formatWithCount = (template: string, count: number) =>
-  template.replace("{count}", count.toString());
+const formatWithCount = (template: string, count: number) => template.replace("{count}", count.toString());
 
 export const formatRelativeTime = (timestamp?: number) => {
   if (!timestamp) return fr.time.unknown;
@@ -10,18 +9,12 @@ export const formatRelativeTime = (timestamp?: number) => {
 
   if (minutes < 1) return fr.time.justNow;
   if (minutes < 60) {
-    return formatWithCount(
-      minutes === 1 ? fr.time.minuteAgo : fr.time.minutesAgo,
-      minutes
-    );
+    return formatWithCount(minutes === 1 ? fr.time.minuteAgo : fr.time.minutesAgo, minutes);
   }
 
   const hours = Math.floor(minutes / 60);
   if (hours < 24) {
-    return formatWithCount(
-      hours === 1 ? fr.time.hourAgo : fr.time.hoursAgo,
-      hours
-    );
+    return formatWithCount(hours === 1 ? fr.time.hourAgo : fr.time.hoursAgo, hours);
   }
 
   const days = Math.floor(hours / 24);

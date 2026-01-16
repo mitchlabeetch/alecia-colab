@@ -8,24 +8,18 @@ import { Badge } from "../tailwind/ui/badge";
 import { Button } from "../tailwind/ui/button";
 import { ScrollArea } from "../tailwind/ui/scroll-area";
 import { Card, CardContent, CardHeader, CardTitle } from "../tailwind/ui/card";
-import { 
-  Briefcase, 
-  Building, 
-  Calendar, 
-  DollarSign, 
+import {
+  Briefcase,
+  Building,
+  Calendar,
+  DollarSign,
   TrendingUp,
   ArrowRight,
   MoreVertical,
   Plus,
   Loader2,
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../tailwind/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../tailwind/ui/dialog";
 
 // Multi-view components
 import { ViewSwitcher, type ViewType } from "./ViewSwitcher";
@@ -147,10 +141,13 @@ export default function DealPipeline() {
     ? deals.filter((deal) => deal.stage === selectedStage)
     : deals.filter((deal) => !["closed-won", "closed-lost"].includes(deal.stage));
 
-  const dealsByStage = pipelineStages.reduce((acc, stage) => {
-    acc[stage] = deals.filter((d) => d.stage === stage).length;
-    return acc;
-  }, {} as Record<DealStage, number>);
+  const dealsByStage = pipelineStages.reduce(
+    (acc, stage) => {
+      acc[stage] = deals.filter((d) => d.stage === stage).length;
+      return acc;
+    },
+    {} as Record<DealStage, number>,
+  );
 
   const handleCreateDeal = async () => {
     if (!newDealCompany.trim()) return;
@@ -201,17 +198,15 @@ export default function DealPipeline() {
             {fr.pipeline.title}
           </h2>
           {!isConvexConfigured && (
-            <Badge variant="outline" className="text-xs">{fr.pipeline.demoMode}</Badge>
+            <Badge variant="outline" className="text-xs">
+              {fr.pipeline.demoMode}
+            </Badge>
           )}
         </div>
-        
+
         <div className="flex items-center gap-3">
-          <ViewSwitcher 
-            currentView={currentView} 
-            onViewChange={handleViewChange}
-            showFlowView={true}
-          />
-          
+          <ViewSwitcher currentView={currentView} onViewChange={handleViewChange} showFlowView={true} />
+
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
               <Button disabled={!isConvexConfigured}>
@@ -275,9 +270,7 @@ export default function DealPipeline() {
               onClick={() => setSelectedStage(selectedStage === stage ? null : stage)}
             >
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">
-                  {stageLabels[stage]}
-                </CardTitle>
+                <CardTitle className="text-sm font-medium">{stageLabels[stage]}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{dealsByStage[stage] || 0}</div>
@@ -292,9 +285,7 @@ export default function DealPipeline() {
         <ScrollArea className="h-[500px]">
           <div className="space-y-3">
             {filteredDeals.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                {fr.pipeline.noDealsFound}
-              </div>
+              <div className="text-center py-8 text-muted-foreground">{fr.pipeline.noDealsFound}</div>
             ) : (
               filteredDeals.map((deal) => (
                 <Card key={deal._id} className="hover:shadow-md transition-all">
@@ -324,9 +315,7 @@ export default function DealPipeline() {
                           </div>
                         </div>
                         <div className="flex gap-2 flex-wrap">
-                          <Badge className={stageColors[deal.stage]}>
-                            {stageLabels[deal.stage]}
-                          </Badge>
+                          <Badge className={stageColors[deal.stage]}>{stageLabels[deal.stage]}</Badge>
                           {deal.priority && (
                             <Badge variant="outline" className="capitalize">
                               {deal.priority}
@@ -336,8 +325,8 @@ export default function DealPipeline() {
                       </div>
                       <div className="flex gap-2">
                         {isConvexConfigured && pipelineStages.indexOf(deal.stage) < pipelineStages.length - 1 && (
-                          <Button 
-                            variant="ghost" 
+                          <Button
+                            variant="ghost"
                             size="icon"
                             onClick={() => handleMoveToNextStage(deal)}
                             title="Move to next stage"
@@ -358,17 +347,11 @@ export default function DealPipeline() {
         </ScrollArea>
       )}
 
-      {currentView === "table" && (
-        <TableView deals={deals} />
-      )}
+      {currentView === "table" && <TableView deals={deals} />}
 
-      {currentView === "calendar" && (
-        <CalendarView deals={deals} />
-      )}
+      {currentView === "calendar" && <CalendarView deals={deals} />}
 
-      {currentView === "flow" && (
-        <DealFlowCanvas />
-      )}
+      {currentView === "flow" && <DealFlowCanvas />}
     </div>
   );
 }
