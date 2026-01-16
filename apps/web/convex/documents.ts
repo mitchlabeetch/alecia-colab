@@ -1,20 +1,31 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import type { QueryCtx, MutationCtx } from "./_generated/server";
+
+// Helper to get authenticated user ID
+async function getUserId(ctx: QueryCtx | MutationCtx) {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity) {
+    throw new Error("Unauthorized");
+  }
+  return identity.subject;
+}
 
 // Get all documents for a user
 export const list = query({
   args: {
-    userId: v.optional(v.string()),
+    userId: v.optional(v.string()), // Kept for backward compatibility but ignored/verified
   },
-  handler: async (ctx, args) => {
-    if (args.userId) {
-      return await ctx.db
-        .query("colab_documents")
-        .withIndex("by_user", (q) => q.eq("userId", args.userId))
-        .order("desc")
-        .collect();
-    }
-    return await ctx.db.query("colab_documents").order("desc").take(50);
+  handler: async (ctx, _args) => {
+    // We ignore args.userId and strictly use the authenticated user
+    // This prevents users from listing other users' documents
+    const userId = await getUserId(ctx);
+
+    return await ctx.db
+      .query("colab_documents")
+      .withIndex("by_user", (q) => q.eq("userId", userId))
+      .order("desc")
+      .collect();
   },
 });
 
@@ -22,7 +33,20 @@ export const list = query({
 export const get = query({
   args: { id: v.id("colab_documents") },
   handler: async (ctx, args) => {
-    return await ctx.db.get(args.id);
+    const userId = await getUserId(ctx);
+    const doc = await ctx.db.get(args.id);
+
+    if (!doc) {
+      return null;
+    }
+
+    // Only allow access if the document belongs to the user
+    // In the future, we might check for shared access (e.g., workspaces/deals)
+    if (doc.userId !== userId) {
+        throw new Error("Unauthorized");
+    }
+
+    return doc;
   },
 });
 
@@ -30,6 +54,10 @@ export const get = query({
 export const getByDeal = query({
   args: { dealId: v.id("colab_deals") },
   handler: async (ctx, args) => {
+    // Ensure user is authenticated
+    // Ideally, we should also check if the user has access to the deal
+    await getUserId(ctx);
+
     return await ctx.db
       .query("colab_documents")
       .withIndex("by_deal", (q) => q.eq("dealId", args.dealId))
@@ -43,16 +71,18 @@ export const create = mutation({
     title: v.string(),
     content: v.string(),
     markdown: v.optional(v.string()),
-    userId: v.optional(v.string()),
+    userId: v.optional(v.string()), // Kept but ignored to enforce auth
     dealId: v.optional(v.id("colab_deals")),
   },
   handler: async (ctx, args) => {
+    const userId = await getUserId(ctx);
     const now = Date.now();
+
     return await ctx.db.insert("colab_documents", {
       title: args.title,
       content: args.content,
       markdown: args.markdown,
-      userId: args.userId,
+      userId: userId, // Always use authenticated user
       dealId: args.dealId,
       createdAt: now,
       updatedAt: now,
@@ -70,7 +100,18 @@ export const update = mutation({
     dealId: v.optional(v.id("colab_deals")),
   },
   handler: async (ctx, args) => {
+    const userId = await getUserId(ctx);
     const { id, ...updates } = args;
+
+    const doc = await ctx.db.get(id);
+    if (!doc) {
+        throw new Error("Document not found");
+    }
+
+    if (doc.userId !== userId) {
+        throw new Error("Unauthorized");
+    }
+
     return await ctx.db.patch(id, {
       ...updates,
       updatedAt: Date.now(),
@@ -82,6 +123,17 @@ export const update = mutation({
 export const archive = mutation({
   args: { id: v.id("colab_documents") },
   handler: async (ctx, args) => {
+    const userId = await getUserId(ctx);
+
+    const doc = await ctx.db.get(args.id);
+    if (!doc) {
+        throw new Error("Document not found");
+    }
+
+    if (doc.userId !== userId) {
+        throw new Error("Unauthorized");
+    }
+
     return await ctx.db.patch(args.id, {
       isArchived: true,
       updatedAt: Date.now(),
@@ -93,6 +145,17 @@ export const archive = mutation({
 export const remove = mutation({
   args: { id: v.id("colab_documents") },
   handler: async (ctx, args) => {
+    const userId = await getUserId(ctx);
+
+    const doc = await ctx.db.get(args.id);
+    if (!doc) {
+        throw new Error("Document not found");
+    }
+
+    if (doc.userId !== userId) {
+        throw new Error("Unauthorized");
+    }
+
     return await ctx.db.delete(args.id);
   },
 });
