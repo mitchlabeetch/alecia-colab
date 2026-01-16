@@ -23,6 +23,7 @@ import { Button } from "@/components/tailwind/ui/button";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { Separator } from "@/components/tailwind/ui/separator";
 import { useDocuments } from "@/hooks/use-convex";
+import { formatRelativeTime } from "@/lib/format-relative-time";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
@@ -39,21 +40,6 @@ const navItems = [
   { icon: CalendarIcon, label: "nav.calendar", href: "/calendar" },
   { icon: Settings, label: "nav.settings", href: "/settings" },
 ];
-
-const formatRelativeTime = (timestamp?: number) => {
-  if (!timestamp) return t("loader.loading");
-  const diff = Math.max(Date.now() - timestamp, 0);
-  const minutes = Math.floor(diff / 60000);
-
-  if (minutes < 1) return "À l'instant";
-  if (minutes < 60) return `Il y a ${minutes} minute${minutes > 1 ? "s" : ""}`;
-
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `Il y a ${hours} heure${hours > 1 ? "s" : ""}`;
-
-  const days = Math.floor(hours / 24);
-  return `Il y a ${days} jour${days > 1 ? "s" : ""}`;
-};
 
 export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);

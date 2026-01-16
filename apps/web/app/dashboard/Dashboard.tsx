@@ -6,6 +6,7 @@
  */
 
 import { motion } from "motion/react";
+import { useMemo } from "react";
 import { useUser } from "@clerk/nextjs";
 import {
   FileText,
@@ -21,7 +22,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/tailwind/ui/button";
 import { Separator } from "@/components/tailwind/ui/separator";
 import { useDeals, useDocuments } from "@/hooks/use-convex";
-import { fr } from "@/lib/i18n";
+import { formatRelativeTime } from "@/lib/format-relative-time";
+import { fr, t } from "@/lib/i18n";
 
 const quickActions = [
   {
@@ -50,23 +52,23 @@ const quickActions = [
   },
 ];
 
-const formatRelativeTime = (timestamp?: number) => {
-  if (!timestamp) return fr.loader.loading;
-  const diff = Math.max(Date.now() - timestamp, 0);
-  const minutes = Math.floor(diff / 60000);
-
-  if (minutes < 1) return "À l'instant";
-  if (minutes < 60) return `Il y a ${minutes} minute${minutes > 1 ? "s" : ""}`;
-
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `Il y a ${hours} heure${hours > 1 ? "s" : ""}`;
-
-  const days = Math.floor(hours / 24);
-  return `Il y a ${days} jour${days > 1 ? "s" : ""}`;
-};
-
 const getTimestamp = (timestamp?: number, fallback?: number) =>
   timestamp ?? fallback ?? 0;
+
+const isDealNew = (deal: { updatedAt?: number; createdAt?: number }) =>
+  !deal.updatedAt || deal.updatedAt === deal.createdAt;
+
+const getInitials = (name?: string) => {
+  if (!name) return "?";
+  return (
+    name
+      .split(" ")
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2) || "?"
+  );
+};
 
 export default function Dashboard() {
   const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
@@ -87,86 +89,107 @@ export default function Dashboard() {
   const isDocumentsLoading = documentsLoading && isDocumentsAvailable;
   const isDealsLoading = dealsLoading && isDealsAvailable;
   const isDataLoading = !isLoaded || isDocumentsLoading || isDealsLoading;
-  const activeDocuments = documents.filter((document) => !document.isArchived);
-  const activeDeals = deals.filter((deal) => !deal.isArchived);
-  const inProgressDeals = activeDeals.filter(
-    (deal) => !["closed-won", "closed-lost"].includes(deal.stage)
+  const activeDocuments = useMemo(
+    () => documents.filter((document) => !document.isArchived),
+    [documents]
   );
-  const closedDeals = activeDeals.filter((deal) =>
-    ["closed-won", "closed-lost"].includes(deal.stage)
+  const activeDeals = useMemo(
+    () => deals.filter((deal) => !deal.isArchived),
+    [deals]
+  );
+  const inProgressDeals = useMemo(
+    () => activeDeals.filter(
+      (deal) => !["closed-won", "closed-lost"].includes(deal.stage)
+    ),
+    [activeDeals]
+  );
+  const closedDeals = useMemo(
+    () => activeDeals.filter((deal) =>
+      ["closed-won", "closed-lost"].includes(deal.stage)
+    ),
+    [activeDeals]
   );
   const displayName =
     user?.fullName || user?.firstName || user?.username || "Utilisateur";
 
-  const memberIds = new Set<string>();
-  if (user?.id) {
-    memberIds.add(user.id);
-  }
-  activeDocuments.forEach((document) => {
-    if (document.userId) {
-      memberIds.add(document.userId);
+  const memberIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (user?.id) {
+      ids.add(user.id);
     }
-  });
-  activeDeals.forEach((deal) => {
-    if (deal.userId) {
-      memberIds.add(deal.userId);
-    }
-  });
+    activeDocuments.forEach((document) => {
+      if (document.userId) {
+        ids.add(document.userId);
+      }
+    });
+    activeDeals.forEach((deal) => {
+      if (deal.userId) {
+        ids.add(deal.userId);
+      }
+    });
+    return ids;
+  }, [activeDocuments, activeDeals, user?.id]);
 
   const getDocumentTimestamp = (document: (typeof documents)[number]) =>
     getTimestamp(document.updatedAt, document.createdAt ?? document._creationTime);
   const getDealTimestamp = (deal: (typeof deals)[number]) =>
     getTimestamp(deal.updatedAt, deal.createdAt ?? deal._creationTime);
 
-  const recentDocuments = activeDocuments
-    .map((document) => {
-      const timestamp = getDocumentTimestamp(document);
-      return {
-        id: document._id,
-        title: document.title || fr.editor.untitled,
-        description: document.dealId
-          ? "Document lié à un deal"
-          : "Document de collaboration",
-        time: formatRelativeTime(timestamp),
-        collaborators: document.userId ? 1 : 0,
-        href: `/documents/${document._id}`,
-        timestamp,
-      };
-    })
-    .sort((a, b) => b.timestamp - a.timestamp)
-    .slice(0, 3);
+  const recentDocuments = useMemo(
+    () =>
+      activeDocuments
+        .map((document) => {
+          const timestamp = getDocumentTimestamp(document);
+          return {
+            id: document._id,
+            title: document.title || t("editor.untitled"),
+            description: document.dealId
+              ? fr.dashboard.documentLinkedToDeal
+              : fr.dashboard.documentCollaboration,
+            time: formatRelativeTime(timestamp),
+            collaborators: document.userId ? 1 : 0,
+            href: `/documents/${document._id}`,
+            timestamp,
+          };
+        })
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, 3),
+    [activeDocuments]
+  );
 
-  const activityFeed = [
-    ...activeDocuments.map((document) => {
-      const timestamp = getDocumentTimestamp(document);
-      return {
-        id: `document-${document._id}`,
-        user: document.userId === user?.id ? displayName : fr.common.collaborator,
-        action: fr.activity.updatedDocument,
-        target: document.title || fr.editor.untitled,
-        time: formatRelativeTime(timestamp),
-        timestamp,
-      };
-    }),
-    ...activeDeals.map((deal) => {
-      const timestamp = getDealTimestamp(deal);
-      return {
-        id: `deal-${deal._id}`,
-        user:
-          deal.lead ||
-          (deal.userId === user?.id ? displayName : fr.common.team),
-        action:
-          deal.updatedAt === deal.createdAt
-            ? fr.activity.createdDeal
-            : fr.activity.updatedDeal,
-        target: deal.company,
-        time: formatRelativeTime(timestamp),
-        timestamp,
-      };
-    }),
-  ]
-    .sort((a, b) => b.timestamp - a.timestamp)
-    .slice(0, 5);
+  const activityFeed = useMemo(
+    () =>
+      [
+        ...activeDocuments.map((document) => {
+          const timestamp = getDocumentTimestamp(document);
+          return {
+            id: `document-${document._id}`,
+            user: document.userId === user?.id ? displayName : fr.common.collaborator,
+            action: fr.activity.updatedDocument,
+            target: document.title || t("editor.untitled"),
+            time: formatRelativeTime(timestamp),
+            timestamp,
+          };
+        }),
+        ...activeDeals.map((deal) => {
+          const timestamp = getDealTimestamp(deal);
+          const isNewDeal = isDealNew(deal);
+          return {
+            id: `deal-${deal._id}`,
+            user:
+              deal.lead ||
+              (deal.userId === user?.id ? displayName : fr.common.team),
+            action: isNewDeal ? fr.activity.createdDeal : fr.activity.updatedDeal,
+            target: deal.company,
+            time: formatRelativeTime(timestamp),
+            timestamp,
+          };
+        }),
+      ]
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, 5),
+    [activeDeals, activeDocuments, displayName, user?.id]
+  );
 
   const stats = [
     {
@@ -340,8 +363,10 @@ export default function Dashboard() {
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <Users className="h-3 w-3" />
-                                  {doc.collaborators} collaborateur
-                                  {doc.collaborators > 1 ? "s" : ""}
+                                  {doc.collaborators}{" "}
+                                  {doc.collaborators === 1
+                                    ? fr.common.collaboratorSingle
+                                    : fr.common.collaboratorPlural}
                                 </span>
                               </div>
                             </div>
@@ -380,25 +405,28 @@ export default function Dashboard() {
                 </p>
               ) : (
                 <div className="space-y-4">
-                  {activityFeed.map((activity) => (
-                    <div key={activity.id} className="flex gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                        {activity.user.split(" ").map(n => n[0]).join("")}
+                  {activityFeed.map((activity) => {
+                    const initials = getInitials(activity.user);
+                    return (
+                      <div key={activity.id} className="flex gap-3">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                          {initials || "?"}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm">
+                            <span className="font-medium">{activity.user}</span>{" "}
+                            <span className="text-muted-foreground">
+                              {activity.action}
+                            </span>{" "}
+                            <span className="font-medium">{activity.target}</span>
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {activity.time}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="text-sm">
-                          <span className="font-medium">{activity.user}</span>{" "}
-                          <span className="text-muted-foreground">
-                            {activity.action}
-                          </span>{" "}
-                          <span className="font-medium">{activity.target}</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {activity.time}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </CardContent>
