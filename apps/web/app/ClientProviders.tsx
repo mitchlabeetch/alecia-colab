@@ -8,6 +8,7 @@ export function ClientProviders({ children }: { children: ReactNode }) {
   
   if (!publishableKey) {
     // During build without env vars, just return children
+    // Components using Clerk hooks should use dynamic imports with ssr: false
     return <>{children}</>;
   }
   

@@ -3,6 +3,7 @@
 import { Clock, FileText, Plus } from "lucide-react";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/tailwind/ui/button";
 import { Skeleton } from "@/components/tailwind/ui/skeleton";
 import { useDocuments } from "@/hooks/use-convex";
@@ -15,9 +16,13 @@ interface RecentFilesProps {
 }
 
 export function RecentFiles({ limit = 5, showCreateButton = true }: RecentFilesProps) {
-  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-  const { user } = isClerkEnabled ? useUser() : { user: null };
+  const [mounted, setMounted] = useState(false);
+  const { user } = useUser();
   const { documents, isLoading, isConvexAvailable } = useDocuments(user?.id);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const recentDocuments = documents
     .filter((doc) => !doc.isArchived)

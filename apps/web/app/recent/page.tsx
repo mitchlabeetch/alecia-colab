@@ -1,14 +1,29 @@
 "use client";
 
-import { AppShell } from "@/components/layout/AppShell";
-import { RecentFiles } from "@/components/recent-files/RecentFiles";
-import { fr } from "@/lib/i18n";
 import { Clock } from "lucide-react";
-
+import dynamicImport from "next/dynamic";
+import { fr } from "@/lib/i18n";
+import { AppShell } from "@/components/layout/AppShell";
+import { Skeleton } from "@/components/tailwind/ui/skeleton";
 
 // Prevent static generation
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+
+// Dynamically import RecentFiles to avoid SSR issues with Clerk
+const RecentFiles = dynamicImport(
+  () => import("@/components/recent-files/RecentFiles").then((mod) => ({ default: mod.RecentFiles })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="space-y-4">
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} className="h-16 w-full" />
+        ))}
+      </div>
+    ),
+  }
+);
 
 export default function RecentPage() {
   return (
