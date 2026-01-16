@@ -33,6 +33,8 @@ import { TableView } from "./TableView";
 import { CalendarView } from "./CalendarView";
 import DealFlowCanvas from "../deal-flow/DealFlowCanvas";
 
+import { fr } from "@/lib/i18n";
+
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
 
 interface Deal {
@@ -92,12 +94,12 @@ const stageColors: Record<DealStage, string> = {
 };
 
 const stageLabels: Record<DealStage, string> = {
-  sourcing: "Sourcing",
-  "due-diligence": "Due Diligence",
-  negotiation: "Negotiation",
-  closing: "Closing",
-  "closed-won": "Won",
-  "closed-lost": "Lost",
+  sourcing: fr.pipeline.stages.sourcing,
+  "due-diligence": fr.pipeline.stages.dueDiligence,
+  negotiation: fr.pipeline.stages.negotiation,
+  closing: fr.pipeline.stages.closing,
+  "closed-won": fr.pipeline.stages.closedWon,
+  "closed-lost": fr.pipeline.stages.closedLost,
 };
 
 const pipelineStages: DealStage[] = ["sourcing", "due-diligence", "negotiation", "closing"];
@@ -196,10 +198,10 @@ export default function DealPipeline() {
         <div className="flex items-center gap-4">
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Briefcase className="h-6 w-6" />
-            Deal Pipeline
+            {fr.pipeline.title}
           </h2>
           {!isConvexConfigured && (
-            <Badge variant="outline" className="text-xs">Demo Mode</Badge>
+            <Badge variant="outline" className="text-xs">{fr.pipeline.demoMode}</Badge>
           )}
         </div>
         
@@ -214,46 +216,46 @@ export default function DealPipeline() {
             <DialogTrigger asChild>
               <Button disabled={!isConvexConfigured}>
                 <Plus className="h-4 w-4 mr-2" />
-                New Deal
+                {fr.actions.newDeal}
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create New Deal</DialogTitle>
+                <DialogTitle>{fr.pipeline.createDeal}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 pt-4">
                 <div>
-                  <label className="text-sm font-medium">Company Name *</label>
+                  <label className="text-sm font-medium">{fr.pipeline.fields.companyName} *</label>
                   <input
                     type="text"
                     value={newDealCompany}
                     onChange={(e) => setNewDealCompany(e.target.value)}
                     className="w-full mt-1 px-3 py-2 border rounded-md"
-                    placeholder="Enter company name"
+                    placeholder={fr.form.enterValue}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Valuation</label>
+                  <label className="text-sm font-medium">{fr.pipeline.fields.valuation}</label>
                   <input
                     type="text"
                     value={newDealValuation}
                     onChange={(e) => setNewDealValuation(e.target.value)}
                     className="w-full mt-1 px-3 py-2 border rounded-md"
-                    placeholder="e.g., $10M"
+                    placeholder="ex: 10 m€"
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Deal Lead</label>
+                  <label className="text-sm font-medium">{fr.pipeline.fields.dealLead}</label>
                   <input
                     type="text"
                     value={newDealLead}
                     onChange={(e) => setNewDealLead(e.target.value)}
                     className="w-full mt-1 px-3 py-2 border rounded-md"
-                    placeholder="Lead person name"
+                    placeholder={fr.form.enterValue}
                   />
                 </div>
                 <Button onClick={handleCreateDeal} className="w-full">
-                  Create Deal
+                  {fr.pipeline.createDeal}
                 </Button>
               </div>
             </DialogContent>
@@ -291,7 +293,7 @@ export default function DealPipeline() {
           <div className="space-y-3">
             {filteredDeals.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                No deals found.
+                {fr.pipeline.noDealsFound}
               </div>
             ) : (
               filteredDeals.map((deal) => (

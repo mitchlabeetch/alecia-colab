@@ -33,11 +33,10 @@ const stageColors: Record<DealStage, string> = {
   "closed-lost": "bg-red-500",
 };
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+import { fr } from "@/lib/i18n";
+
+const DAYS = fr.calendar.days.short;
+const MONTHS = fr.calendar.months.long;
 
 export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -117,7 +116,7 @@ export function CalendarView({ deals, onDealClick }: CalendarViewProps) {
           </h2>
         </div>
         <Button variant="outline" size="sm" onClick={goToToday}>
-          Today
+          {fr.calendar.today}
         </Button>
       </div>
 
