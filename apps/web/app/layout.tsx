@@ -8,9 +8,9 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import Providers from "./providers";
 
-const title = "Alecia Colab - M&A Knowledge Base & Collaboration Platform";
+const title = "Alecia Colab - Plateforme de collaboration M&A";
 const description =
-  "Alecia Colab is a comprehensive M&A knowledge centralization and collaboration platform. Streamline deal workflows, due diligence, and integration planning.";
+  "Alecia Colab est une plateforme complète de centralisation des connaissances et de collaboration M&A. Rationalisez les flux de travail, la due diligence et la planification d'intégration.";
 
 export const metadata: Metadata = {
   title,
@@ -26,6 +26,10 @@ export const metadata: Metadata = {
     creator: "@alecia",
   },
   metadataBase: new URL("https://colab.alecia.markets"),
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+  },
 };
 
 export const viewport: Viewport = {
@@ -48,7 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   }
   
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <body>{content}</body>
     </html>
   );
