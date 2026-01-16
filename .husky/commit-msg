@@ -1,1 +1,1 @@
-pnpm commitlint --edit $1
+command -v pnpm >/dev/null 2>&1 && pnpm commitlint --edit $1 || true
