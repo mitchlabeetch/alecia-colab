@@ -15,11 +15,16 @@ export const fr = {
     home: "Accueil",
     documents: "Documents",
     pipeline: "Pipeline",
+    companies: "Sociétés",
     calendar: "Calendrier",
     settings: "Paramètres",
     recentlyOpened: "Récemment ouvert",
     workspace: "Espace de travail",
     noRecentDocuments: "Aucun document récent.",
+    recent: "Récents",
+    favorites: "Favoris",
+    trash: "Corbeille",
+    allDocuments: "Tous les documents",
   },
 
   // Actions

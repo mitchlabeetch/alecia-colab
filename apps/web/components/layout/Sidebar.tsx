@@ -51,7 +51,7 @@ const colabSidebarSections = [
     items: [
       { icon: Home, label: "Dashboard", href: "/dashboard" },
       { icon: Search, label: "Search", action: "openSearch" },
-      { icon: Plus, label: "New Document", href: "/documents" },
+      { icon: Plus, label: "New Document", href: "/documents/new" },
     ],
   },
   {
@@ -70,9 +70,17 @@ const colabSidebarSections = [
     collapsible: true,
     defaultOpen: true,
     items: [
-      { icon: Briefcase, label: "Active Deals", href: "/deals" },
+      { icon: Briefcase, label: "Active Deals", href: "/pipeline" },
       { icon: Target, label: "Pipeline", href: "/pipeline" },
       { icon: Building, label: "Companies", href: "/companies" },
+      { icon: CalendarIcon, label: "Calendar", href: "/calendar" },
+    ],
+  },
+  {
+    title: "Settings",
+    collapsible: false,
+    items: [
+      { icon: Settings, label: "Settings", href: "/settings" },
     ],
   },
   {
@@ -82,7 +90,6 @@ const colabSidebarSections = [
     items: [
       { icon: LayoutDashboard, label: "Admin Dashboard", href: "/admin/dashboard", external: true },
       { icon: Users, label: "CRM", href: "/admin/crm", external: true },
-      { icon: Settings, label: "Settings", href: "/admin/settings", external: true },
     ],
   },
   {
