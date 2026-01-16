@@ -8,19 +8,23 @@
  * @module
  */
 
+import type * as boards from "../boards.js";
 import type * as deals from "../deals.js";
 import type * as documentVersions from "../documentVersions.js";
 import type * as documents from "../documents.js";
 import type * as presence from "../presence.js";
+import type * as presentations from "../presentations.js";
 import type * as propertyDefinitions from "../propertyDefinitions.js";
 
 import type { ApiFromModules, FilterApi, FunctionReference } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  boards: typeof boards;
   deals: typeof deals;
   documentVersions: typeof documentVersions;
   documents: typeof documents;
   presence: typeof presence;
+  presentations: typeof presentations;
   propertyDefinitions: typeof propertyDefinitions;
 }>;
 

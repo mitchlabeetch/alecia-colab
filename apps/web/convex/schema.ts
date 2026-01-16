@@ -113,4 +113,50 @@ export default defineSchema({
   })
     .index("by_resource", ["resourceType", "resourceId"])
     .index("by_resource_user", ["resourceType", "resourceId", "userId"]),
+
+  // Kanban Boards
+  colab_boards: defineTable({
+    name: v.string(),
+    visibility: v.string(),
+    userId: v.string(),
+    createdAt: v.number(),
+  }).index("by_user", ["userId"]),
+
+  colab_lists: defineTable({
+    name: v.string(),
+    boardId: v.id("colab_boards"),
+    order: v.number(),
+  }).index("by_board", ["boardId"]),
+
+  colab_cards: defineTable({
+    title: v.string(),
+    listId: v.id("colab_lists"),
+    order: v.number(),
+    description: v.optional(v.string()),
+    createdBy: v.string(),
+  }).index("by_list", ["listId"]),
+
+  // Checklists
+  colab_checklists: defineTable({
+    name: v.string(),
+    cardId: v.id("colab_cards"),
+  }).index("by_card", ["cardId"]),
+
+  colab_checklist_items: defineTable({
+    content: v.string(),
+    completed: v.boolean(),
+    checklistId: v.id("colab_checklists"),
+  }).index("by_checklist", ["checklistId"]),
+
+  // Presentations
+  colab_presentations: defineTable({
+    title: v.string(),
+    userId: v.string(),
+    theme: v.optional(v.string()),
+    language: v.optional(v.string()),
+    slides: v.array(v.any()), // JSON structure for slides
+    status: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index("by_user", ["userId"]),
 });

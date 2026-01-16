@@ -26,7 +26,7 @@ const GenerativeMenuSwitch = ({ children, open, onOpenChange }: GenerativeMenuSw
       }}
       className="flex w-fit max-w-[90vw] overflow-hidden rounded-md border border-muted bg-background shadow-xl"
     >
-      {open && <AISelector open={open} onOpenChange={onOpenChange} />}
+      {open && <AISelector editor={editor} open={open} onOpenChange={onOpenChange} />}
       {!open && (
         <Fragment>
           <Button
