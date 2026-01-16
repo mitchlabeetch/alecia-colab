@@ -1,57 +1,28 @@
-/* eslint-disable */
-/**
- * Generated `api` utility.
- *
- * THIS CODE IS AUTOMATICALLY GENERATED.
- *
- * To regenerate, run `npx convex dev`.
- * @module
- */
-
+import { type FunctionReference, type AnyApi } from "convex/server";
 import type * as deals from "../deals.js";
-import type * as documentVersions from "../documentVersions.js";
 import type * as documents from "../documents.js";
+import type * as kanban from "../kanban.js";
 import type * as presence from "../presence.js";
 import type * as propertyDefinitions from "../propertyDefinitions.js";
+import type * as versions from "../versions.js";
+import type * as presentations from "../presentations.js";
+import type * as presentations_generate from "../../app/actions/presentation/generate.js";
 
-import type {
-  ApiFromModules,
-  FilterApi,
-  FunctionReference,
-} from "convex/server";
-
-declare const fullApi: ApiFromModules<{
+/**
+ * A type describing your app's public Convex API.
+ *
+ * This `API` type includes information about the arguments and return
+ * types of your app's query and mutation functions.
+ *
+ * This type should be used with type-parameterized classes like
+ * `ConvexReactClient` to create a typed client.
+ */
+export type API = {
   deals: typeof deals;
-  documentVersions: typeof documentVersions;
   documents: typeof documents;
+  kanban: typeof kanban;
   presence: typeof presence;
   propertyDefinitions: typeof propertyDefinitions;
-}>;
-
-/**
- * A utility for referencing Convex functions in your app's public API.
- *
- * Usage:
- * ```js
- * const myFunctionReference = api.myModule.myFunction;
- * ```
- */
-export declare const api: FilterApi<
-  typeof fullApi,
-  FunctionReference<any, "public">
->;
-
-/**
- * A utility for referencing Convex functions in your app's internal API.
- *
- * Usage:
- * ```js
- * const myFunctionReference = internal.myModule.myFunction;
- * ```
- */
-export declare const internal: FilterApi<
-  typeof fullApi,
-  FunctionReference<any, "internal">
->;
-
-export declare const components: {};
+  versions: typeof versions;
+  presentations: typeof presentations;
+};

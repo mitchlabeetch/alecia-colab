@@ -110,4 +110,28 @@ export default defineSchema({
   })
     .index("by_resource", ["resourceType", "resourceId"])
     .index("by_resource_user", ["resourceType", "resourceId", "userId"]),
+
+  // Batch 12: Presentations
+  colab_presentations: defineTable({
+    title: v.string(),
+    userId: v.string(),
+    workspaceId: v.optional(v.string()),
+    theme: v.string(),
+    language: v.string(), // 'fr-FR' default
+    slides: v.array(v.object({
+      id: v.string(),
+      title: v.string(),
+      content: v.any(), // Block content
+      rootImage: v.optional(v.object({
+        url: v.string(),
+        query: v.string(),
+      })),
+    })),
+    status: v.union(v.literal('draft'), v.literal('generating'), v.literal('complete')),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_workspace", ["workspaceId"])
+    .index("by_updated", ["updatedAt"]),
 });
