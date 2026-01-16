@@ -19,6 +19,7 @@ export const fr = {
     settings: "Paramètres",
     recentlyOpened: "Récemment ouvert",
     workspace: "Espace de travail",
+    noRecentDocuments: "Aucun document récent.",
   },
 
   // Actions
@@ -43,6 +44,27 @@ export const fr = {
     quickNote: "Note Rapide",
     upload: "Téléverser",
     download: "Télécharger",
+  },
+
+  // Common
+  common: {
+    collaborator: "Collaborateur",
+    collaboratorSingle: "collaborateur",
+    collaboratorPlural: "collaborateurs",
+    team: "Équipe",
+    total: "au total",
+  },
+
+  // Time
+  time: {
+    justNow: "À l'instant",
+    minuteAgo: "Il y a {count} minute",
+    minutesAgo: "Il y a {count} minutes",
+    hourAgo: "Il y a {count} heure",
+    hoursAgo: "Il y a {count} heures",
+    dayAgo: "Il y a {count} jour",
+    daysAgo: "Il y a {count} jours",
+    unknown: "Heure inconnue",
   },
 
   // Deal Pipeline
@@ -84,6 +106,13 @@ export const fr = {
     createDeal: "Créer un Deal",
     moveToNextStage: "Passer à l'étape suivante",
     demoMode: "Mode Démo",
+  },
+
+  // Activity
+  activity: {
+    updatedDocument: "a mis à jour le document",
+    createdDeal: "a créé le deal",
+    updatedDeal: "a mis à jour le deal",
   },
 
   // Calendar
@@ -180,6 +209,15 @@ export const fr = {
     recentDocuments: "Documents Récents",
     activityFeed: "Fil d'Activité",
     notifications: "Notifications",
+    lastUpdate: "Dernière mise à jour",
+    noDocuments: "Aucun document",
+    documentLinkedToDeal: "Document lié à un deal",
+    documentCollaboration: "Document de collaboration",
+    activeTeam: "Équipe active",
+    noMembers: "Aucun membre",
+    dealsClosed: "deals clôturés",
+    noClosedDeals: "Aucun deal clôturé",
+    noRecentActivity: "Aucune activité récente.",
     stats: {
       dealsInProgress: "Deals en cours",
       documentsCreated: "Documents créés",

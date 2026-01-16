@@ -6,6 +6,8 @@
  */
 
 import { motion } from "motion/react";
+import { useMemo } from "react";
+import { useUser } from "@clerk/nextjs";
 import {
   FileText,
   Briefcase,
@@ -19,7 +21,9 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { Button } from "@/components/tailwind/ui/button";
 import { Separator } from "@/components/tailwind/ui/separator";
-import { fr } from "@/lib/i18n";
+import { useDeals, useDocuments } from "@/hooks/use-convex";
+import { formatRelativeTime } from "@/lib/format-relative-time";
+import { fr, t } from "@/lib/i18n";
 
 const quickActions = [
   {
@@ -48,83 +52,193 @@ const quickActions = [
   },
 ];
 
-const recentDocuments = [
-  {
-    title: "Q4 Financial Report",
-    description: "Rapport financier trimestriel",
-    date: "Il y a 2 heures",
-    collaborators: 3,
-  },
-  {
-    title: "TechVenture Due Diligence",
-    description: "Documents de due diligence",
-    date: "Il y a 5 heures",
-    collaborators: 5,
-  },
-  {
-    title: "Integration Plan Template",
-    description: "Modèle de plan d'intégration",
-    date: "Il y a 1 jour",
-    collaborators: 2,
-  },
-];
+const getTimestamp = (timestamp?: number, fallback?: number) =>
+  timestamp ?? fallback ?? 0;
 
-const activityFeed = [
-  {
-    user: "Marie Dubois",
-    action: "a créé un nouveau deal",
-    target: "HealthTech Solutions",
-    time: "Il y a 30 minutes",
-  },
-  {
-    user: "Jean Martin",
-    action: "a modifié le document",
-    target: "Q4 Financial Report",
-    time: "Il y a 1 heure",
-  },
-  {
-    user: "Sophie Bernard",
-    action: "a commenté sur",
-    target: "TechVenture Due Diligence",
-    time: "Il y a 2 heures",
-  },
-];
+const isDealNew = (deal: { updatedAt?: number; createdAt?: number }) =>
+  !deal.updatedAt || deal.updatedAt === deal.createdAt;
 
-const stats = [
-  {
-    label: fr.dashboard.stats.dealsInProgress,
-    value: "12",
-    icon: Briefcase,
-    trend: "+3 ce mois",
-    color: "text-blue-500",
-  },
-  {
-    label: fr.dashboard.stats.documentsCreated,
-    value: "48",
-    icon: FileText,
-    trend: "+8 cette semaine",
-    color: "text-green-500",
-  },
-  {
-    label: fr.dashboard.stats.teamMembers,
-    value: "15",
-    icon: Users,
-    trend: "+2 nouveaux",
-    color: "text-purple-500",
-  },
-  {
-    label: fr.dashboard.stats.tasksCompleted,
-    value: "34",
-    icon: CheckCircle2,
-    trend: "85% terminé",
-    color: "text-orange-500",
-  },
-];
+const getInitials = (name?: string) => {
+  if (!name) return "?";
+  return (
+    name
+      .split(" ")
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2) || "?"
+  );
+};
 
 export default function Dashboard() {
-  // Mock user for demo - in production, would use Clerk
-  const user = null;
-  const isLoaded = true;
+  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+  const { user, isLoaded } = isClerkEnabled
+    ? useUser()
+    : { user: null, isLoaded: true };
+  const {
+    documents,
+    isLoading: documentsLoading,
+    isConvexAvailable: isDocumentsAvailable,
+  } = useDocuments(user?.id);
+  const {
+    deals,
+    isLoading: dealsLoading,
+    isConvexAvailable: isDealsAvailable,
+  } = useDeals(user?.id);
+
+  const isDocumentsLoading = documentsLoading && isDocumentsAvailable;
+  const isDealsLoading = dealsLoading && isDealsAvailable;
+  const isDataLoading = !isLoaded || isDocumentsLoading || isDealsLoading;
+  const activeDocuments = useMemo(
+    () => documents.filter((document) => !document.isArchived),
+    [documents]
+  );
+  const activeDeals = useMemo(
+    () => deals.filter((deal) => !deal.isArchived),
+    [deals]
+  );
+  const inProgressDeals = useMemo(
+    () => activeDeals.filter(
+      (deal) => !["closed-won", "closed-lost"].includes(deal.stage)
+    ),
+    [activeDeals]
+  );
+  const closedDeals = useMemo(
+    () => activeDeals.filter((deal) =>
+      ["closed-won", "closed-lost"].includes(deal.stage)
+    ),
+    [activeDeals]
+  );
+  const displayName =
+    user?.fullName || user?.firstName || user?.username || "Utilisateur";
+
+  const memberIds = useMemo(() => {
+    const ids = new Set<string>();
+    if (user?.id) {
+      ids.add(user.id);
+    }
+    activeDocuments.forEach((document) => {
+      if (document.userId) {
+        ids.add(document.userId);
+      }
+    });
+    activeDeals.forEach((deal) => {
+      if (deal.userId) {
+        ids.add(deal.userId);
+      }
+    });
+    return ids;
+  }, [activeDocuments, activeDeals, user?.id]);
+
+  const getDocumentTimestamp = (document: (typeof documents)[number]) =>
+    getTimestamp(document.updatedAt, document.createdAt ?? document._creationTime);
+  const getDealTimestamp = (deal: (typeof deals)[number]) =>
+    getTimestamp(deal.updatedAt, deal.createdAt ?? deal._creationTime);
+
+  const recentDocuments = useMemo(
+    () =>
+      activeDocuments
+        .map((document) => {
+          const timestamp = getDocumentTimestamp(document);
+          return {
+            id: document._id,
+            title: document.title || t("editor.untitled"),
+            description: document.dealId
+              ? fr.dashboard.documentLinkedToDeal
+              : fr.dashboard.documentCollaboration,
+            time: formatRelativeTime(timestamp),
+            collaborators: document.userId ? 1 : 0,
+            href: `/documents/${document._id}`,
+            timestamp,
+          };
+        })
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, 3),
+    [activeDocuments]
+  );
+
+  const activityFeed = useMemo(
+    () =>
+      [
+        ...activeDocuments.map((document) => {
+          const timestamp = getDocumentTimestamp(document);
+          return {
+            id: `document-${document._id}`,
+            user: document.userId === user?.id ? displayName : fr.common.collaborator,
+            action: fr.activity.updatedDocument,
+            target: document.title || t("editor.untitled"),
+            time: formatRelativeTime(timestamp),
+            timestamp,
+          };
+        }),
+        ...activeDeals.map((deal) => {
+          const timestamp = getDealTimestamp(deal);
+          const isNewDeal = isDealNew(deal);
+          return {
+            id: `deal-${deal._id}`,
+            user:
+              deal.lead ||
+              (deal.userId === user?.id ? displayName : fr.common.team),
+            action: isNewDeal ? fr.activity.createdDeal : fr.activity.updatedDeal,
+            target: deal.company,
+            time: formatRelativeTime(timestamp),
+            timestamp,
+          };
+        }),
+      ]
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, 5),
+    [activeDeals, activeDocuments, displayName, user?.id]
+  );
+
+  const stats = [
+    {
+      id: "deals",
+      label: fr.dashboard.stats.dealsInProgress,
+      value: isDataLoading ? "—" : inProgressDeals.length.toString(),
+      icon: Briefcase,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : `${activeDeals.length} ${fr.common.total}`,
+      color: "text-blue-500",
+    },
+    {
+      id: "documents",
+      label: fr.dashboard.stats.documentsCreated,
+      value: isDataLoading ? "—" : activeDocuments.length.toString(),
+      icon: FileText,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : recentDocuments[0]
+          ? `${fr.dashboard.lastUpdate} ${recentDocuments[0].time}`
+          : fr.dashboard.noDocuments,
+      color: "text-green-500",
+    },
+    {
+      id: "members",
+      label: fr.dashboard.stats.teamMembers,
+      value: isDataLoading ? "—" : memberIds.size.toString(),
+      icon: Users,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : memberIds.size > 0
+          ? fr.dashboard.activeTeam
+          : fr.dashboard.noMembers,
+      color: "text-purple-500",
+    },
+    {
+      id: "tasks",
+      label: fr.dashboard.stats.tasksCompleted,
+      value: isDataLoading ? "—" : closedDeals.length.toString(),
+      icon: CheckCircle2,
+      trend: isDataLoading
+        ? fr.loader.loading
+        : closedDeals.length > 0
+          ? `${closedDeals.length} ${fr.dashboard.dealsClosed}`
+          : fr.dashboard.noClosedDeals,
+      color: "text-orange-500",
+    },
+  ];
 
   return (
     <div className="space-y-8">
@@ -152,10 +266,10 @@ export default function Dashboard() {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
       >
-        {stats.map((stat, index) => {
+        {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={index}>
+            <Card key={stat.id}>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
                   {stat.label}
@@ -179,10 +293,10 @@ export default function Dashboard() {
       >
         <h2 className="text-2xl font-bold mb-4">{fr.dashboard.quickActions}</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {quickActions.map((action, index) => {
+          {quickActions.map((action) => {
             const Icon = action.icon;
             return (
-              <Link key={index} href={action.href}>
+              <Link key={action.href} href={action.href}>
                 <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                   <CardHeader>
                     <div className={`w-12 h-12 rounded-lg ${action.bgColor} flex items-center justify-center mb-4`}>
@@ -219,38 +333,53 @@ export default function Dashboard() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentDocuments.map((doc, index) => (
-                  <div key={index}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-3">
-                        <div className="rounded-lg bg-primary/10 p-2">
-                          <FileText className="h-4 w-4 text-primary" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">{doc.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {doc.description}
-                          </p>
-                          <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {doc.date}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Users className="h-3 w-3" />
-                              {doc.collaborators} collaborateurs
-                            </span>
+              {isDocumentsLoading ? (
+                <p className="text-sm text-muted-foreground">
+                  {fr.loader.loading}
+                </p>
+              ) : recentDocuments.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  {fr.nav.noRecentDocuments}
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {recentDocuments.map((doc, index) => (
+                    <div key={doc.id}>
+                      <Link href={doc.href} className="block">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-3">
+                            <div className="rounded-lg bg-primary/10 p-2">
+                              <FileText className="h-4 w-4 text-primary" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium">{doc.title}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {doc.description}
+                              </p>
+                              <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {doc.time}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Users className="h-3 w-3" />
+                                  {doc.collaborators}{" "}
+                                  {doc.collaborators === 1
+                                    ? fr.common.collaboratorSingle
+                                    : fr.common.collaboratorPlural}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
+                      {index < recentDocuments.length - 1 && (
+                        <Separator className="mt-4" />
+                      )}
                     </div>
-                    {index < recentDocuments.length - 1 && (
-                      <Separator className="mt-4" />
-                    )}
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
@@ -266,27 +395,40 @@ export default function Dashboard() {
               <CardTitle>{fr.dashboard.activityFeed}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {activityFeed.map((activity, index) => (
-                  <div key={index} className="flex gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                      {activity.user.split(" ").map(n => n[0]).join("")}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm">
-                        <span className="font-medium">{activity.user}</span>{" "}
-                        <span className="text-muted-foreground">
-                          {activity.action}
-                        </span>{" "}
-                        <span className="font-medium">{activity.target}</span>
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {activity.time}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {isDataLoading ? (
+                <p className="text-sm text-muted-foreground">
+                  {fr.loader.loading}
+                </p>
+              ) : activityFeed.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  {fr.dashboard.noRecentActivity}
+                </p>
+              ) : (
+                <div className="space-y-4">
+                  {activityFeed.map((activity) => {
+                    const initials = getInitials(activity.user);
+                    return (
+                      <div key={activity.id} className="flex gap-3">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                          {initials || "?"}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm">
+                            <span className="font-medium">{activity.user}</span>{" "}
+                            <span className="text-muted-foreground">
+                              {activity.action}
+                            </span>{" "}
+                            <span className="font-medium">{activity.target}</span>
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {activity.time}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
