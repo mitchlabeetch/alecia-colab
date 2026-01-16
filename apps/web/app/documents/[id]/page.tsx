@@ -24,11 +24,9 @@ export default function DocumentEditorPage() {
   const params = useParams();
   const documentId = params.id as string;
 
-  // TODO: Pass documentId to TailwindAdvancedEditor once it supports props
-  // For now, it uses a hardcoded demo document ID
   return (
     <AppShell>
-      <TailwindAdvancedEditor />
+      <TailwindAdvancedEditor documentId={documentId} />
     </AppShell>
   );
 }

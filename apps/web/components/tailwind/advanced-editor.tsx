@@ -39,10 +39,11 @@ const hljs = require("highlight.js");
 
 const extensions = [...defaultExtensions, slashCommand];
 
-// Document ID placeholder - in production, this would come from route params
-const DOCUMENT_ID = "demo-document-v1";
+interface TailwindAdvancedEditorProps {
+  documentId: string;
+}
 
-const TailwindAdvancedEditor = () => {
+const TailwindAdvancedEditor = ({ documentId }: TailwindAdvancedEditorProps) => {
   const [initialContent, setInitialContent] = useState<null | JSONContent>(null);
   const [saveStatus, setSaveStatus] = useState("Enregistré");
   const [charsCount, setCharsCount] = useState<number>();
@@ -58,7 +59,7 @@ const TailwindAdvancedEditor = () => {
   // Presence tracking
   const { otherUsers } = usePresence({
     resourceType: "document",
-    resourceId: DOCUMENT_ID,
+    resourceId: documentId,
     enabled: true,
   });
 
@@ -190,7 +191,7 @@ const TailwindAdvancedEditor = () => {
       {showVersionHistory && (
         <div className="absolute right-0 top-16 z-20 w-80">
           <VersionHistorySidebar
-            documentId={DOCUMENT_ID as unknown as Id<"colab_documents">}
+            documentId={documentId as unknown as Id<"colab_documents">}
             isOpen={showVersionHistory}
             onClose={() => setShowVersionHistory(false)}
             onPreviewVersion={handlePreviewVersion}

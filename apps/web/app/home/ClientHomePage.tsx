@@ -156,7 +156,7 @@ export default function ClientHomePage() {
 
           <TabsContent value="editor">
             <div className="bg-card border rounded-xl p-6">
-              <TailwindAdvancedEditor />
+              <TailwindAdvancedEditor documentId="demo-document-v1" />
             </div>
           </TabsContent>
 

@@ -43,7 +43,7 @@ export default function ClientPage() {
           </DialogTrigger>
           <DialogContent className="flex max-w-3xl h-[calc(100vh-24px)]">
             <ScrollArea className="max-h-screen">
-              <TailwindAdvancedEditor />
+              <TailwindAdvancedEditor documentId="demo-document-v1" />
             </ScrollArea>
           </DialogContent>
         </Dialog>
@@ -74,7 +74,7 @@ export default function ClientPage() {
           </TabsList>
 
           <TabsContent value="editor" className="mt-6">
-            <TailwindAdvancedEditor />
+            <TailwindAdvancedEditor documentId="demo-document-v1" />
           </TabsContent>
 
           <TabsContent value="pipeline" className="mt-6">
