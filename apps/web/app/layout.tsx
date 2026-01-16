@@ -8,6 +8,9 @@ import { ClientProviders } from "./ClientProviders";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import Providers from "./providers";
 
+// Force dynamic rendering for the entire app to avoid SSG auth errors
+export const dynamic = "force-dynamic";
+
 const title = "Alecia Colab - Plateforme de collaboration M&A";
 const description =
   "Alecia Colab est une plateforme complète de centralisation des connaissances et de collaboration M&A. Rationalisez les flux de travail, la due diligence et la planification d'intégration.";
