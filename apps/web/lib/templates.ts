@@ -100,7 +100,7 @@ export const templates: Template[] = [
         {
           type: "paragraph",
           content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Revenue: " },
+            { type: "text", marks: [{ type: "bold" }], text: "Chiffre d'Affaires: " },
             { type: "text", text: "$[Amount]" },
           ],
         },
@@ -139,7 +139,7 @@ export const templates: Template[] = [
             {
               type: "taskItem",
               attrs: { checked: false },
-              content: [{ type: "paragraph", content: [{ type: "text", text: "Analyze revenue trends" }] }],
+              content: [{ type: "paragraph", content: [{ type: "text", text: "Analyze Chiffre d'Affaires trends" }] }],
             },
           ],
         },

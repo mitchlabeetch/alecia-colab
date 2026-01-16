@@ -13,20 +13,43 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 210 90% 48%;
-    --primary-foreground: 210 40% 98%;
+    /* ========================================
+       ALECIA DESIGN SYSTEM - OFFICIAL PALETTE
+       ======================================== */
+    /* PRIMARY BLUES - HSL Values for Opacity Support */
+    --alecia-blue-midnight: 219 83% 14%; /* Primary Brand Color */
+    --alecia-blue-corporate: 209 64% 24%;
+    --alecia-blue-mid: 213 43% 46%;
+    --alecia-blue-light: 213 43% 62%;
+    --alecia-blue-pale: 207 51% 83%;
+    --alecia-blue-ice: 205 87% 94%;
+
+    /* ACCENT */
+    --alecia-red-accent: 1 91% 38%;
+    --alecia-taupe: 0 2% 68%;
+
+    /* NEUTRALS */
+    --alecia-grey-titanium: 219 13% 50%;
+    --alecia-grey-stone: 219 13% 71%;
+    --alecia-grey-silver: 222 13% 81%;
+    --alecia-grey-cloud: 220 14% 91%;
+    --alecia-off-white: 240 25% 98%;
+
+    /* SHADCN MAPPINGS */
+    --primary: var(--alecia-blue-midnight);
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: var(--alecia-grey-cloud);
+    --muted-foreground: var(--alecia-grey-titanium);
 
-    --accent: 210 90% 95%;
-    --accent-foreground: 210 90% 48%;
+    --accent: var(--alecia-blue-mid);
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: var(--alecia-red-accent);
+    --destructive-foreground: 0 0% 100%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;

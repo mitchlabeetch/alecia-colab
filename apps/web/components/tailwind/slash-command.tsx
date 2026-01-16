@@ -107,7 +107,7 @@ export const suggestionItems = createSuggestionItems([
         { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Nom : " }, { type: "text", text: "..." }] },
         { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Siège : " }, { type: "text", text: "..." }] },
         { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "CA : " }, { type: "text", text: "..." }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "EBITDA : " }, { type: "text", text: "..." }] },
+        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "EBE : " }, { type: "text", text: "..." }] },
       ]).run();
     },
   },
