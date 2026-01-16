@@ -30,11 +30,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/tailwind/ui/button";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
-import { Separator } from "@/components/tailwind/ui/separator";
-import { useDocuments } from "@/hooks/use-convex";
-import { formatRelativeTime } from "@/lib/format-relative-time";
 import { cn } from "@/lib/utils";
-import { t } from "@/lib/i18n";
+import { useCommandMenu } from "@/components/command-menu-provider";
 import { CollapsibleSection } from "./CollapsibleSection";
 
 interface SidebarProps {
@@ -78,9 +75,7 @@ const colabSidebarSections = [
   {
     title: "Settings",
     collapsible: false,
-    items: [
-      { icon: Settings, label: "Settings", href: "/settings" },
-    ],
+    items: [{ icon: Settings, label: "Settings", href: "/settings" }],
   },
   {
     title: "Admin Panel",
@@ -105,6 +100,7 @@ const colabSidebarSections = [
 export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+  const { setOpen } = useCommandMenu();
 
   return (
     <>
@@ -151,8 +147,9 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                               variant="ghost"
                               className="w-full justify-start"
                               onClick={() => {
-                                // TODO: Handle action
-                                console.log("Action:", item.action);
+                                if (item.action === "openSearch") {
+                                  setOpen(true);
+                                }
                               }}
                             >
                               <Icon className="h-5 w-5" />
@@ -188,7 +185,9 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                         className="w-full justify-center px-2"
                         title={item.label}
                         onClick={() => {
-                          console.log("Action:", item.action);
+                          if (item.action === "openSearch") {
+                            setOpen(true);
+                          }
                         }}
                       >
                         <Icon className="h-5 w-5" />
@@ -243,8 +242,10 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                             variant="ghost"
                             className="w-full justify-start"
                             onClick={() => {
-                              console.log("Action:", item.action);
-                              onClose?.();
+                              if (item.action === "openSearch") {
+                                setOpen(true);
+                                onClose?.();
+                              }
                             }}
                           >
                             <Icon className="h-5 w-5" />
