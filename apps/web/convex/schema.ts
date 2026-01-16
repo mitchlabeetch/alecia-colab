@@ -125,6 +125,7 @@ export default defineSchema({
       id: v.string(),
       title: v.string(),
       content: v.any(), // Block content
+      notes: v.optional(v.string()),
       rootImage: v.optional(v.object({
         url: v.string(),
         query: v.string(),

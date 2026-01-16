@@ -2,6 +2,7 @@ export type Slide = {
   id: string;
   title: string;
   content: { type: string; content: string }[];
+  notes?: string;
   rootImage?: {
     url: string;
     query: string;

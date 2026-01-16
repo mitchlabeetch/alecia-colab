@@ -9,12 +9,7 @@ export async function generateOutlineAction(prompt: string) {
 
   (async () => {
     try {
-      const systemPrompt = `Tu es un expert en banque d'affaires et en stratégie, spécialisé dans la création de présentations M&A (Teasers, Mémorandums, Management Presentations).
-
-      Ta mission est de générer un plan de présentation structuré, professionnel et percutant, basé sur la demande de l'utilisateur.
-      Le ton doit être formel, précis et orienté business.
-
-      Structure la présentation avec 5 à 8 diapositives logiques.
+      const systemPrompt = `Tu es un expert en création de présentations M&A. Génère un plan structuré de 5-8 slides. Utilise un ton professionnel.
 
       IMPORTANT : Tu dois impérativement utiliser le format de balisage suivant pour que le système puisse lire ta réponse :
 
