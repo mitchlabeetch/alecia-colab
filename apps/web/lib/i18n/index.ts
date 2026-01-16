@@ -3,7 +3,7 @@
  * Simple translation system for French-first interface
  */
 
-import { fr } from "./fr";
+import { fr, type TranslationKeys } from "./fr";
 
 // For Phase 1, we only support French
 export const translations = {
@@ -19,11 +19,11 @@ export const defaultLanguage = "fr";
  */
 export function t(path: string): string {
   const keys = path.split(".");
-  let value: any = translations[defaultLanguage];
+  let value: Record<string, unknown> | string = translations[defaultLanguage];
 
   for (const key of keys) {
     if (value && typeof value === "object" && key in value) {
-      value = value[key];
+      value = value[key] as Record<string, unknown> | string;
     } else {
       console.warn(`Translation key not found: ${path}`);
       return path;
@@ -36,21 +36,21 @@ export function t(path: string): string {
 /**
  * Get nested translation object
  */
-export function getTranslations(path?: string) {
+export function getTranslations(path?: string): Record<string, unknown> | null {
   if (!path) return translations[defaultLanguage];
 
   const keys = path.split(".");
-  let value: any = translations[defaultLanguage];
+  let value: Record<string, unknown> | string = translations[defaultLanguage];
 
   for (const key of keys) {
     if (value && typeof value === "object" && key in value) {
-      value = value[key];
+      value = value[key] as Record<string, unknown> | string;
     } else {
       return null;
     }
   }
 
-  return value;
+  return typeof value === "object" ? value : null;
 }
 
 // Export translations for direct use

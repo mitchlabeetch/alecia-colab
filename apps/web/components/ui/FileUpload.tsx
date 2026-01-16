@@ -34,7 +34,8 @@ export function FileUpload({
     setError(null);
 
     if (maxSize && file.size > maxSize) {
-      setError(`Fichier trop volumineux (max: ${maxSize / 1024 / 1024}MB)`);
+      const maxSizeMB = (maxSize / 1024 / 1024).toFixed(0);
+      setError(`Fichier trop volumineux (max: ${maxSizeMB}MB)`);
       return;
     }
 
