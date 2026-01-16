@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { Markdown } from 'tiptap-markdown';
-import { SlashCommand } from '@/components/tailwind/slash-command';
 import { slashCommand } from '@/components/tailwind/slash-command';
 import { AISelector } from '@/components/tailwind/generative/ai-selector';
 import { useMutation, useQuery } from 'convex/react';
