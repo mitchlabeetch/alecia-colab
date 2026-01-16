@@ -73,8 +73,7 @@ const getInitials = (name?: string) => {
 };
 
 export default function Dashboard() {
-  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-  const { user, isLoaded } = isClerkEnabled ? useUser() : { user: null, isLoaded: true };
+  const { user, isLoaded } = useUser();
   const { documents, isLoading: documentsLoading, isConvexAvailable: isDocumentsAvailable } = useDocuments(user?.id);
   const { deals, isLoading: dealsLoading, isConvexAvailable: isDealsAvailable } = useDeals(user?.id);
 
