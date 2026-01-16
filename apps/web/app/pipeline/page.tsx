@@ -24,6 +24,10 @@ const DealPipeline = dynamic(() => import("@/components/tailwind/deal-pipeline")
   ),
 });
 
+// Prevent static generation
+export const dynamicParams = false;
+export const revalidate = 0;
+
 export default function PipelinePage() {
   return (
     <AppShell>

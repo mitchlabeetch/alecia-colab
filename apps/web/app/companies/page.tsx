@@ -6,6 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { EmptyState } from "@/components/ui/empty-state";
 import { Building, ExternalLink } from "lucide-react";
 
+// Prevent static generation
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default function CompaniesPage() {
   return (
     <AppShell>

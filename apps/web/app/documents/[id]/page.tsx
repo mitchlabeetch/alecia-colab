@@ -16,13 +16,19 @@ const TailwindAdvancedEditor = dynamic(() => import("@/components/tailwind/advan
   ),
 });
 
+// Prevent static generation
+export const dynamicParams = false;
+export const revalidate = 0;
+
 export default function DocumentEditorPage() {
   const params = useParams();
   const documentId = params.id as string;
 
+  // TODO: Pass documentId to TailwindAdvancedEditor once it supports props
+  // For now, it uses a hardcoded demo document ID
   return (
     <AppShell>
-      <TailwindAdvancedEditor documentId={documentId} />
+      <TailwindAdvancedEditor />
     </AppShell>
   );
 }

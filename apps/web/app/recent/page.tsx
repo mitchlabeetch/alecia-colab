@@ -5,6 +5,11 @@ import { RecentFiles } from "@/components/recent-files/RecentFiles";
 import { fr } from "@/lib/i18n";
 import { Clock } from "lucide-react";
 
+
+// Prevent static generation
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default function RecentPage() {
   return (
     <AppShell>

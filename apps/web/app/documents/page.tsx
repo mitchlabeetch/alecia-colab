@@ -23,6 +23,10 @@ import { useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { t } from "@/lib/i18n";
 
+// Prevent static generation
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();

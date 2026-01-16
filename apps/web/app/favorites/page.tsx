@@ -4,6 +4,11 @@ import { AppShell } from "@/components/layout/AppShell";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Star } from "lucide-react";
 
+
+// Prevent static generation
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default function FavoritesPage() {
   return (
     <AppShell>

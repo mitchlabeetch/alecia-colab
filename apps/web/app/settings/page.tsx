@@ -12,6 +12,10 @@ import { Label } from "@/components/tailwind/ui/label";
 import { Separator } from "@/components/tailwind/ui/separator";
 import { Switch } from "@/components/tailwind/ui/switch";
 
+// Prevent static generation
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
