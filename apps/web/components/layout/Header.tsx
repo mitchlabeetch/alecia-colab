@@ -9,6 +9,7 @@ import { Bell, Search, Menu } from "lucide-react";
 import { Button } from "@/components/tailwind/ui/button";
 import { Input } from "@/components/tailwind/ui/input";
 import { Badge } from "@/components/tailwind/ui/badge";
+import { WorkspaceSwitcher } from "./WorkspaceSwitcher";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
 
@@ -46,6 +47,11 @@ export function Header({ onMenuClick, className }: HeaderProps) {
           <span className="hidden sm:inline-block font-semibold">
             {t("app.name")}
           </span>
+        </div>
+
+        {/* Workspace Switcher */}
+        <div className="hidden md:block">
+          <WorkspaceSwitcher />
         </div>
 
         {/* Search bar */}

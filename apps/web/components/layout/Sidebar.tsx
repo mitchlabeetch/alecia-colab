@@ -18,6 +18,16 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  Search,
+  Plus,
+  Star,
+  Trash,
+  Target,
+  Building,
+  LayoutDashboard,
+  Users,
+  Globe,
+  HelpCircle,
 } from "lucide-react";
 import { Button } from "@/components/tailwind/ui/button";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
@@ -26,6 +36,7 @@ import { useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+import { CollapsibleSection } from "./CollapsibleSection";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -33,40 +44,61 @@ interface SidebarProps {
   className?: string;
 }
 
-const navItems = [
-  { icon: Home, label: "nav.home", href: "/dashboard" },
-  { icon: FileText, label: "nav.documents", href: "/documents" },
-  { icon: Briefcase, label: "nav.pipeline", href: "/pipeline" },
-  { icon: CalendarIcon, label: "nav.calendar", href: "/calendar" },
-  { icon: Settings, label: "nav.settings", href: "/settings" },
+const colabSidebarSections = [
+  {
+    title: "Quick Access",
+    collapsible: false,
+    items: [
+      { icon: Home, label: "Dashboard", href: "/dashboard" },
+      { icon: Search, label: "Search", action: "openSearch" },
+      { icon: Plus, label: "New Document", href: "/documents" },
+    ]
+  },
+  {
+    title: "Documents",
+    collapsible: true,
+    defaultOpen: true,
+    items: [
+      { icon: Clock, label: "Recent", href: "/recent" },
+      { icon: Star, label: "Favorites", href: "/favorites" },
+      { icon: FileText, label: "All Documents", href: "/documents" },
+      { icon: Trash, label: "Trash", href: "/trash" },
+    ]
+  },
+  {
+    title: "Deals & Pipeline",
+    collapsible: true,
+    defaultOpen: true,
+    items: [
+      { icon: Briefcase, label: "Active Deals", href: "/deals" },
+      { icon: Target, label: "Pipeline", href: "/pipeline" },
+      { icon: Building, label: "Companies", href: "/companies" },
+    ]
+  },
+  {
+    title: "Admin Panel",
+    collapsible: true,
+    defaultOpen: false,
+    items: [
+      { icon: LayoutDashboard, label: "Admin Dashboard", href: "/admin/dashboard", external: true },
+      { icon: Users, label: "CRM", href: "/admin/crm", external: true },
+      { icon: Settings, label: "Settings", href: "/admin/settings", external: true },
+    ]
+  },
+  {
+    title: "External",
+    collapsible: true,
+    defaultOpen: false,
+    items: [
+      { icon: Globe, label: "Website", href: "https://alecia.markets", external: true },
+      { icon: HelpCircle, label: "Documentation", href: "/docs", external: true },
+    ]
+  }
 ];
 
 export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
-  const isClerkEnabled = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-  const { user } = isClerkEnabled ? useUser() : { user: null };
-  const {
-    documents,
-    isLoading: documentsLoading,
-    isConvexAvailable: isDocumentsAvailable,
-  } = useDocuments(user?.id);
-  const isDocumentsLoading = documentsLoading && isDocumentsAvailable;
-  const recentItems = documents
-    .filter((document) => !document.isArchived)
-    .map((document) => {
-      const timestamp =
-        document.updatedAt ?? document.createdAt ?? document._creationTime;
-      return {
-        id: document._id,
-        name: document.title || t("editor.untitled"),
-        href: `/documents/${document._id}`,
-        date: formatRelativeTime(timestamp),
-        timestamp: timestamp ?? 0,
-      };
-    })
-    .sort((a, b) => b.timestamp - a.timestamp)
-    .slice(0, 3);
 
   return (
     <>
@@ -106,73 +138,56 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
           </div>
 
           <ScrollArea className="flex-1 px-3">
-            {/* Main navigation */}
-            <nav className="space-y-1">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = pathname === item.href;
-                return (
-                  <Link key={item.href} href={item.href}>
-                    <Button
-                      variant={isActive ? "secondary" : "ghost"}
-                      className={cn(
-                        "w-full justify-start",
-                        collapsed && "justify-center px-2"
-                      )}
-                      title={collapsed ? t(item.label) : undefined}
-                    >
-                      <Icon className="h-5 w-5" />
-                      {!collapsed && (
-                        <span className="ml-3">{t(item.label)}</span>
-                      )}
-                    </Button>
-                  </Link>
-                );
-              })}
-            </nav>
-
             {!collapsed && (
-              <>
-                <Separator className="my-4" />
-
-                {/* Recently opened */}
-                <div className="space-y-2">
-                <div className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
-                  <Clock className="h-3 w-3" />
-                  {t("nav.recentlyOpened")}
-                </div>
-                <div className="space-y-1">
-                  {isDocumentsLoading ? (
-                    <p className="px-3 text-xs text-muted-foreground">
-                      {t("loader.loading")}
-                    </p>
-                  ) : recentItems.length === 0 ? (
-                    <p className="px-3 text-xs text-muted-foreground">
-                      {t("nav.noRecentDocuments")}
-                    </p>
-                  ) : (
-                    recentItems.map((item) => (
-                      <Link key={item.id} href={item.href}>
-                        <Button
-                          variant="ghost"
-                          className="w-full justify-start text-sm h-auto py-2"
-                        >
-                          <div className="flex flex-col items-start">
-                            <span className="truncate max-w-[180px]">
-                              {item.name}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {item.date}
-                            </span>
-                          </div>
-                        </Button>
-                      </Link>
-                    ))
-                  )}
-                </div>
+              <div className="space-y-4">
+                {colabSidebarSections.map((section, sectionIndex) => (
+                  <CollapsibleSection
+                    key={sectionIndex}
+                    title={section.title}
+                    collapsible={section.collapsible}
+                    defaultOpen={section.defaultOpen}
+                  >
+                    <nav className="space-y-1">
+                      {section.items.map((item) => {
+                        const Icon = item.icon;
+                        const isActive = pathname === item.href;
+                        return (
+                          <Link key={item.href} href={item.href} target={item.external ? "_blank" : undefined}>
+                            <Button
+                              variant={isActive ? "secondary" : "ghost"}
+                              className="w-full justify-start"
+                            >
+                              <Icon className="h-5 w-5" />
+                              <span className="ml-3">{item.label}</span>
+                            </Button>
+                          </Link>
+                        );
+                      })}
+                    </nav>
+                  </CollapsibleSection>
+                ))}
               </div>
-            </>
-          )}
+            )}
+
+            {collapsed && (
+              <nav className="space-y-1">
+                {colabSidebarSections[0].items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link key={item.href} href={item.href}>
+                      <Button
+                        variant={isActive ? "secondary" : "ghost"}
+                        className="w-full justify-center px-2"
+                        title={item.label}
+                      >
+                        <Icon className="h-5 w-5" />
+                      </Button>
+                    </Link>
+                  );
+                })}
+              </nav>
+            )}
           </ScrollArea>
         </div>
       </aside>
@@ -188,62 +203,33 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
       >
         <div className="flex h-full flex-col">
           <ScrollArea className="flex-1 px-3 py-4">
-            {/* Main navigation */}
-            <nav className="space-y-1">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = pathname === item.href;
-                return (
-                  <Link key={item.href} href={item.href} onClick={onClose}>
-                    <Button
-                      variant={isActive ? "secondary" : "ghost"}
-                      className="w-full justify-start"
-                    >
-                      <Icon className="h-5 w-5" />
-                      <span className="ml-3">{t(item.label)}</span>
-                    </Button>
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <Separator className="my-4" />
-
-            {/* Recently opened */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 px-3 text-xs font-medium text-muted-foreground">
-                <Clock className="h-3 w-3" />
-                {t("nav.recentlyOpened")}
-              </div>
-              <div className="space-y-1">
-                {isDocumentsLoading ? (
-                  <p className="px-3 text-xs text-muted-foreground">
-                    {t("loader.loading")}
-                  </p>
-                ) : recentItems.length === 0 ? (
-                  <p className="px-3 text-xs text-muted-foreground">
-                    {t("nav.noRecentDocuments")}
-                  </p>
-                ) : (
-                  recentItems.map((item) => (
-                    <Link key={item.id} href={item.href} onClick={onClose}>
-                      <Button
-                        variant="ghost"
-                        className="w-full justify-start text-sm h-auto py-2"
-                      >
-                        <div className="flex flex-col items-start">
-                          <span className="truncate max-w-[180px]">
-                            {item.name}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            {item.date}
-                          </span>
-                        </div>
-                      </Button>
-                    </Link>
-                  ))
-                )}
-              </div>
+            <div className="space-y-4">
+              {colabSidebarSections.map((section, sectionIndex) => (
+                <CollapsibleSection
+                  key={sectionIndex}
+                  title={section.title}
+                  collapsible={section.collapsible}
+                  defaultOpen={section.defaultOpen}
+                >
+                  <nav className="space-y-1">
+                    {section.items.map((item) => {
+                      const Icon = item.icon;
+                      const isActive = pathname === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={onClose} target={item.external ? "_blank" : undefined}>
+                          <Button
+                            variant={isActive ? "secondary" : "ghost"}
+                            className="w-full justify-start"
+                          >
+                            <Icon className="h-5 w-5" />
+                            <span className="ml-3">{item.label}</span>
+                          </Button>
+                        </Link>
+                      );
+                    })}
+                  </nav>
+                </CollapsibleSection>
+              ))}
             </div>
           </ScrollArea>
         </div>

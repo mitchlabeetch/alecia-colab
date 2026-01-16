@@ -16,11 +16,14 @@ import {
   Users,
   CheckCircle2,
   ArrowRight,
+  LayoutDashboard,
+  Globe,
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { Button } from "@/components/tailwind/ui/button";
 import { Separator } from "@/components/tailwind/ui/separator";
+import { RecentFiles } from "@/components/recent-files";
 import { useDeals, useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { fr, t } from "@/lib/i18n";
@@ -310,6 +313,63 @@ export default function Dashboard() {
             );
           })}
         </div>
+      </motion.div>
+
+      {/* Recent Files & Quick Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+      >
+        {/* Recent Files Card */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Recent Documents</CardTitle>
+            <CardDescription>
+              Pick up where you left off
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <RecentFiles limit={5} showCreateButton={true} />
+          </CardContent>
+        </Card>
+
+        {/* Quick Navigation Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Quick Navigation</CardTitle>
+            <CardDescription>
+              Jump to frequently used areas
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="/admin/dashboard" target="_blank" rel="noopener noreferrer">
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                Admin Dashboard
+              </a>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="/admin/crm/contacts" target="_blank" rel="noopener noreferrer">
+                <Users className="h-4 w-4 mr-2" />
+                CRM Contacts
+              </a>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="/admin/crm/companies" target="_blank" rel="noopener noreferrer">
+                <Building className="h-4 w-4 mr-2" />
+                Companies
+              </a>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start" asChild>
+              <a href="https://alecia.markets" target="_blank" rel="noopener noreferrer">
+                <Globe className="h-4 w-4 mr-2" />
+                Website
+              </a>
+            </Button>
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Main Content Grid */}
