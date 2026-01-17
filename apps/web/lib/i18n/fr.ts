@@ -229,6 +229,16 @@ export const fr = {
       teamMembers: "Membres de l'équipe",
       tasksCompleted: "Tâches terminées",
     },
+    welcomeMessage: "Gérez vos deals, documents et collaborations en un seul endroit",
+    recentDocumentsDescription: "Reprenez là où vous vous étiez arrêté",
+    quickNavigation: "Navigation Rapide",
+    quickNavigationDescription: "Accédez aux zones fréquemment utilisées",
+    adminDashboard: "Tableau de bord Admin",
+    crmContacts: "Contacts CRM",
+    companies: "Entreprises",
+    website: "Site Web",
+    viewAll: "Voir tout",
+    recentFilesUnavailable: "Fichiers récents indisponibles en mode démo.",
   },
 
   // Errors

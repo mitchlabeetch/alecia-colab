@@ -313,7 +313,7 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
           {fr.dashboard.welcomeBack}
           {isLoaded && user && <span className="text-primary">, {user.firstName || user.username}</span>}
         </h1>
-        <p className="mt-2 text-muted-foreground">Gérez vos deals, documents et collaborations en un seul endroit</p>
+        <p className="mt-2 text-muted-foreground">{fr.dashboard.welcomeMessage}</p>
       </motion.div>
 
       {/* Stats Grid */}
@@ -377,8 +377,8 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
         {/* Recent Files Card */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Recent Documents</CardTitle>
-            <CardDescription>Pick up where you left off</CardDescription>
+            <CardTitle>{fr.dashboard.recentDocuments}</CardTitle>
+            <CardDescription>{fr.dashboard.recentDocumentsDescription}</CardDescription>
           </CardHeader>
           <CardContent>
             {/* RecentFiles component also likely uses hooks, so we should mock it or be careful */}
@@ -387,7 +387,7 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
             {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? (
               <RecentFiles limit={5} showCreateButton={true} />
             ) : (
-              <div className="text-sm text-muted-foreground">Recent files unavailable in demo mode.</div>
+              <div className="text-sm text-muted-foreground">{fr.dashboard.recentFilesUnavailable}</div>
             )}
           </CardContent>
         </Card>
@@ -395,32 +395,32 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
         {/* Quick Navigation Card */}
         <Card>
           <CardHeader>
-            <CardTitle>Quick Navigation</CardTitle>
-            <CardDescription>Jump to frequently used areas</CardDescription>
+            <CardTitle>{fr.dashboard.quickNavigation}</CardTitle>
+            <CardDescription>{fr.dashboard.quickNavigationDescription}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <Button variant="ghost" className="w-full justify-start" asChild>
               <a href="/admin/dashboard" target="_blank" rel="noopener noreferrer">
                 <LayoutDashboard className="h-4 w-4 mr-2" />
-                Admin Dashboard
+                {fr.dashboard.adminDashboard}
               </a>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>
               <a href="/admin/crm/contacts" target="_blank" rel="noopener noreferrer">
                 <Users className="h-4 w-4 mr-2" />
-                CRM Contacts
+                {fr.dashboard.crmContacts}
               </a>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>
               <a href="/admin/crm/companies" target="_blank" rel="noopener noreferrer">
                 <Building className="h-4 w-4 mr-2" />
-                Companies
+                {fr.dashboard.companies}
               </a>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>
               <a href="https://alecia.markets" target="_blank" rel="noopener noreferrer">
                 <Globe className="h-4 w-4 mr-2" />
-                Website
+                {fr.dashboard.website}
               </a>
             </Button>
           </CardContent>
@@ -442,7 +442,7 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
                 <CardTitle>{fr.dashboard.recentDocuments}</CardTitle>
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/documents">
-                    Voir tout <ArrowRight className="ml-2 h-4 w-4" />
+                    {fr.dashboard.viewAll} <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
