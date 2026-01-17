@@ -17,7 +17,7 @@ export const KanbanComponent = ({ node, updateAttributes }: NodeViewProps) => {
 
   useEffect(() => {
     if (boardId) {
-        setSelectedBoardId(boardId);
+      setSelectedBoardId(boardId);
     }
   }, [boardId]);
 
@@ -28,73 +28,73 @@ export const KanbanComponent = ({ node, updateAttributes }: NodeViewProps) => {
 
   if (boards === undefined) {
     return (
-        <NodeViewWrapper className="my-4 flex items-center justify-center p-8 border rounded-lg bg-muted/50">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </NodeViewWrapper>
+      <NodeViewWrapper className="my-4 flex items-center justify-center p-8 border rounded-lg bg-muted/50">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </NodeViewWrapper>
     );
   }
 
   if (boards.length === 0) {
-      return (
-        <NodeViewWrapper className="my-4 p-4 border rounded-lg bg-muted/20">
-            <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                <KanbanSquare className="h-8 w-8" />
-                <p>Aucun tableau Kanban disponible.</p>
-            </div>
-        </NodeViewWrapper>
-      )
+    return (
+      <NodeViewWrapper className="my-4 p-4 border rounded-lg bg-muted/20">
+        <div className="flex flex-col items-center gap-2 text-muted-foreground">
+          <KanbanSquare className="h-8 w-8" />
+          <p>Aucun tableau Kanban disponible.</p>
+        </div>
+      </NodeViewWrapper>
+    );
   }
 
   if (!selectedBoardId) {
     return (
-        <NodeViewWrapper className="my-4 p-4 border rounded-lg bg-background shadow-sm">
-            <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-2 border-b pb-2">
-                    <KanbanSquare className="h-5 w-5 text-primary" />
-                    <h3 className="font-medium">Insérer un tableau Kanban</h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {boards.map((board) => (
-                        <button
-                            type="button"
-                            key={board._id}
-                            onClick={() => handleSelect(board._id)}
-                            className="flex items-center gap-2 p-3 text-left border rounded hover:bg-muted transition-colors"
-                        >
-                            <span className="font-medium">{board.name}</span>
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </NodeViewWrapper>
+      <NodeViewWrapper className="my-4 p-4 border rounded-lg bg-background shadow-sm">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2 border-b pb-2">
+            <KanbanSquare className="h-5 w-5 text-primary" />
+            <h3 className="font-medium">Insérer un tableau Kanban</h3>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {boards.map((board) => (
+              <button
+                type="button"
+                key={board._id}
+                onClick={() => handleSelect(board._id)}
+                className="flex items-center gap-2 p-3 text-left border rounded hover:bg-muted transition-colors"
+              >
+                <span className="font-medium">{board.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </NodeViewWrapper>
     );
   }
 
-  const selectedBoard = boards.find(b => b._id === selectedBoardId);
+  const selectedBoard = boards.find((b) => b._id === selectedBoardId);
 
   return (
     <NodeViewWrapper className="my-4">
       <div className="border rounded-lg overflow-hidden bg-background shadow-sm">
-         <div className="flex items-center justify-between p-3 bg-muted/30 border-b">
-            <div className="flex items-center gap-2">
-                <KanbanSquare className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium">{selectedBoard?.name || "Tableau introuvable"}</span>
-            </div>
-             <button
-                type="button"
-                onClick={() => updateAttributes({ boardId: "" })}
-                className="text-xs text-muted-foreground hover:text-foreground"
-             >
-                Changer
-             </button>
-         </div>
-         <div className="p-4 min-h-[200px] flex items-center justify-center bg-muted/10 text-muted-foreground text-sm italic">
-             {/* Note: Full Kanban embedding would require more complex logic/components.
+        <div className="flex items-center justify-between p-3 bg-muted/30 border-b">
+          <div className="flex items-center gap-2">
+            <KanbanSquare className="h-4 w-4 text-muted-foreground" />
+            <span className="font-medium">{selectedBoard?.name || "Tableau introuvable"}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => updateAttributes({ boardId: "" })}
+            className="text-xs text-muted-foreground hover:text-foreground"
+          >
+            Changer
+          </button>
+        </div>
+        <div className="p-4 min-h-[200px] flex items-center justify-center bg-muted/10 text-muted-foreground text-sm italic">
+          {/* Note: Full Kanban embedding would require more complex logic/components.
                  For this "editor enhancement" task, we are showing a preview/placeholder logic.
                  Real rendering would duplicate the Kanban Board component here.
              */}
-             (Aperçu du tableau Kanban "{selectedBoard?.name}")
-         </div>
+          (Aperçu du tableau Kanban "{selectedBoard?.name}")
+        </div>
       </div>
     </NodeViewWrapper>
   );

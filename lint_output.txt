@@ -1,0 +1,619 @@
+
+> alecia-colab@ lint /app
+> turbo lint --continue -- "apps/web/components/kanban/TimelineView.tsx" "--verbose"
+
+• Packages in scope: alecia-colab-web, novel, tsconfig
+• Running lint in 3 packages
+• Remote caching disabled
+novel:lint: cache hit, replaying logs 4d1f77d9c984fdaf
+novel:lint:
+novel:lint: > novel@1.0.0 lint /app/packages/headless
+novel:lint: > biome lint ./src "apps/web/components/kanban/TimelineView.tsx" "--verbose"
+novel:lint:
+novel:lint: apps/web/components/kanban/TimelineView.tsx internalError/io  INTERNAL  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+novel:lint:
+novel:lint: Checked 20 files in 15ms. No fixes applied.
+novel:lint:  VERBOSE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+novel:lint:
+novel:lint:   i Files processed:
+novel:lint:
+novel:lint:   - ./src/components/editor-bubble-item.tsx
+novel:lint:   - ./src/components/editor-bubble.tsx
+novel:lint:   - ./src/components/editor-command-item.tsx
+novel:lint:   - ./src/components/editor-command.tsx
+novel:lint:   - ./src/components/editor.tsx
+novel:lint:   - ./src/components/index.ts
+novel:lint:   - ./src/extensions/ai-highlight.ts
+novel:lint:   - ./src/extensions/custom-keymap.ts
+novel:lint:   - ./src/extensions/image-resizer.tsx
+novel:lint:   - ./src/extensions/index.ts
+novel:lint:   × No such file or directory (os error 2)
+novel:lint:
+novel:lint:   - ./src/extensions/mathematics.ts
+novel:lint:   - ./src/extensions/slash-command.tsx
+novel:lint:   ! This diagnostic was derived from an internal Biome error. Potential bug, please report it if necessary.
+novel:lint:
+novel:lint:
+novel:lint:   - ./src/extensions/twitter.tsx
+novel:lint:   - ./src/extensions/updated-image.ts
+novel:lint:   - ./src/index.ts
+novel:lint:   - ./src/plugins/index.ts
+novel:lint:   - ./src/plugins/upload-images.tsx
+novel:lint:   - ./src/utils/atoms.ts
+novel:lint:   - ./src/utils/index.ts
+novel:lint:   - ./src/utils/store.ts
+novel:lint:
+novel:lint:
+novel:lint:  VERBOSE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+novel:lint:
+novel:lint:   i Files fixed:
+novel:lint:
+novel:lint:   ! The list is empty.
+novel:lint:
+novel:lint:
+alecia-colab-web:lint: cache miss, executing 2814d3f71d0e7cf5
+alecia-colab-web:lint:
+alecia-colab-web:lint: > alecia-colab-web@0.1.0 lint /app/apps/web
+alecia-colab-web:lint: > biome lint . "apps/web/components/kanban/TimelineView.tsx" "--verbose"
+alecia-colab-web:lint:
+alecia-colab-web:lint: apps/web/components/kanban/TimelineView.tsx internalError/io  INTERNAL  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × No such file or directory (os error 2)
+alecia-colab-web:lint:
+alecia-colab-web:lint:   ! This diagnostic was derived from an internal Biome error. Potential bug, please report it if necessary.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/calendar/calendar-client.tsx:75:33 lint/style/noNonNullAssertion ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Forbidden non-null assertion.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     73 │   const getDealsForDay = (day: number) => {
+alecia-colab-web:lint:     74 │     return dealsInMonth?.filter((deal) => {
+alecia-colab-web:lint:   > 75 │       const dealDate = new Date(deal.dueDate!); // Checked in filter above
+alecia-colab-web:lint:        │                                 ^^^^^^^^^^^^^
+alecia-colab-web:lint:     76 │       return dealDate.getDate() === day;
+alecia-colab-web:lint:     77 │     });
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/calendar/calendar-client.tsx:131:26 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Avoid using the index of an array as key property in an element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     129 │                 return (
+alecia-colab-web:lint:     130 │                   <div
+alecia-colab-web:lint:   > 131 │                     key={index}
+alecia-colab-web:lint:         │                          ^^^^^
+alecia-colab-web:lint:     132 │                     className={cn(
+alecia-colab-web:lint:     133 │                       "min-h-[120px] p-2 border-b border-r last:border-r-0 relative transition-colors hover:bg-muted/10",
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i This is the source of the key value.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     120 │             {/* Calendar Grid */}
+alecia-colab-web:lint:     121 │             <div className="grid grid-cols-7 flex-1 auto-rows-fr">
+alecia-colab-web:lint:   > 122 │               {days.map((day, index) => {
+alecia-colab-web:lint:         │                               ^^^^^
+alecia-colab-web:lint:     123 │                 const dayDeals = day ? getDealsForDay(day) : [];
+alecia-colab-web:lint:     124 │                 const isToday =
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The order of the items may change, and this also affects performances and component state.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Check the React documentation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/colab/boards/[boardId]/page.tsx:81:52 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     79 │                       Tous
+alecia-colab-web:lint:     80 │                     </Badge>
+alecia-colab-web:lint:   > 81 │                     {boardData.labels?.map((label: any) => (
+alecia-colab-web:lint:        │                                                    ^^^
+alecia-colab-web:lint:     82 │                       <Badge
+alecia-colab-web:lint:     83 │                         key={label._id}
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/dashboard/page.tsx:17:26 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Avoid using the index of an array as key property in an element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     15 │       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+alecia-colab-web:lint:     16 │         {[...Array(6)].map((_, i) => (
+alecia-colab-web:lint:   > 17 │           <Skeleton key={i} className="h-48 w-full" />
+alecia-colab-web:lint:        │                          ^
+alecia-colab-web:lint:     18 │         ))}
+alecia-colab-web:lint:     19 │       </div>
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i This is the source of the key value.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     14 │       <Skeleton className="h-32 w-full" />
+alecia-colab-web:lint:     15 │       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+alecia-colab-web:lint:   > 16 │         {[...Array(6)].map((_, i) => (
+alecia-colab-web:lint:        │                                ^
+alecia-colab-web:lint:     17 │           <Skeleton key={i} className="h-48 w-full" />
+alecia-colab-web:lint:     18 │         ))}
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The order of the items may change, and this also affects performances and component state.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Check the React documentation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/documents/page.tsx:18:28 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Avoid using the index of an array as key property in an element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     16 │         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+alecia-colab-web:lint:     17 │           {[...Array(6)].map((_, i) => (
+alecia-colab-web:lint:   > 18 │             <Skeleton key={i} className="h-48 w-full" />
+alecia-colab-web:lint:        │                            ^
+alecia-colab-web:lint:     19 │           ))}
+alecia-colab-web:lint:     20 │         </div>
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i This is the source of the key value.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     15 │         <Skeleton className="h-12 w-64" />
+alecia-colab-web:lint:     16 │         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+alecia-colab-web:lint:   > 17 │           {[...Array(6)].map((_, i) => (
+alecia-colab-web:lint:        │                                  ^
+alecia-colab-web:lint:     18 │             <Skeleton key={i} className="h-48 w-full" />
+alecia-colab-web:lint:     19 │           ))}
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The order of the items may change, and this also affects performances and component state.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Check the React documentation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/dashboard/Dashboard.tsx:293:56 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     291 │   return <DashboardUI
+alecia-colab-web:lint:     292 │       isLoaded={true}
+alecia-colab-web:lint:   > 293 │       user={{ firstName: "Demo", username: "User" } as any}
+alecia-colab-web:lint:         │                                                        ^^^
+alecia-colab-web:lint:     294 │       stats={stats}
+alecia-colab-web:lint:     295 │       recentDocuments={[]}
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/dashboard/Dashboard.tsx:303:115 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     302 │ // UI Component to share layout
+alecia-colab-web:lint:   > 303 │ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isDocumentsLoading, isDataLoading }: any) {
+alecia-colab-web:lint:         │                                                                                                                   ^^^
+alecia-colab-web:lint:     304 │     return (
+alecia-colab-web:lint:     305 │     <div className="space-y-8">
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/dashboard/Dashboard.tsx:322:27 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     320 │         className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+alecia-colab-web:lint:     321 │       >
+alecia-colab-web:lint:   > 322 │         {stats.map((stat: any) => {
+alecia-colab-web:lint:         │                           ^^^
+alecia-colab-web:lint:     323 │           const Icon = stat.icon;
+alecia-colab-web:lint:     324 │           return (
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/dashboard/Dashboard.tsx:453:46 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     451 │               ) : (
+alecia-colab-web:lint:     452 │                 <div className="space-y-4">
+alecia-colab-web:lint:   > 453 │                   {recentDocuments.map((doc: any, index: number) => (
+alecia-colab-web:lint:         │                                              ^^^
+alecia-colab-web:lint:     454 │                     <div key={doc.id}>
+alecia-colab-web:lint:     455 │                       <Link href={doc.href} className="block">
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/dashboard/Dashboard.tsx:507:48 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     505 │               ) : (
+alecia-colab-web:lint:     506 │                 <div className="space-y-4">
+alecia-colab-web:lint:   > 507 │                   {activityFeed.map((activity: any) => {
+alecia-colab-web:lint:         │                                                ^^^
+alecia-colab-web:lint:     508 │                     const initials = getInitials(activity.user);
+alecia-colab-web:lint:     509 │                     return (
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/home/ClientHomePage.tsx:125:29 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Avoid using the index of an array as key property in an element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     123 │               <div className="space-y-3">
+alecia-colab-web:lint:     124 │                 {recentActivity.map((item, index) => (
+alecia-colab-web:lint:   > 125 │                   <div key={index} className="flex items-center justify-between py-2 border-b last:border-0">
+alecia-colab-web:lint:         │                             ^^^^^
+alecia-colab-web:lint:     126 │                     <div className="flex items-center gap-3">
+alecia-colab-web:lint:     127 │                       <div
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i This is the source of the key value.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     122 │               </h2>
+alecia-colab-web:lint:     123 │               <div className="space-y-3">
+alecia-colab-web:lint:   > 124 │                 {recentActivity.map((item, index) => (
+alecia-colab-web:lint:         │                                            ^^^^^
+alecia-colab-web:lint:     125 │                   <div key={index} className="flex items-center justify-between py-2 border-b last:border-0">
+alecia-colab-web:lint:     126 │                     <div className="flex items-center gap-3">
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The order of the items may change, and this also affects performances and component state.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Check the React documentation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./hooks/use-presence.ts:28:33 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     27 │ // Lazy import useUser to avoid SSR issues
+alecia-colab-web:lint:   > 28 │ let useUserHook: (() => { user: any }) | null = null;
+alecia-colab-web:lint:        │                                 ^^^
+alecia-colab-web:lint:     29 │
+alecia-colab-web:lint:     30 │ function getUser() {
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./hooks/use-presence.ts:47:36 lint/suspicious/noExplicitAny ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Unexpected any. Specify a different type.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     45 │ export function usePresence({ resourceType, resourceId, enabled = true }: UsePresenceOptions) {
+alecia-colab-web:lint:     46 │   const [mounted, setMounted] = useState(false);
+alecia-colab-web:lint:   > 47 │   const [user, setUser] = useState<any>(null);
+alecia-colab-web:lint:        │                                    ^^^
+alecia-colab-web:lint:     48 │   const heartbeatRef = useRef<NodeJS.Timeout | null>(null);
+alecia-colab-web:lint:     49 │
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i any disables many type checking rules. Its use should be avoided.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/recent/page.tsx:21:26 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Avoid using the index of an array as key property in an element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     19 │       <div className="space-y-4">
+alecia-colab-web:lint:     20 │         {[...Array(5)].map((_, i) => (
+alecia-colab-web:lint:   > 21 │           <Skeleton key={i} className="h-16 w-full" />
+alecia-colab-web:lint:        │                          ^
+alecia-colab-web:lint:     22 │         ))}
+alecia-colab-web:lint:     23 │       </div>
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i This is the source of the key value.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     18 │     loading: () => (
+alecia-colab-web:lint:     19 │       <div className="space-y-4">
+alecia-colab-web:lint:   > 20 │         {[...Array(5)].map((_, i) => (
+alecia-colab-web:lint:        │                                ^
+alecia-colab-web:lint:     21 │           <Skeleton key={i} className="h-16 w-full" />
+alecia-colab-web:lint:     22 │         ))}
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The order of the items may change, and this also affects performances and component state.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Check the React documentation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./app/settings/page.tsx:18:28 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Avoid using the index of an array as key property in an element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     16 │         <div className="space-y-4">
+alecia-colab-web:lint:     17 │           {[...Array(4)].map((_, i) => (
+alecia-colab-web:lint:   > 18 │             <Skeleton key={i} className="h-32 w-full" />
+alecia-colab-web:lint:        │                            ^
+alecia-colab-web:lint:     19 │           ))}
+alecia-colab-web:lint:     20 │         </div>
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i This is the source of the key value.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     15 │         <Skeleton className="h-12 w-64" />
+alecia-colab-web:lint:     16 │         <div className="space-y-4">
+alecia-colab-web:lint:   > 17 │           {[...Array(4)].map((_, i) => (
+alecia-colab-web:lint:        │                                  ^
+alecia-colab-web:lint:     18 │             <Skeleton key={i} className="h-32 w-full" />
+alecia-colab-web:lint:     19 │           ))}
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The order of the items may change, and this also affects performances and component state.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Check the React documentation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./components/deal-pipeline/CalendarView.tsx:140:22 lint/suspicious/noArrayIndexKey ━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Avoid using the index of an array as key property in an element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     138 │             return (
+alecia-colab-web:lint:     139 │               <div
+alecia-colab-web:lint:   > 140 │                 key={index}
+alecia-colab-web:lint:         │                      ^^^^^
+alecia-colab-web:lint:     141 │                 className={`min-h-[100px] border-b border-r p-1 ${day ? "bg-background" : "bg-muted/20"}`}
+alecia-colab-web:lint:     142 │               >
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i This is the source of the key value.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     132 │         {/* Calendar cells */}
+alecia-colab-web:lint:     133 │         <div className="grid grid-cols-7">
+alecia-colab-web:lint:   > 134 │           {calendarDays.map((day, index) => {
+alecia-colab-web:lint:         │                                   ^^^^^
+alecia-colab-web:lint:     135 │             const dayDeals = day ? dealsOnDate[day.toString()] || [] : [];
+alecia-colab-web:lint:     136 │             const isToday = isCurrentMonth && day === today.getDate();
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The order of the items may change, and this also affects performances and component state.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Check the React documentation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./components/deal-pipeline/TableView.tsx:220:17 lint/a11y/useKeyWithClickEvents ━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Enforce to have the onClick mouse event with the onKeyUp, the onKeyDown, or the onKeyPress keyboard event.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     218 │             ) : (
+alecia-colab-web:lint:     219 │               table.getRowModel().rows.map((row) => (
+alecia-colab-web:lint:   > 220 │                 <tr
+alecia-colab-web:lint:         │                 ^^^
+alecia-colab-web:lint:   > 221 │                   key={row.id}
+alecia-colab-web:lint:   > 222 │                   className="border-t hover:bg-muted/50 cursor-pointer transition-colors"
+alecia-colab-web:lint:   > 223 │                   onClick={() => onDealClick?.(row.original._id)}
+alecia-colab-web:lint:   > 224 │                 >
+alecia-colab-web:lint:         │                 ^
+alecia-colab-web:lint:     225 │                   {row.getVisibleCells().map((cell) => (
+alecia-colab-web:lint:     226 │                     <td key={cell.id} className="px-4 py-3 text-sm">
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Actions triggered using mouse events should have corresponding keyboard events to account for keyboard-only navigation.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./components/deal-pipeline/PropertyEditor.tsx:148:13 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Provide an explicit type prop for the button element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     146 │           <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+alecia-colab-web:lint:     147 │             <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Propriétés personnalisées</h2>
+alecia-colab-web:lint:   > 148 │             <button onClick={onClose} className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+alecia-colab-web:lint:         │             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alecia-colab-web:lint:     149 │               <X className="h-5 w-5 text-gray-500" />
+alecia-colab-web:lint:     150 │             </button>
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Allowed button types are: submit, button or reset
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: ./components/deal-pipeline/PropertyEditor.tsx:216:25 lint/a11y/useButtonType ━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Provide an explicit type prop for the button element.
+alecia-colab-web:lint:
+alecia-colab-web:lint:     215 │                       <div className="flex gap-2">
+alecia-colab-web:lint:   > 216 │                         <button
+alecia-colab-web:lint:         │                         ^^^^^^^
+alecia-colab-web:lint:   > 217 │                           onClick={handleCreateProperty}
+alecia-colab-web:lint:   > 218 │                           disabled={!newPropertyName.trim()}
+alecia-colab-web:lint:   > 219 │                           className="flex-1 px-3 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
+alecia-colab-web:lint:   > 220 │                         >
+alecia-colab-web:lint:         │                         ^
+alecia-colab-web:lint:     221 │                           Créer
+alecia-colab-web:lint:     222 │                         </button>
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i The default type of a button is submit, which causes the submission of a form when placed inside a `form` element. This is likely not the behaviour that you want inside a React application.
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Allowed button types are: submit, button or reset
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: The number of diagnostics exceeds the number allowed by Biome.
+alecia-colab-web:lint: Diagnostics not shown: 66.
+alecia-colab-web:lint: Checked 171 files in 100ms. No fixes applied.
+alecia-colab-web:lint: Found 68 errors.
+alecia-colab-web:lint: Found 17 warnings.
+alecia-colab-web:lint:  VERBOSE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Files processed:
+alecia-colab-web:lint:
+alecia-colab-web:lint:   - ./biome.json
+alecia-colab-web:lint:   - ./app/ClientPage.tsx
+alecia-colab-web:lint:   - ./app/ClientProviders.tsx
+alecia-colab-web:lint:   - ./app/ConvexClientProvider.tsx
+alecia-colab-web:lint:   - ./app/actions/presentation/generate.ts
+alecia-colab-web:lint:   - ./app/api/generate/route.ts
+alecia-colab-web:lint:   - ./app/api/health/route.ts
+alecia-colab-web:lint:   - ./app/api/upload/route.ts
+alecia-colab-web:lint:   - ./app/calendar/calendar-client.tsx
+alecia-colab-web:lint:   - ./app/calendar/loading.tsx
+alecia-colab-web:lint:   - ./app/calendar/page.tsx
+alecia-colab-web:lint:   - ./app/colab/boards/[boardId]/page.tsx
+alecia-colab-web:lint:   - ./app/colab/boards/page.tsx
+alecia-colab-web:lint:   - ./app/colab/documents/[documentId]/page.tsx
+alecia-colab-web:lint:   - ./app/companies/loading.tsx
+alecia-colab-web:lint:   - ./app/companies/page.tsx
+alecia-colab-web:lint:   - ./app/dashboard/Dashboard.tsx
+alecia-colab-web:lint:   - ./app/dashboard/layout.tsx
+alecia-colab-web:lint:   - ./app/dashboard/page.tsx
+alecia-colab-web:lint:   - ./app/documents/DocumentsContent.tsx
+alecia-colab-web:lint:   - ./app/documents/[id]/page.tsx
+alecia-colab-web:lint:   - ./app/documents/loading.tsx
+alecia-colab-web:lint:   - ./app/documents/new/NewDocumentContent.tsx
+alecia-colab-web:lint:   - ./app/documents/new/page.tsx
+alecia-colab-web:lint:   - ./app/documents/page.tsx
+alecia-colab-web:lint:   - ./app/favorites/loading.tsx
+alecia-colab-web:lint:   - ./app/favorites/page.tsx
+alecia-colab-web:lint:   - ./app/home/ClientHomePage.tsx
+alecia-colab-web:lint:   - ./app/home/page.tsx
+alecia-colab-web:lint:   - ./app/layout.tsx
+alecia-colab-web:lint:   - ./app/page.tsx
+alecia-colab-web:lint:   - ./app/pipeline/layout.tsx
+alecia-colab-web:lint:   - ./app/pipeline/page.tsx
+alecia-colab-web:lint:   - ./app/presentations/[id]/page.tsx
+alecia-colab-web:lint:   - ./app/presentations/new/page.tsx
+alecia-colab-web:lint:   - ./app/presentations/page.tsx
+alecia-colab-web:lint:   - ./app/providers.tsx
+alecia-colab-web:lint:   - ./app/recent/loading.tsx
+alecia-colab-web:lint:   - ./app/recent/page.tsx
+alecia-colab-web:lint:   - ./app/settings/SettingsContent.tsx
+alecia-colab-web:lint:   - ./app/settings/loading.tsx
+alecia-colab-web:lint:   - ./app/settings/page.tsx
+alecia-colab-web:lint:   - ./app/trash/loading.tsx
+alecia-colab-web:lint:   - ./app/trash/page.tsx
+alecia-colab-web:lint:   - ./components/command-menu-provider.tsx
+alecia-colab-web:lint:   - ./components/command-menu.tsx
+alecia-colab-web:lint:   - ./components/deal-flow/DealFlowCanvas.tsx
+alecia-colab-web:lint:   - ./components/deal-flow/nodes/DealNode.tsx
+alecia-colab-web:lint:   - ./components/deal-flow/nodes/StageNode.tsx
+alecia-colab-web:lint:   - ./components/deal-pipeline/CalendarView.tsx
+alecia-colab-web:lint:   - ./components/deal-pipeline/PropertyEditor.tsx
+alecia-colab-web:lint:   - ./components/deal-pipeline/TableView.tsx
+alecia-colab-web:lint:   - ./components/deal-pipeline/ViewSwitcher.tsx
+alecia-colab-web:lint:   - ./components/deal-pipeline/index.tsx
+alecia-colab-web:lint:   - ./components/editor/DocumentEditor.tsx
+alecia-colab-web:lint:   - ./components/editor/extensions/CalloutComponent.tsx
+alecia-colab-web:lint:   - ./components/editor/extensions/KanbanComponent.tsx
+alecia-colab-web:lint:   - ./components/editor/extensions/callout-extension.ts
+alecia-colab-web:lint:   - ./components/editor/extensions/kanban-extension.ts
+alecia-colab-web:lint:   - ./components/feedback/Alert.tsx
+alecia-colab-web:lint:   - ./components/feedback/Progress.tsx
+alecia-colab-web:lint:   - ./components/kanban/Board.tsx
+alecia-colab-web:lint:   - ./components/kanban/CardModal.tsx
+alecia-colab-web:lint:   - ./components/kanban/ListColumn.tsx
+alecia-colab-web:lint:   - ./components/kanban/StrictModeDroppable.tsx
+alecia-colab-web:lint:   - ./components/kanban/TaskCard.tsx
+alecia-colab-web:lint:   - ./components/kanban/TimelineView.tsx
+alecia-colab-web:lint:   - ./components/layout/AppShell.tsx
+alecia-colab-web:lint:   - ./components/layout/ColabBreadcrumbs.tsx
+alecia-colab-web:lint:   - ./components/layout/ColabHeader.tsx
+alecia-colab-web:lint:   - ./components/layout/CollapsibleSection.tsx
+alecia-colab-web:lint:   - ./components/layout/Header.tsx
+alecia-colab-web:lint:   - ./components/layout/Sidebar.tsx
+alecia-colab-web:lint:   - ./components/layout/ThemeToggle.tsx
+alecia-colab-web:lint:   - ./components/layout/WorkspaceSwitcher.tsx
+alecia-colab-web:lint:   - ./components/layout/sidebar-provider.tsx
+alecia-colab-web:lint:   - ./components/motion/Counter.tsx
+alecia-colab-web:lint:   - ./components/motion/Loader.tsx
+alecia-colab-web:lint:   - ./components/navigation/ActionSearchBar.tsx
+alecia-colab-web:lint:   - ./components/navigation/Dock.tsx
+alecia-colab-web:lint:   - ./components/navigation/Toolbar.tsx
+alecia-colab-web:lint:   - ./components/presence/AvatarGroup.tsx
+alecia-colab-web:lint:   - ./components/presence/LiveCursors.tsx
+alecia-colab-web:lint:   - ./components/presence/PresenceAvatars.tsx
+alecia-colab-web:lint:   - ./components/presence/RoomPresence.tsx
+alecia-colab-web:lint:   - ./components/presence/TypingIndicator.tsx
+alecia-colab-web:lint:   - ./components/presentations/PresentationDashboard.tsx
+alecia-colab-web:lint:   - ./components/presentations/PresentationGenerator.tsx
+alecia-colab-web:lint:   - ./components/presentations/PresentationList.tsx
+alecia-colab-web:lint:   - ./components/presentations/SlideEditor.tsx
+alecia-colab-web:lint:   - ./components/profile/ProfileDropdown.tsx
+alecia-colab-web:lint:   - ./components/recent-files/RecentFiles.tsx
+alecia-colab-web:lint:   - ./components/recent-files/index.ts
+alecia-colab-web:lint:   - ./components/tailwind/advanced-editor.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ai/ai-actions.tsx
+alecia-colab-web:lint:   - ./components/tailwind/deal-pipeline.tsx
+alecia-colab-web:lint:   - ./components/tailwind/document-sidebar.tsx
+alecia-colab-web:lint:   - ./components/tailwind/extensions.ts
+alecia-colab-web:lint:   - ./components/tailwind/generative/ai-completion-command.tsx
+alecia-colab-web:lint:   - ./components/tailwind/generative/ai-selector-commands.tsx
+alecia-colab-web:lint:   - ./components/tailwind/generative/ai-selector.tsx
+alecia-colab-web:lint:   - ./components/tailwind/generative/generative-menu-switch.tsx
+alecia-colab-web:lint:   - ./components/tailwind/image-upload.ts
+alecia-colab-web:lint:   - ./components/tailwind/mention-command.tsx
+alecia-colab-web:lint:   - ./components/tailwind/selectors/color-selector.tsx
+alecia-colab-web:lint:   - ./components/tailwind/selectors/link-selector.tsx
+alecia-colab-web:lint:   - ./components/tailwind/selectors/math-selector.tsx
+alecia-colab-web:lint:   - ./components/tailwind/selectors/node-selector.tsx
+alecia-colab-web:lint:   - ./components/tailwind/selectors/text-buttons.tsx
+alecia-colab-web:lint:   - ./components/tailwind/slash-command.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/badge.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/button.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/card.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/command.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/dialog.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/dropdown-menu.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/icons/crazy-spinner.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/icons/font-default.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/icons/font-mono.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/icons/font-serif.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/icons/index.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/icons/loading-circle.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/icons/magic.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/input.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/label.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/menu.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/popover.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/scroll-area.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/separator.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/sheet.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/skeleton.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/switch.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/tabs.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/textarea.tsx
+alecia-colab-web:lint:   - ./components/tailwind/ui/tooltip.tsx
+alecia-colab-web:lint:   - ./components/templates/TemplateSelector.tsx
+alecia-colab-web:lint:   - ./components/ui/FileUpload.tsx
+alecia-colab-web:lint:   - ./components/ui/Loader.tsx
+alecia-colab-web:lint:   - ./components/ui/empty-state.tsx
+alecia-colab-web:lint:   - ./components/ui/loading-skeletons.tsx
+alecia-colab-web:lint:   - ./components/upload/FileUpload.tsx
+alecia-colab-web:lint:   - ./components/version-history/VersionHistorySidebar.tsx
+alecia-colab-web:lint:   - ./convex/_generated/api.d.ts
+alecia-colab-web:lint:   - ./convex/_generated/api.js
+alecia-colab-web:lint:   - ./convex/_generated/dataModel.d.ts
+alecia-colab-web:lint:   - ./convex/_generated/server.d.ts
+alecia-colab-web:lint:   - ./convex/_generated/server.js
+alecia-colab-web:lint:   - ./convex/boards.ts
+alecia-colab-web:lint:   - ./convex/deals.ts
+alecia-colab-web:lint:   - ./convex/documentVersions.ts
+alecia-colab-web:lint:   - ./convex/documents.ts
+alecia-colab-web:lint:   - ./convex/presence.ts
+alecia-colab-web:lint:   - ./convex/presentations.ts
+alecia-colab-web:lint:   - ./convex/propertyDefinitions.ts
+alecia-colab-web:lint:   - ./convex/schema.ts
+alecia-colab-web:lint:   - ./hooks/use-convex.ts
+alecia-colab-web:lint:   - ./hooks/use-debounce.ts
+alecia-colab-web:lint:   - ./hooks/use-local-storage.ts
+alecia-colab-web:lint:   - ./hooks/use-presence.ts
+alecia-colab-web:lint:   - ./lib/content.ts
+alecia-colab-web:lint:   - ./lib/format-relative-time.ts
+alecia-colab-web:lint:   - ./lib/formatters.ts
+alecia-colab-web:lint:   - ./lib/i18n/fr.ts
+alecia-colab-web:lint:   - ./lib/i18n/index.ts
+alecia-colab-web:lint:   - ./lib/presentation-parser.ts
+alecia-colab-web:lint:   - ./lib/templates.ts
+alecia-colab-web:lint:   - ./lib/utils.ts
+alecia-colab-web:lint:   - ./middleware.ts
+alecia-colab-web:lint:   - ./styles/fonts.ts
+alecia-colab-web:lint:   - ./styles/globals.css
+alecia-colab-web:lint:   - ./styles/prosemirror.css
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint:  VERBOSE  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   i Files fixed:
+alecia-colab-web:lint:
+alecia-colab-web:lint:   ! The list is empty.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint: lint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+alecia-colab-web:lint:
+alecia-colab-web:lint:   × Some errors were emitted while running checks.
+alecia-colab-web:lint:
+alecia-colab-web:lint:
+alecia-colab-web:lint:  ELIFECYCLE  Command failed with exit code 1.
+
+ Tasks:    1 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    946ms
+Failed:    alecia-colab-web#lint
+
+ ELIFECYCLE  Command failed with exit code 1.
