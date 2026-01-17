@@ -87,7 +87,7 @@ export function CardModal({ cardId, open, onClose, boardLabels, boardId }: CardM
     setNewItemContents((prev) => ({ ...prev, [checklistId]: "" }));
   };
 
-  const toggleLabel = async (labelId: string) => {
+  const toggleLabel = async (labelId: Id<"colab_labels">) => {
     if (!card || !user) return;
     const currentLabels = card.labelIds || [];
     const newLabels = currentLabels.includes(labelId)
