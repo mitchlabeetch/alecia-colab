@@ -5,277 +5,133 @@
  * Features: Navigation links, workspace selector, recently opened items
  */
 
+import { useCommandMenu } from "@/components/command-menu-provider";
 import { Button } from "@/components/tailwind/ui/button";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
+import { Sheet, SheetContent } from "@/components/tailwind/ui/sheet";
 import { cn } from "@/lib/utils";
 import {
-  Briefcase,
-  Building,
   Calendar as CalendarIcon,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
   FileText,
-  Globe,
-  HelpCircle,
   Home,
   LayoutDashboard,
-  Plus,
-  Search,
-  Settings,
-  Star,
-  Target,
-  Trash,
+  Presentation,
   Users,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { useCommandMenu } from "@/components/command-menu-provider";
-import { CollapsibleSection } from "./CollapsibleSection";
+import { useSidebar } from "./sidebar-provider";
 
 interface SidebarProps {
-  isOpen?: boolean;
-  onClose?: () => void;
   className?: string;
 }
 
 const colabSidebarSections = [
   {
-    title: "Quick Access",
+    title: "Principal",
     collapsible: false,
     items: [
-      { icon: Home, label: "Dashboard", href: "/dashboard" },
-      { icon: Search, label: "Search", action: "openSearch" },
-      { icon: Plus, label: "New Document", href: "/documents/new" },
-    ],
-  },
-  {
-    title: "Documents",
-    collapsible: true,
-    defaultOpen: true,
-    items: [
-      { icon: Clock, label: "Recent", href: "/recent" },
-      { icon: Star, label: "Favorites", href: "/favorites" },
-      { icon: FileText, label: "All Documents", href: "/documents" },
-      { icon: Trash, label: "Trash", href: "/trash" },
-    ],
-  },
-  {
-    title: "Deals & Pipeline",
-    collapsible: true,
-    defaultOpen: true,
-    items: [
-      { icon: Briefcase, label: "Active Deals", href: "/pipeline" },
-      { icon: Target, label: "Pipeline", href: "/pipeline" },
-      { icon: Building, label: "Companies", href: "/companies" },
-      { icon: CalendarIcon, label: "Calendar", href: "/calendar" },
-    ],
-  },
-  {
-    title: "Settings",
-    collapsible: false,
-    items: [{ icon: Settings, label: "Settings", href: "/settings" }],
-  },
-  {
-    title: "Admin Panel",
-    collapsible: true,
-    defaultOpen: false,
-    items: [
-      { icon: LayoutDashboard, label: "Admin Dashboard", href: "/admin/dashboard", external: true },
-      { icon: Users, label: "CRM", href: "/admin/crm", external: true },
-    ],
-  },
-  {
-    title: "External",
-    collapsible: true,
-    defaultOpen: false,
-    items: [
-      { icon: Globe, label: "Website", href: "https://alecia.markets", external: true },
-      { icon: HelpCircle, label: "Documentation", href: "/docs", external: true },
+      { icon: Home, label: "Accueil", href: "/dashboard" },
+      { icon: FileText, label: "Documents", href: "/documents" },
+      { icon: LayoutDashboard, label: "Tableaux", href: "/pipeline" },
+      { icon: Presentation, label: "Présentations", href: "/presentations" },
+      { icon: CalendarIcon, label: "Calendrier", href: "/calendar" },
+      { icon: Users, label: "Équipe", href: "/team" },
     ],
   },
 ];
 
-export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(false);
+function SidebarContent() {
+  const { isCollapsed, setMobileOpen } = useSidebar();
   const pathname = usePathname();
-  const { setOpen } = useCommandMenu();
 
-  const handleAction = (action?: string) => {
+  return (
+    <div className="flex h-full flex-col py-4">
+      <ScrollArea className="flex-1 px-3">
+        <div className="space-y-4">
+          {colabSidebarSections.map((section, sectionIndex) => (
+            <div key={section.title || sectionIndex}>
+               {!isCollapsed && section.title && (
+                  <h4 className="mb-2 px-4 text-xs font-semibold text-muted-foreground tracking-wider uppercase">
+                    {section.title}
+                  </h4>
+                )}
+              <nav className="space-y-1">
+                {section.items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+
+                  // Mobile or Expanded
+                  if (!isCollapsed) {
+                     return (
+                      <Link key={item.label} href={item.href || "#"} onClick={() => setMobileOpen(false)}>
+                        <Button
+                          variant={isActive ? "secondary" : "ghost"}
+                          className="w-full justify-start h-11 md:h-10" // h-11 (44px) for mobile, h-10 for desktop
+                        >
+                          <Icon className="h-5 w-5 mr-3" />
+                          <span>{item.label}</span>
+                        </Button>
+                      </Link>
+                    );
+                  }
+
+                  // Collapsed (Desktop only)
+                  return (
+                    <Link key={item.label} href={item.href || "#"}>
+                       <Button
+                        variant={isActive ? "secondary" : "ghost"}
+                        className="w-full justify-center px-2 h-10" // Desktop collapsed stays h-10
+                        title={item.label}
+                      >
+                        <Icon className="h-5 w-5" />
+                        <span className="sr-only">{item.label}</span>
+                      </Button>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
+    </div>
+  );
+}
+
+export function Sidebar({ className }: SidebarProps) {
+  const { isCollapsed, isMobileOpen, setMobileOpen } = useSidebar();
+  const { setOpen: setCommandOpen } = useCommandMenu();
+
+  const _handleAction = (action?: string) => {
     if (action === "openSearch") {
-      setOpen(true);
-      if (onClose && window.innerWidth < 768) {
-        onClose();
+      setCommandOpen(true);
+      if (window.innerWidth < 768) {
+        setMobileOpen(false);
       }
     }
   };
 
   return (
     <>
-      {/* Mobile overlay */}
-      {isOpen && <div className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden" onClick={onClose} />}
+      {/* Mobile Overlay & Drawer (Using Sheet) */}
+      <Sheet open={isMobileOpen} onOpenChange={setMobileOpen}>
+          <SheetContent side="left" className="p-0 w-64">
+              <SidebarContent />
+          </SheetContent>
+      </Sheet>
 
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-16 z-40 h-[calc(100vh-4rem)]",
+          "hidden md:block fixed left-0 top-14 z-30 h-[calc(100vh-3.5rem)]",
           "border-r border-border bg-background",
-          "transition-all duration-300",
-          collapsed ? "w-16" : "w-64",
-          "hidden md:block",
+          "transition-[width] duration-300 ease-in-out",
+          isCollapsed ? "w-16" : "w-64",
           className,
         )}
       >
-        <div className="flex h-full flex-col">
-          {/* Collapse button */}
-          <div className="flex items-center justify-end p-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setCollapsed(!collapsed)}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-            >
-              {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-            </Button>
-          </div>
-
-          <ScrollArea className="flex-1 px-3">
-            {!collapsed && (
-              <div className="space-y-4">
-                {colabSidebarSections.map((section, sectionIndex) => (
-                  <CollapsibleSection
-                    key={sectionIndex}
-                    title={section.title}
-                    collapsible={section.collapsible}
-                    defaultOpen={section.defaultOpen}
-                  >
-                    <nav className="space-y-1">
-                      {section.items.map((item) => {
-                        const Icon = item.icon;
-                        const isActive = pathname === item.href;
-                        if (item.action) {
-                          return (
-                            <Button
-                              key={item.label}
-                              variant="ghost"
-                              className="w-full justify-start"
-                              onClick={() => handleAction(item.action)}
-                            >
-                              <Icon className="h-5 w-5" />
-                              <span className="ml-3">{item.label}</span>
-                            </Button>
-                          );
-                        }
-                        return (
-                          <Link key={item.label} href={item.href || "#"} target={item.external ? "_blank" : undefined}>
-                            <Button variant={isActive ? "secondary" : "ghost"} className="w-full justify-start">
-                              <Icon className="h-5 w-5" />
-                              <span className="ml-3">{item.label}</span>
-                            </Button>
-                          </Link>
-                        );
-                      })}
-                    </nav>
-                  </CollapsibleSection>
-                ))}
-              </div>
-            )}
-
-            {collapsed && (
-              <nav className="space-y-1">
-                {colabSidebarSections[0].items.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = pathname === item.href;
-                  if (item.action) {
-                    return (
-                      <Button
-                        key={item.label}
-                        variant="ghost"
-                        className="w-full justify-center px-2"
-                        title={item.label}
-                        aria-label={item.label}
-                        onClick={() => handleAction(item.action)}
-                      >
-                        <Icon className="h-5 w-5" />
-                      </Button>
-                    );
-                  }
-                  return (
-                    <Link key={item.label} href={item.href || "#"}>
-                      <Button
-                        variant={isActive ? "secondary" : "ghost"}
-                        className="w-full justify-center px-2"
-                        title={item.label}
-                        aria-label={item.label}
-                      >
-                        <Icon className="h-5 w-5" />
-                      </Button>
-                    </Link>
-                  );
-                })}
-              </nav>
-            )}
-          </ScrollArea>
-        </div>
-      </aside>
-
-      {/* Mobile sidebar */}
-      <aside
-        className={cn(
-          "fixed left-0 top-16 z-50 h-[calc(100vh-4rem)] w-64",
-          "border-r border-border bg-background",
-          "transition-transform duration-300 md:hidden",
-          isOpen ? "translate-x-0" : "-translate-x-full",
-        )}
-      >
-        <div className="flex h-full flex-col">
-          <ScrollArea className="flex-1 px-3 py-4">
-            <div className="space-y-4">
-              {colabSidebarSections.map((section, sectionIndex) => (
-                <CollapsibleSection
-                  key={sectionIndex}
-                  title={section.title}
-                  collapsible={section.collapsible}
-                  defaultOpen={section.defaultOpen}
-                >
-                  <nav className="space-y-1">
-                    {section.items.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = pathname === item.href;
-                      if (item.action) {
-                        return (
-                          <Button
-                            key={item.label}
-                            variant="ghost"
-                            className="w-full justify-start"
-                            onClick={() => handleAction(item.action)}
-                          >
-                            <Icon className="h-5 w-5" />
-                            <span className="ml-3">{item.label}</span>
-                          </Button>
-                        );
-                      }
-                      return (
-                        <Link
-                          key={item.label}
-                          href={item.href || "#"}
-                          onClick={onClose}
-                          target={item.external ? "_blank" : undefined}
-                        >
-                          <Button variant={isActive ? "secondary" : "ghost"} className="w-full justify-start">
-                            <Icon className="h-5 w-5" />
-                            <span className="ml-3">{item.label}</span>
-                          </Button>
-                        </Link>
-                      );
-                    })}
-                  </nav>
-                </CollapsibleSection>
-              ))}
-            </div>
-          </ScrollArea>
-        </div>
+         <SidebarContent />
       </aside>
     </>
   );

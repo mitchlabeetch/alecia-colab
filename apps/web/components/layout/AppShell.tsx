@@ -6,10 +6,10 @@
  */
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { ColabBreadcrumbs } from "./ColabBreadcrumbs";
-import { Header } from "./Header";
+import { ColabHeader } from "./ColabHeader";
 import { Sidebar } from "./Sidebar";
+import { SidebarProvider, useSidebar } from "./sidebar-provider";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -17,8 +17,8 @@ interface AppShellProps {
   className?: string;
 }
 
-export function AppShell({ children, mode = "standalone", className }: AppShellProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+function AppShellContent({ children, mode = "standalone", className }: AppShellProps) {
+  const { isCollapsed } = useSidebar();
 
   // Detect if running in iframe (embedded mode)
   const isEmbedded = mode === "embedded" || (typeof window !== "undefined" && window.self !== window.top);
@@ -36,11 +36,27 @@ export function AppShell({ children, mode = "standalone", className }: AppShellP
   // Full standalone shell
   return (
     <div className="relative min-h-screen">
-      <Header onMenuClick={() => setSidebarOpen(true)} />
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <main className={cn("min-h-[calc(100vh-4rem)]", "md:pl-64", "transition-all duration-300", className)}>
+      <ColabHeader />
+      <Sidebar />
+      <main
+        className={cn(
+          "min-h-[calc(100vh-3.5rem)]",
+          "transition-all duration-300 ease-in-out",
+          isCollapsed ? "md:pl-16" : "md:pl-64",
+          className,
+        )}
+      >
         <div className="container py-6 px-4">{children}</div>
       </main>
     </div>
   );
+}
+
+// Wrapper to provide context
+export function AppShell(props: AppShellProps) {
+    return (
+        <SidebarProvider>
+            <AppShellContent {...props} />
+        </SidebarProvider>
+    )
 }
