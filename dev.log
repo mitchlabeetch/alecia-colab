@@ -7,16 +7,16 @@ turbo 2.3.3
 • Packages in scope: alecia-colab-web, novel, tsconfig
 • Running dev in 3 packages
 • Remote caching disabled
-novel:dev: cache bypass, force executing a55844255e23c8a5
-alecia-colab-web:dev: cache bypass, force executing e7e93c5b11a291a1
-novel:dev:
-novel:dev: > novel@1.0.0 dev /app/packages/headless
-novel:dev: > tsup --watch
-novel:dev:
+novel:dev: cache bypass, force executing 89faf12e882bbb2f
+alecia-colab-web:dev: cache bypass, force executing 3714c140efd068fe
 alecia-colab-web:dev:
 alecia-colab-web:dev: > alecia-colab-web@0.1.0 dev /app/apps/web
 alecia-colab-web:dev: > next dev
 alecia-colab-web:dev:
+novel:dev:
+novel:dev: > novel@1.0.0 dev /app/packages/headless
+novel:dev: > tsup --watch
+novel:dev:
 novel:dev: CLI Building entry: src/index.ts
 novel:dev: CLI Using tsconfig: tsconfig.json
 novel:dev: CLI tsup v8.3.5
@@ -27,35 +27,140 @@ novel:dev: CLI Cleaning output folder
 novel:dev: CJS Build start
 novel:dev: ESM Build start
 novel:dev: CJS dist/index.cjs 15.58 KB
-novel:dev: CJS ⚡️ Build success in 71ms
+novel:dev: CJS ⚡️ Build success in 82ms
 novel:dev: ESM dist/index.js 14.46 KB
-novel:dev: ESM ⚡️ Build success in 70ms
+novel:dev: ESM ⚡️ Build success in 83ms
 novel:dev: CLI Watching for changes in "."
 novel:dev: CLI Ignoring changes in "**/{.git,node_modules}/**" | "dist"
+alecia-colab-web:dev:  ⚠ Port 3000 is in use, trying 3001 instead.
+alecia-colab-web:dev:  ⚠ Port 3001 is in use, trying 3002 instead.
+alecia-colab-web:dev:  ⚠ Port 3002 is in use, trying 3003 instead.
+alecia-colab-web:dev:  ⚠ Port 3003 is in use, trying 3004 instead.
 alecia-colab-web:dev:    ▲ Next.js 15.1.11
-alecia-colab-web:dev:    - Local:        http://localhost:3000
-alecia-colab-web:dev:    - Network:      http://192.168.0.2:3000
+alecia-colab-web:dev:    - Local:        http://localhost:3004
+alecia-colab-web:dev:    - Network:      http://192.168.0.2:3004
 alecia-colab-web:dev:
 alecia-colab-web:dev:  ✓ Starting...
-alecia-colab-web:dev: Attention: Next.js now collects completely anonymous telemetry regarding usage.
-alecia-colab-web:dev: This information is used to shape Next.js' roadmap and prioritize features.
-alecia-colab-web:dev: You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-alecia-colab-web:dev: https://nextjs.org/telemetry
-alecia-colab-web:dev:
 novel:dev: DTS Build start
-alecia-colab-web:dev:  ✓ Ready in 2s
-novel:dev: DTS ⚡️ Build success in 3476ms
+alecia-colab-web:dev:  ✓ Ready in 3.8s
+novel:dev: DTS ⚡️ Build success in 5171ms
 alecia-colab-web:dev:  ○ Compiling /middleware ...
-alecia-colab-web:dev:  ✓ Compiled /middleware in 2.2s (252 modules)
-alecia-colab-web:dev:  ○ Compiling /dashboard ...
-alecia-colab-web:dev: <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (186kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+alecia-colab-web:dev:  ✓ Compiled /middleware in 632ms (252 modules)
+alecia-colab-web:dev:  ○ Compiling /test-upload ...
 alecia-colab-web:dev: Browserslist: browsers data (caniuse-lite) is 13 months old. Please run:
 alecia-colab-web:dev:   npx update-browserslist-db@latest
 alecia-colab-web:dev:   Why you should do it regularly: https://github.com/browserslist/update-db#readme
-alecia-colab-web:dev:  ✓ Compiled /dashboard in 19.6s (2527 modules)
-alecia-colab-web:dev:  GET /dashboard 200 in 21156ms
-alecia-colab-web:dev:  ✓ Compiled in 1797ms (1094 modules)
- ELIFECYCLE  Command failed.
-alecia-colab-web:dev:  ELIFECYCLE  Command failed.
-novel:dev:  ELIFECYCLE  Command failed.
- ERROR  run failed: command  exited (1)
+alecia-colab-web:dev:  ⨯ ./components/ui/fancy/FileUpload.tsx:7:1
+alecia-colab-web:dev: Module not found: Can't resolve '../../../../convex/_generated/api'
+alecia-colab-web:dev:    5 | import { Upload, X } from "lucide-react";
+alecia-colab-web:dev:    6 | import { useState, useRef, type DragEvent, type ChangeEvent } from "react";
+alecia-colab-web:dev: >  7 | import { api } from "../../../../convex/_generated/api";
+alecia-colab-web:dev:      | ^
+alecia-colab-web:dev:    8 | import { cn } from "@/lib/utils";
+alecia-colab-web:dev:    9 |
+alecia-colab-web:dev:   10 | interface FileUploadProps {
+alecia-colab-web:dev:
+alecia-colab-web:dev: https://nextjs.org/docs/messages/module-not-found
+alecia-colab-web:dev:  ⨯ ./components/ui/fancy/FileUpload.tsx:7:1
+alecia-colab-web:dev: Module not found: Can't resolve '../../../../convex/_generated/api'
+alecia-colab-web:dev:    5 | import { Upload, X } from "lucide-react";
+alecia-colab-web:dev:    6 | import { useState, useRef, type DragEvent, type ChangeEvent } from "react";
+alecia-colab-web:dev: >  7 | import { api } from "../../../../convex/_generated/api";
+alecia-colab-web:dev:      | ^
+alecia-colab-web:dev:    8 | import { cn } from "@/lib/utils";
+alecia-colab-web:dev:    9 |
+alecia-colab-web:dev:   10 | interface FileUploadProps {
+alecia-colab-web:dev:
+alecia-colab-web:dev: https://nextjs.org/docs/messages/module-not-found
+alecia-colab-web:dev:  ⨯ ./components/ui/fancy/FileUpload.tsx:7:1
+alecia-colab-web:dev: Module not found: Can't resolve '../../../../convex/_generated/api'
+alecia-colab-web:dev:    5 | import { Upload, X } from "lucide-react";
+alecia-colab-web:dev:    6 | import { useState, useRef, type DragEvent, type ChangeEvent } from "react";
+alecia-colab-web:dev: >  7 | import { api } from "../../../../convex/_generated/api";
+alecia-colab-web:dev:      | ^
+alecia-colab-web:dev:    8 | import { cn } from "@/lib/utils";
+alecia-colab-web:dev:    9 |
+alecia-colab-web:dev:   10 | interface FileUploadProps {
+alecia-colab-web:dev:
+alecia-colab-web:dev: https://nextjs.org/docs/messages/module-not-found
+alecia-colab-web:dev:  HEAD /test-upload 500 in 17850ms
+alecia-colab-web:dev:  ✓ Compiled /_error in 4.5s (2549 modules)
+alecia-colab-web:dev:  ⨯ ./components/ui/fancy/FileUpload.tsx:8:1
+alecia-colab-web:dev: Module not found: Can't resolve '../../../../convex/_generated/api'
+alecia-colab-web:dev:    6 | import { useState, useRef, type DragEvent, type ChangeEvent } from "react";
+alecia-colab-web:dev:    7 | // @ts-ignore
+alecia-colab-web:dev: >  8 | import { api } from "../../../../convex/_generated/api";
+alecia-colab-web:dev:      | ^
+alecia-colab-web:dev:    9 | import { cn } from "@/lib/utils";
+alecia-colab-web:dev:   10 |
+alecia-colab-web:dev:   11 | interface FileUploadProps {
+alecia-colab-web:dev:
+alecia-colab-web:dev: https://nextjs.org/docs/messages/module-not-found
+alecia-colab-web:dev:  ✓ Compiled in 826ms (1190 modules)
+alecia-colab-web:dev:  ○ Compiling /test-upload ...
+alecia-colab-web:dev:  ✓ Compiled /test-upload in 834ms (1353 modules)
+alecia-colab-web:dev:  ⨯ Error: Event handlers cannot be passed to Client Component props.
+alecia-colab-web:dev:   <... onUploadComplete={function onUploadComplete} className=...>
+alecia-colab-web:dev:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alecia-colab-web:dev: If you need interactivity, consider converting part of this to a Client Component.
+alecia-colab-web:dev:     at stringify (<anonymous>)
+alecia-colab-web:dev:     at stringify (<anonymous>) {
+alecia-colab-web:dev:   digest: '441535633'
+alecia-colab-web:dev: }
+alecia-colab-web:dev:  HEAD /test-upload 200 in 2371ms
+alecia-colab-web:dev:  ⨯ Error: Event handlers cannot be passed to Client Component props.
+alecia-colab-web:dev:   <... onUploadComplete={function onUploadComplete} className=...>
+alecia-colab-web:dev:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alecia-colab-web:dev: If you need interactivity, consider converting part of this to a Client Component.
+alecia-colab-web:dev:     at stringify (<anonymous>)
+alecia-colab-web:dev:     at stringify (<anonymous>) {
+alecia-colab-web:dev:   digest: '441535633'
+alecia-colab-web:dev: }
+alecia-colab-web:dev:  GET /test-upload 200 in 752ms
+alecia-colab-web:dev:  ⨯ Error: Event handlers cannot be passed to Client Component props.
+alecia-colab-web:dev:   <... onUploadComplete={function onUploadComplete} className=...>
+alecia-colab-web:dev:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alecia-colab-web:dev: If you need interactivity, consider converting part of this to a Client Component.
+alecia-colab-web:dev:     at stringify (<anonymous>)
+alecia-colab-web:dev:     at stringify (<anonymous>) {
+alecia-colab-web:dev:   digest: '441535633'
+alecia-colab-web:dev: }
+alecia-colab-web:dev:  GET /test-upload 200 in 553ms
+alecia-colab-web:dev:  ✓ Compiled in 3.6s (2530 modules)
+alecia-colab-web:dev:  ⨯ Error: Could not find Convex client! `useMutation` must be used in the React component tree under `ConvexProvider`. Did you forget it? See https://docs.convex.dev/quick-start#set-up-convex-in-your-react-app
+alecia-colab-web:dev:     at api (components/ui/fancy/FileUpload.tsx:24:40)
+alecia-colab-web:dev:   22 |   maxSize = 10 * 1024 * 1024, // 10MB default
+alecia-colab-web:dev:   23 | }: FileUploadProps) {
+alecia-colab-web:dev: > 24 |   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+alecia-colab-web:dev:      |                                        ^
+alecia-colab-web:dev:   25 |   const saveFile = useMutation(api.files.saveFile);
+alecia-colab-web:dev:   26 |
+alecia-colab-web:dev:   27 |   const [isDragging, setIsDragging] = useState(false); {
+alecia-colab-web:dev:   digest: '2477448926'
+alecia-colab-web:dev: }
+alecia-colab-web:dev:  GET /test-upload 200 in 619ms
+alecia-colab-web:dev:  ⨯ Error: Could not find Convex client! `useMutation` must be used in the React component tree under `ConvexProvider`. Did you forget it? See https://docs.convex.dev/quick-start#set-up-convex-in-your-react-app
+alecia-colab-web:dev:     at api (components/ui/fancy/FileUpload.tsx:24:40)
+alecia-colab-web:dev:   22 |   maxSize = 10 * 1024 * 1024, // 10MB default
+alecia-colab-web:dev:   23 | }: FileUploadProps) {
+alecia-colab-web:dev: > 24 |   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+alecia-colab-web:dev:      |                                        ^
+alecia-colab-web:dev:   25 |   const saveFile = useMutation(api.files.saveFile);
+alecia-colab-web:dev:   26 |
+alecia-colab-web:dev:   27 |   const [isDragging, setIsDragging] = useState(false); {
+alecia-colab-web:dev:   digest: '2477448926'
+alecia-colab-web:dev: }
+alecia-colab-web:dev:  HEAD /test-upload 200 in 56ms
+alecia-colab-web:dev:  ⨯ Error: Could not find Convex client! `useMutation` must be used in the React component tree under `ConvexProvider`. Did you forget it? See https://docs.convex.dev/quick-start#set-up-convex-in-your-react-app
+alecia-colab-web:dev:     at api (components/ui/fancy/FileUpload.tsx:24:40)
+alecia-colab-web:dev:   22 |   maxSize = 10 * 1024 * 1024, // 10MB default
+alecia-colab-web:dev:   23 | }: FileUploadProps) {
+alecia-colab-web:dev: > 24 |   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+alecia-colab-web:dev:      |                                        ^
+alecia-colab-web:dev:   25 |   const saveFile = useMutation(api.files.saveFile);
+alecia-colab-web:dev:   26 |
+alecia-colab-web:dev:   27 |   const [isDragging, setIsDragging] = useState(false); {
+alecia-colab-web:dev:   digest: '2477448926'
+alecia-colab-web:dev: }
+alecia-colab-web:dev:  GET /test-upload 200 in 59ms
+alecia-colab-web:dev:  ✓ Compiled in 2s (1498 modules)
