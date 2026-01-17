@@ -1,6 +1,7 @@
 "use client";
 
 import useLocalStorage from "@/hooks/use-local-storage";
+import { AnimationProvider } from "@/providers/AnimationProvider";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider, useTheme } from "next-themes";
 import { type Dispatch, type ReactNode, type SetStateAction, createContext } from "react";
@@ -32,9 +33,11 @@ export default function Providers({ children }: { children: ReactNode }) {
           setFont,
         }}
       >
-        <ToasterProvider />
-        {children}
-        <Analytics />
+        <AnimationProvider>
+          <ToasterProvider />
+          {children}
+          <Analytics />
+        </AnimationProvider>
       </AppContext.Provider>
     </ThemeProvider>
   );
