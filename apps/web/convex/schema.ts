@@ -36,6 +36,19 @@ export default defineSchema({
     .index("by_document", ["documentId"])
     .index("by_version", ["documentId", "versionNumber"]),
 
+  // Batch 20: Files
+  colab_files: defineTable({
+    storageId: v.id("_storage"),
+    fileName: v.string(),
+    fileType: v.string(),
+    size: v.number(),
+    folderId: v.optional(v.string()),
+    userId: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_folder", ["folderId"])
+    .index("by_user", ["userId"]),
+
   // M&A Deals for the Deal Pipeline
   colab_deals: defineTable({
     company: v.string(),
