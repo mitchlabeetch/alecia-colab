@@ -1,15 +1,22 @@
 "use client";
 
 import { AISelector } from "@/components/tailwind/generative/ai-selector";
+import { mentionCommand } from "@/components/tailwind/mention-command";
 import { slashCommand } from "@/components/tailwind/slash-command";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import { Table } from "@tiptap/extension-table";
+import { TableCell } from "@tiptap/extension-table-cell";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { TableRow } from "@tiptap/extension-table-row";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useMutation, useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import { Markdown } from "tiptap-markdown";
 import { useDebounce } from "use-debounce";
+import { CalloutExtension } from "./extensions/callout-extension";
+import { KanbanExtension } from "./extensions/kanban-extension";
 
 interface DocumentEditorProps {
   documentId: Id<"colab_documents">;
@@ -51,6 +58,15 @@ export const DocumentEditor = ({ documentId }: DocumentEditorProps) => {
       }),
       Markdown,
       slashCommand,
+      mentionCommand,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
+      CalloutExtension,
+      KanbanExtension,
     ],
     content: content,
     onUpdate: ({ editor }) => {

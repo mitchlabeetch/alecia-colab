@@ -1,217 +1,78 @@
-import type { JSONContent } from "novel";
-
-export interface Template {
-  id: string;
-  name: string;
-  description: string;
-  category: "deal" | "company" | "due-diligence" | "valuation" | "integration" | "general";
-  content: JSONContent;
-}
-
-export const templates: Template[] = [
+export const DOCUMENTS_TEMPLATES = [
   {
-    id: "deal-summary",
-    name: "Deal Summary",
-    description: "Comprehensive deal overview and tracking",
-    category: "deal",
-    content: {
-      type: "doc",
-      content: [
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Deal Summary" }] },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Target Company: " },
-            { type: "text", text: "[Company Name]" },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Deal Stage: " },
-            { type: "text", text: "[Sourcing / Due Diligence / Negotiation / Closing]" },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Deal Lead: " },
-            { type: "text", text: "[Name]" },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Valuation: " },
-            { type: "text", text: "[Amount]" },
-          ],
-        },
-        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Strategic Rationale" }] },
-        {
-          type: "bulletList",
-          content: [
-            {
-              type: "listItem",
-              content: [{ type: "paragraph", content: [{ type: "text", text: "Market expansion opportunities" }] }],
-            },
-            {
-              type: "listItem",
-              content: [{ type: "paragraph", content: [{ type: "text", text: "Technology and IP acquisition" }] }],
-            },
-            {
-              type: "listItem",
-              content: [{ type: "paragraph", content: [{ type: "text", text: "Synergies and cost optimization" }] }],
-            },
-          ],
-        },
-      ],
-    },
+    id: "teaser",
+    title: "Teaser de cession",
+    description: "Document de présentation anonymisé pour acquéreurs potentiels",
+    content: `
+      <h1>Teaser de Cession</h1>
+      <p><strong>Secteur : </strong>[Secteur d'activité]</p>
+      <p><strong>Code Projet : </strong>[Nom de code]</p>
+      <h2>Points Clés d'Investissement</h2>
+      <ul>
+        <li><p>Position de leader sur le marché de niche</p></li>
+        <li><p>Croissance du CA de +XX% par an</p></li>
+        <li><p>Technologie propriétaire brevetée</p></li>
+      </ul>
+      <h2>Aperçu Financier</h2>
+      <p>[Insérer tableau synthétique ici]</p>
+    `,
   },
   {
-    id: "company-profile",
-    name: "Company Profile",
-    description: "Target company analysis and overview",
-    category: "company",
-    content: {
-      type: "doc",
-      content: [
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Company Profile" }] },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Company Name: " },
-            { type: "text", text: "[Name]" },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Industry: " },
-            { type: "text", text: "[Industry]" },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Location: " },
-            { type: "text", text: "[Location]" },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Chiffre d'Affaires: " },
-            { type: "text", text: "$[Amount]" },
-          ],
-        },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Employees: " },
-            { type: "text", text: "[Number]" },
-          ],
-        },
-        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Business Overview" }] },
-        { type: "paragraph", content: [{ type: "text", text: "[Brief description]" }] },
-      ],
-    },
+    id: "im",
+    title: "Mémorandum d'information",
+    description: "Document détaillé de présentation de la société",
+    content: `
+      <h1>Mémorandum d'Information</h1>
+      <h2>Résumé Exécutif</h2>
+      <p>[Synthèse de l'opportunité]</p>
+      <h2>Présentation de la Société</h2>
+      <h3>Historique</h3>
+      <h3>Produits et Services</h3>
+      <h2>Marché et Concurrence</h2>
+      <h2>Plan Stratégique</h2>
+    `,
   },
   {
-    id: "due-diligence",
-    name: "Due Diligence Checklist",
-    description: "Comprehensive DD framework",
-    category: "due-diligence",
-    content: {
-      type: "doc",
-      content: [
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Due Diligence Checklist" }] },
-        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Financial Due Diligence" }] },
-        {
-          type: "taskList",
-          content: [
-            {
-              type: "taskItem",
-              attrs: { checked: false },
-              content: [
-                { type: "paragraph", content: [{ type: "text", text: "Review financial statements (3-5 years)" }] },
-              ],
-            },
-            {
-              type: "taskItem",
-              attrs: { checked: false },
-              content: [{ type: "paragraph", content: [{ type: "text", text: "Analyze Chiffre d'Affaires trends" }] }],
-            },
-          ],
-        },
-      ],
-    },
+    id: "loi",
+    title: "Lettre d'Intention (LOI)",
+    description: "Structure standard d'une LOI",
+    content: `
+      <h1>Lettre d'Intention</h1>
+      <p><strong>Date : </strong>[Date]</p>
+      <p><strong>À l'attention de : </strong>[Cédant]</p>
+      <h2>Objet : Offre indicative pour l'acquisition de [Société]</h2>
+      <p>Madame, Monsieur,</p>
+      <p>Suite à nos échanges...</p>
+      <h3>1. Périmètre de l'opération</h3>
+      <h3>2. Prix et Modalités de paiement</h3>
+      <h3>3. Conditions suspensives</h3>
+      <h3>4. Calendrier indicatif</h3>
+      <h3>5. Exclusivité</h3>
+    `,
   },
   {
-    id: "valuation",
-    name: "Valuation Analysis",
-    description: "Financial valuation model",
-    category: "valuation",
-    content: {
-      type: "doc",
-      content: [
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Valuation Analysis" }] },
-        {
-          type: "paragraph",
-          content: [
-            { type: "text", marks: [{ type: "bold" }], text: "Company: " },
-            { type: "text", text: "[Name]" },
-          ],
-        },
-        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Valuation Methodologies" }] },
-        {
-          type: "orderedList",
-          content: [
-            { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "DCF Analysis" }] }] },
-            {
-              type: "listItem",
-              content: [{ type: "paragraph", content: [{ type: "text", text: "Comparable Companies" }] }],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    id: "integration-plan",
-    name: "Integration Plan",
-    description: "Post-merger integration roadmap",
-    category: "integration",
-    content: {
-      type: "doc",
-      content: [
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Integration Plan" }] },
-        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Day 1 Priorities" }] },
-        {
-          type: "taskList",
-          content: [
-            {
-              type: "taskItem",
-              attrs: { checked: false },
-              content: [{ type: "paragraph", content: [{ type: "text", text: "Communication to stakeholders" }] }],
-            },
-            {
-              type: "taskItem",
-              attrs: { checked: false },
-              content: [
-                { type: "paragraph", content: [{ type: "text", text: "Establish integration management office" }] },
-              ],
-            },
-          ],
-        },
-      ],
-    },
+    id: "dd",
+    title: "Checklist Due Diligence",
+    description: "Standard checklist pour Due Diligence",
+    content: `
+      <h1>Checklist Due Diligence</h1>
+      <h2>1. Juridique</h2>
+      <ul data-type="taskList">
+        <li data-type="taskItem" data-checked="false"><p>Statuts de la société à jour</p></li>
+        <li data-type="taskItem" data-checked="false"><p>Kbis de moins de 3 mois</p></li>
+        <li data-type="taskItem" data-checked="false"><p>Organigramme juridique</p></li>
+      </ul>
+      <h2>2. Financier</h2>
+      <ul data-type="taskList">
+        <li data-type="taskItem" data-checked="false"><p>Liasses fiscales (3 derniers exercices)</p></li>
+        <li data-type="taskItem" data-checked="false"><p>Rapports des commissaires aux comptes</p></li>
+        <li data-type="taskItem" data-checked="false"><p>Budget prévisionnel</p></li>
+      </ul>
+      <h2>3. Social</h2>
+      <ul data-type="taskList">
+        <li data-type="taskItem" data-checked="false"><p>Livre d'entrée et de sortie du personnel</p></li>
+        <li data-type="taskItem" data-checked="false"><p>Contrats de travail des cadres dirigeants</p></li>
+      </ul>
+    `,
   },
 ];
-
-export function getTemplateById(id: string): Template | undefined {
-  return templates.find((t) => t.id === id);
-}
-
-export function getTemplatesByCategory(category: Template["category"]): Template[] {
-  return templates.filter((t) => t.category === category);
-}
