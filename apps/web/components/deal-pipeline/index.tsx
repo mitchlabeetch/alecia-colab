@@ -1,31 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import type { Id } from "../../convex/_generated/dataModel";
-import { Badge } from "../tailwind/ui/badge";
-import { Button } from "../tailwind/ui/button";
-import { ScrollArea } from "../tailwind/ui/scroll-area";
-import { Card, CardContent, CardHeader, CardTitle } from "../tailwind/ui/card";
+import { useMutation, useQuery } from "convex/react";
 import {
+  ArrowRight,
   Briefcase,
   Building,
   Calendar,
   DollarSign,
-  TrendingUp,
-  ArrowRight,
+  Loader2,
   MoreVertical,
   Plus,
-  Loader2,
+  TrendingUp,
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { api } from "../../convex/_generated/api";
+import type { Id } from "../../convex/_generated/dataModel";
+import { Badge } from "../tailwind/ui/badge";
+import { Button } from "../tailwind/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../tailwind/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../tailwind/ui/dialog";
+import { ScrollArea } from "../tailwind/ui/scroll-area";
 
+import DealFlowCanvas from "../deal-flow/DealFlowCanvas";
+import { CalendarView } from "./CalendarView";
+import { TableView } from "./TableView";
 // Multi-view components
 import { ViewSwitcher, type ViewType } from "./ViewSwitcher";
-import { TableView } from "./TableView";
-import { CalendarView } from "./CalendarView";
-import DealFlowCanvas from "../deal-flow/DealFlowCanvas";
 
 import { fr } from "@/lib/i18n";
 

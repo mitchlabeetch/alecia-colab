@@ -9,7 +9,7 @@ import { mutation, query } from "./_generated/server";
  */
 
 // Presence entry for a user
-const presenceValidator = {
+const _presenceValidator = {
   resourceType: v.union(v.literal("document"), v.literal("deal")),
   resourceId: v.string(),
   userId: v.string(),

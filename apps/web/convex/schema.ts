@@ -121,17 +121,21 @@ export default defineSchema({
     workspaceId: v.optional(v.string()),
     theme: v.string(),
     language: v.string(), // 'fr-FR' default
-    slides: v.array(v.object({
-      id: v.string(),
-      title: v.string(),
-      content: v.any(), // Block content
-      notes: v.optional(v.string()),
-      rootImage: v.optional(v.object({
-        url: v.string(),
-        query: v.string(),
-      })),
-    })),
-    status: v.union(v.literal('draft'), v.literal('generating'), v.literal('complete')),
+    slides: v.array(
+      v.object({
+        id: v.string(),
+        title: v.string(),
+        content: v.any(), // Block content
+        notes: v.optional(v.string()),
+        rootImage: v.optional(
+          v.object({
+            url: v.string(),
+            query: v.string(),
+          }),
+        ),
+      }),
+    ),
+    status: v.union(v.literal("draft"), v.literal("generating"), v.literal("complete")),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
@@ -143,60 +147,60 @@ export default defineSchema({
   colab_boards: defineTable({
     name: v.string(),
     workspaceId: v.optional(v.string()),
-    visibility: v.union(v.literal('private'), v.literal('workspace'), v.literal('public')),
+    visibility: v.union(v.literal("private"), v.literal("workspace"), v.literal("public")),
     backgroundUrl: v.optional(v.string()),
     createdBy: v.string(),
     publicId: v.optional(v.string()),
     createdAt: v.number(),
   })
-    .index('by_workspace', ['workspaceId'])
-    .index('by_user', ['createdBy']),
+    .index("by_workspace", ["workspaceId"])
+    .index("by_user", ["createdBy"]),
 
   colab_lists: defineTable({
     name: v.string(),
-    boardId: v.id('colab_boards'),
-    order: v.number(),
+    boardId: v.id("colab_boards"),
+    index: v.number(),
     createdAt: v.number(),
-  }).index('by_board', ['boardId']),
+  }).index("by_board", ["boardId"]),
 
   colab_cards: defineTable({
     title: v.string(),
     description: v.optional(v.string()),
-    listId: v.id('colab_lists'),
-    order: v.number(),
-    labelIds: v.optional(v.array(v.id('colab_labels'))),
+    listId: v.id("colab_lists"),
+    index: v.number(),
+    labelIds: v.optional(v.array(v.id("colab_labels"))),
     assigneeIds: v.optional(v.array(v.string())),
     dueDate: v.optional(v.number()),
     dueDateCompleted: v.optional(v.boolean()),
     createdBy: v.string(),
     createdAt: v.number(),
     updatedAt: v.number(),
-  }).index('by_list', ['listId']),
+  }).index("by_list", ["listId"]),
 
   colab_labels: defineTable({
     name: v.string(),
     colorCode: v.string(),
-    boardId: v.id('colab_boards'),
-  }).index('by_board', ['boardId']),
+    boardId: v.id("colab_boards"),
+  }).index("by_board", ["boardId"]),
 
   colab_checklists: defineTable({
     name: v.string(),
-    cardId: v.id('colab_cards'),
+    cardId: v.id("colab_cards"),
     order: v.number(),
-  }).index('by_card', ['cardId']),
+  }).index("by_card", ["cardId"]),
 
   colab_checklist_items: defineTable({
     content: v.string(),
     completed: v.boolean(),
-    checklistId: v.id('colab_checklists'),
+    checklistId: v.id("colab_checklists"),
     order: v.number(),
-  }).index('by_checklist', ['checklistId']),
+  }).index("by_checklist", ["checklistId"]),
 
   colab_card_activities: defineTable({
-    cardId: v.id('colab_cards'),
+    cardId: v.id("colab_cards"),
     userId: v.string(),
     action: v.string(),
     details: v.optional(v.any()),
     createdAt: v.number(),
-  }).index('by_card', ['cardId']),
+  }).index("by_card", ["cardId"]),
 });

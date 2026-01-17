@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Check, ChevronDown, ExternalLink, LayoutDashboard, FileEdit } from "lucide-react";
+import { Button } from "@/components/tailwind/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +9,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/tailwind/ui/dropdown-menu";
-import { Button } from "@/components/tailwind/ui/button";
 import { cn } from "@/lib/utils";
+import { Check, ChevronDown, ExternalLink, FileEdit, LayoutDashboard } from "lucide-react";
+import { useState } from "react";
 
 type WorkspaceContext = "colab" | "admin";
 

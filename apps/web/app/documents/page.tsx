@@ -1,8 +1,8 @@
 "use client";
 
-import dynamicImport from "next/dynamic";
 import { AppShell } from "@/components/layout/AppShell";
 import { Skeleton } from "@/components/tailwind/ui/skeleton";
+import dynamicImport from "next/dynamic";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";

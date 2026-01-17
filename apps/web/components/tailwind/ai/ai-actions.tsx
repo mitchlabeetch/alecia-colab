@@ -1,11 +1,4 @@
-
-import {
-  Sparkles,
-  RefreshCw,
-  Expand,
-  Minimize,
-  Languages,
-} from "lucide-react";
+import { Expand, Languages, Minimize, RefreshCw, Sparkles } from "lucide-react";
 
 export const AI_ACTIONS = [
   {

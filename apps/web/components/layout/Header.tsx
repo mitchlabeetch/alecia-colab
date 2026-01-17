@@ -5,13 +5,13 @@
  * Features: Logo, search, notifications, profile
  */
 
-import { Bell, Search, Menu } from "lucide-react";
+import { Badge } from "@/components/tailwind/ui/badge";
 import { Button } from "@/components/tailwind/ui/button";
 import { Input } from "@/components/tailwind/ui/input";
-import { Badge } from "@/components/tailwind/ui/badge";
-import { WorkspaceSwitcher } from "./WorkspaceSwitcher";
-import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+import { Bell, Menu, Search } from "lucide-react";
+import { WorkspaceSwitcher } from "./WorkspaceSwitcher";
 
 interface HeaderProps {
   onMenuClick?: () => void;

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useCallback, useRef, useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "../convex/_generated/api";
 
 const HEARTBEAT_INTERVAL = 10000; // 10 seconds
@@ -77,7 +77,7 @@ export function usePresence({ resourceType, resourceId, enabled = true }: UsePre
     if (!mounted) return;
 
     try {
-      const clerk = require("@clerk/nextjs");
+      const _clerk = require("@clerk/nextjs");
       // This is a workaround - in a real app, you'd use useUser directly
       // but for SSR safety, we delay it
       const currentUser = getUser();

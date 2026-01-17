@@ -23,7 +23,6 @@ export interface MathematicsOptions {
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     LatexCommand: {
-
       /**
        * Set selection to a LaTex symbol
        */
@@ -33,16 +32,15 @@ declare module "@tiptap/core" {
        * Unset a LaTex symbol
        */
       unsetLatex: () => ReturnType;
-
     };
   }
 }
 
 /**
  * This extension adds support for mathematical symbols with LaTex expression.
- * 
+ *
  * NOTE: Don't forget to import `katex/dist/katex.min.css` CSS for KaTex styling.
- * 
+ *
  * @see https://katex.org/
  */
 export const Mathematics = Node.create<MathematicsOptions>({
@@ -67,7 +65,7 @@ export const Mathematics = Node.create<MathematicsOptions>({
         if (!$pos.parent.isTextblock) {
           return false;
         }
-        
+
         return $pos.parent.type.name !== "codeBlock";
       },
       katexOptions: {
@@ -99,7 +97,7 @@ export const Mathematics = Node.create<MathematicsOptions>({
                 attrs: {
                   latex: latex,
                 },
-              }
+              },
             )
             .setTextSelection({ from: from, to: from + 1 })
             .run();
@@ -160,7 +158,7 @@ export const Mathematics = Node.create<MathematicsOptions>({
         dom.setAttribute(key, value);
       });
 
-      dom.addEventListener("click", (evt) => {
+      dom.addEventListener("click", (_evt) => {
         if (editor.isEditable && typeof getPos === "function") {
           const pos = getPos();
           const nodeSize = node.nodeSize;

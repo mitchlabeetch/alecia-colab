@@ -1,21 +1,21 @@
 "use client";
 
+import { useMutation, useQuery } from "convex/react";
+import { ChevronRight, Clock, Eye, History, Loader2, RotateCcw, User, X } from "lucide-react";
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
-import { Button } from "../tailwind/ui/button";
-import { ScrollArea } from "../tailwind/ui/scroll-area";
 import { Badge } from "../tailwind/ui/badge";
-import { History, Clock, User, RotateCcw, Eye, ChevronRight, X, Loader2 } from "lucide-react";
+import { Button } from "../tailwind/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "../tailwind/ui/dialog";
+import { ScrollArea } from "../tailwind/ui/scroll-area";
 
 interface VersionHistorySidebarProps {
   documentId: Id<"colab_documents">;

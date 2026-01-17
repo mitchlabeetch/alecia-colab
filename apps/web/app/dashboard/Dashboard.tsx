@@ -5,28 +5,28 @@
  * Features: Welcome message, quick actions, recent documents, activity feed
  */
 
-import { motion } from "motion/react";
-import { useMemo } from "react";
-import { useUser } from "@clerk/nextjs";
-import {
-  FileText,
-  Briefcase,
-  Building,
-  Clock,
-  Users,
-  CheckCircle2,
-  ArrowRight,
-  LayoutDashboard,
-  Globe,
-} from "lucide-react";
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
-import { Button } from "@/components/tailwind/ui/button";
-import { Separator } from "@/components/tailwind/ui/separator";
 import { RecentFiles } from "@/components/recent-files";
+import { Button } from "@/components/tailwind/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
+import { Separator } from "@/components/tailwind/ui/separator";
 import { useDeals, useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { fr, t } from "@/lib/i18n";
+import { useUser } from "@clerk/nextjs";
+import {
+  ArrowRight,
+  Briefcase,
+  Building,
+  CheckCircle2,
+  Clock,
+  FileText,
+  Globe,
+  LayoutDashboard,
+  Users,
+} from "lucide-react";
+import { motion } from "motion/react";
+import Link from "next/link";
+import { useMemo } from "react";
 
 const quickActions = [
   {

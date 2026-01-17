@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/tailwind/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/tailwind/ui/card';
-import { Plus, Presentation } from 'lucide-react';
-import { useUser } from '@clerk/nextjs';
+import { Button } from "@/components/tailwind/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/tailwind/ui/card";
+import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { Plus, Presentation } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function PresentationList() {
   const router = useRouter();
@@ -22,9 +22,9 @@ export function PresentationList() {
   } catch (_e) {
     // If Clerk is not available (e.g. no provider), use a mock or null
     // In dev without keys, we might want to mock it to test UI
-    if (process.env.NODE_ENV === 'development') {
-       user = { id: "dev_user_mock" };
-       isLoaded = true;
+    if (process.env.NODE_ENV === "development") {
+      user = { id: "dev_user_mock" };
+      isLoaded = true;
     }
   }
 
@@ -35,7 +35,7 @@ export function PresentationList() {
     <div className="container mx-auto p-6 space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Mes Présentations</h1>
-        <Button onClick={() => router.push('/presentations/new')}>
+        <Button onClick={() => router.push("/presentations/new")}>
           <Plus className="mr-2 h-4 w-4" />
           Nouvelle présentation
         </Button>
@@ -45,12 +45,12 @@ export function PresentationList() {
         {/* Create New Card */}
         <Card
           className="cursor-pointer hover:bg-accent/50 transition-colors border-dashed flex flex-col items-center justify-center min-h-[160px]"
-          onClick={() => router.push('/presentations/new')}
+          onClick={() => router.push("/presentations/new")}
         >
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                <Plus className="h-6 w-6 text-primary" />
-            </div>
-            <span className="font-semibold text-primary">Créer une présentation</span>
+          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+            <Plus className="h-6 w-6 text-primary" />
+          </div>
+          <span className="font-semibold text-primary">Créer une présentation</span>
         </Card>
 
         {presentations?.map((p: any) => (
@@ -65,14 +65,14 @@ export function PresentationList() {
                   <Presentation className="h-5 w-5 text-primary" />
                 </div>
                 <span className="text-xs text-muted-foreground ml-2">
-                  {new Date(p.createdAt).toLocaleDateString('fr-FR')}
+                  {new Date(p.createdAt).toLocaleDateString("fr-FR")}
                 </span>
               </div>
               <h3 className="font-semibold mt-3 line-clamp-2">{p.title}</h3>
             </CardHeader>
             <CardContent className="p-4 pt-0 mt-auto">
               <p className="text-sm text-muted-foreground">
-                {p.slides.length} diapositive{p.slides.length > 1 ? 's' : ''}
+                {p.slides.length} diapositive{p.slides.length > 1 ? "s" : ""}
               </p>
             </CardContent>
           </Card>
@@ -80,9 +80,7 @@ export function PresentationList() {
       </div>
 
       {presentations && presentations.length === 0 && (
-          <div className="text-center text-muted-foreground py-12">
-              Aucune présentation pour le moment.
-          </div>
+        <div className="text-center text-muted-foreground py-12">Aucune présentation pour le moment.</div>
       )}
     </div>
   );

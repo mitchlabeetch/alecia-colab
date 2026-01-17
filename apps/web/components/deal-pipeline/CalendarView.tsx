@@ -1,12 +1,11 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo } from "react";
-import type { Id } from "../../convex/_generated/dataModel";
-import { Card, CardContent } from "../tailwind/ui/card";
-import { Badge } from "../tailwind/ui/badge";
-import { ChevronLeft, ChevronRight, Building } from "lucide-react";
-import { Button } from "../tailwind/ui/button";
 import { useState } from "react";
+import type { Id } from "../../convex/_generated/dataModel";
+import { Button } from "../tailwind/ui/button";
+import { Card, CardContent } from "../tailwind/ui/card";
 
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
 

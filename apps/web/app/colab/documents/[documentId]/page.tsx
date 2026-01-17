@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { DocumentEditor } from '@/components/editor/DocumentEditor';
-import type { Id } from '@/convex/_generated/dataModel';
-import React from 'react';
+import { DocumentEditor } from "@/components/editor/DocumentEditor";
+import type { Id } from "@/convex/_generated/dataModel";
+import React from "react";
 
 interface PageProps {
   params: Promise<{

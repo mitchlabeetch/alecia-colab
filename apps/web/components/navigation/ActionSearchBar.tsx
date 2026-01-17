@@ -5,22 +5,22 @@
  * Adapté pour Alecia Colab - Interface française
  */
 
-import { useState, useEffect, useMemo, useCallback } from "react";
 import { Input } from "@/components/tailwind/ui/input";
-import { motion, AnimatePresence } from "motion/react";
+import useDebounce from "@/hooks/use-debounce";
 import {
+  Briefcase,
+  Building,
+  FileText,
+  History,
+  LayoutGrid,
+  PlusCircle,
   Search,
   Send,
-  Briefcase,
-  FileText,
   Settings,
-  PlusCircle,
-  LayoutGrid,
-  History,
   Users,
-  Building,
 } from "lucide-react";
-import useDebounce from "@/hooks/use-debounce";
+import { AnimatePresence, motion } from "motion/react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface Action {
   id: string;
@@ -270,7 +270,7 @@ export default function ActionSearchBar({
                 animate="show"
                 exit="exit"
               >
-                <motion.ul role="none">
+                <motion.ul>
                   {filteredActions.map((action, index) => (
                     <motion.li
                       key={action.id}

@@ -30,7 +30,7 @@ export const runtime = "nodejs";
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
-  
+
   // Always call hooks unconditionally - but the provider handles missing config
   const { user } = useUser();
   const { documents, isLoading, isConvexAvailable } = useDocuments(user?.id);

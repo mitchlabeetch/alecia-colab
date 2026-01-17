@@ -5,10 +5,10 @@
  * Adapté pour Alecia Colab - Interface française avec Convex
  */
 
+import { cn } from "@/lib/utils";
 import { UploadCloud } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { type DragEvent, useCallback, useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
 
 type FileStatus = "idle" | "dragging" | "uploading" | "error" | "success";
 
@@ -154,7 +154,7 @@ export default function FileUpload({
 
       if (!isValid) {
         return {
-          message: `Type de fichier non autorisé`,
+          message: "Type de fichier non autorisé",
           code: "INVALID_FILE_TYPE",
         };
       }

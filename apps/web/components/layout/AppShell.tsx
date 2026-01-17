@@ -5,11 +5,11 @@
  * Features: Header, Sidebar, Main content area
  */
 
+import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { ColabBreadcrumbs } from "./ColabBreadcrumbs";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
-import { ColabBreadcrumbs } from "./ColabBreadcrumbs";
-import { cn } from "@/lib/utils";
 
 interface AppShellProps {
   children: React.ReactNode;

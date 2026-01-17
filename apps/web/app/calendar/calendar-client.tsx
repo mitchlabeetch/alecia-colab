@@ -1,17 +1,27 @@
 "use client";
 
-import { useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
-import { useDeals } from "@/hooks/use-convex";
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Briefcase, Loader2 } from "lucide-react";
-import { Button } from "@/components/tailwind/ui/button";
-import { cn } from "@/lib/utils";
 import { Badge } from "@/components/tailwind/ui/badge";
+import { Button } from "@/components/tailwind/ui/button";
+import { useDeals } from "@/hooks/use-convex";
+import { cn } from "@/lib/utils";
+import { Briefcase, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 const WEEKDAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 const MONTHS = [
-  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Août",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre",
 ];
 
 export function CalendarClient() {
@@ -54,17 +64,14 @@ export function CalendarClient() {
   }
 
   // Filter deals for the displayed month
-  const dealsInMonth = deals?.filter(deal => {
+  const dealsInMonth = deals?.filter((deal) => {
     if (!deal.dueDate) return false;
     const dealDate = new Date(deal.dueDate);
-    return (
-      dealDate.getMonth() === currentDate.getMonth() &&
-      dealDate.getFullYear() === currentDate.getFullYear()
-    );
+    return dealDate.getMonth() === currentDate.getMonth() && dealDate.getFullYear() === currentDate.getFullYear();
   });
 
   const getDealsForDay = (day: number) => {
-    return dealsInMonth?.filter(deal => {
+    return dealsInMonth?.filter((deal) => {
       const dealDate = new Date(deal.dueDate!); // Checked in filter above
       return dealDate.getDate() === day;
     });
@@ -78,7 +85,6 @@ export function CalendarClient() {
             <CalendarIcon className="h-6 w-6 text-primary" />
             <h1 className="text-2xl font-bold tracking-tight">Calendrier</h1>
           </div>
-
           <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-lg border">
             <Button variant="ghost" size="icon" onClick={prevMonth}>
               <ChevronLeft className="h-4 w-4" />
@@ -90,7 +96,6 @@ export function CalendarClient() {
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-
           <div className="w-[100px]" /> {/* Spacer for centering alignment if needed, or actions */}
         </div>
 
@@ -103,7 +108,10 @@ export function CalendarClient() {
             {/* Weekday Headers */}
             <div className="grid grid-cols-7 border-b bg-muted/30">
               {WEEKDAYS.map((day) => (
-                <div key={day} className="py-3 text-center text-sm font-semibold text-muted-foreground border-r last:border-r-0">
+                <div
+                  key={day}
+                  className="py-3 text-center text-sm font-semibold text-muted-foreground border-r last:border-r-0"
+                >
                   {day}
                 </div>
               ))}
@@ -125,15 +133,17 @@ export function CalendarClient() {
                       "min-h-[120px] p-2 border-b border-r last:border-r-0 relative transition-colors hover:bg-muted/10",
                       !day && "bg-muted/5",
                       (index + 1) % 7 === 0 && "border-r-0", // Remove right border for last column
-                      index >= days.length - 7 && "border-b-0" // Remove bottom border for last row (approx)
+                      index >= days.length - 7 && "border-b-0", // Remove bottom border for last row (approx)
                     )}
                   >
                     {day && (
                       <>
-                        <div className={cn(
-                          "flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium mb-1",
-                          isToday ? "bg-primary text-primary-foreground" : "text-foreground"
-                        )}>
+                        <div
+                          className={cn(
+                            "flex items-center justify-center w-7 h-7 rounded-full text-sm font-medium mb-1",
+                            isToday ? "bg-primary text-primary-foreground" : "text-foreground",
+                          )}
+                        >
                           {day}
                         </div>
                         <div className="space-y-1">
@@ -147,12 +157,11 @@ export function CalendarClient() {
                                 <Briefcase className="h-3 w-3 opacity-70" />
                                 {deal.company}
                               </div>
-                              {deal.valuation && (
-                                <div className="text-[10px] opacity-80 pl-4">
-                                  {deal.valuation}
-                                </div>
-                              )}
-                              <Badge variant="outline" className="text-[10px] h-4 px-1 w-fit bg-background/50 border-primary/20">
+                              {deal.valuation && <div className="text-[10px] opacity-80 pl-4">{deal.valuation}</div>}
+                              <Badge
+                                variant="outline"
+                                className="text-[10px] h-4 px-1 w-fit bg-background/50 border-primary/20"
+                              >
                                 {deal.stage}
                               </Badge>
                             </div>

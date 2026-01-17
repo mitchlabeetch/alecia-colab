@@ -5,29 +5,32 @@
  * Features: Navigation links, workspace selector, recently opened items
  */
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Button } from "@/components/tailwind/ui/button";
+import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
+import { cn } from "@/lib/utils";
 import {
-  Home,
-  FileText,
   Briefcase,
+  Building,
   Calendar as CalendarIcon,
-  Settings,
   ChevronLeft,
   ChevronRight,
   Clock,
-  Search,
-  Plus,
-  Star,
-  Trash,
-  Target,
-  Building,
-  LayoutDashboard,
-  Users,
+  FileText,
   Globe,
   HelpCircle,
+  Home,
+  LayoutDashboard,
+  Plus,
+  Search,
+  Settings,
+  Star,
+  Target,
+  Trash,
+  Users,
 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/tailwind/ui/button";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { cn } from "@/lib/utils";

@@ -22,7 +22,7 @@ export const revalidate = 0;
 
 export default function DocumentEditorPage() {
   const params = useParams();
-  const documentId = params.id as string;
+  const _documentId = params.id as string;
 
   return (
     <AppShell>

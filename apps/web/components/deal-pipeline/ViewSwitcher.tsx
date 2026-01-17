@@ -1,7 +1,7 @@
 "use client";
 
+import { Calendar, GitBranch, LayoutGrid, Table } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "../tailwind/ui/tabs";
-import { LayoutGrid, Table, Calendar, GitBranch } from "lucide-react";
 
 export type ViewType = "kanban" | "table" | "calendar" | "flow";
 

@@ -7,7 +7,6 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-
 // Prevent static generation
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";

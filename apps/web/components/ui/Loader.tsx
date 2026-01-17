@@ -5,10 +5,10 @@
  * Displays loading animations with French text
  */
 
-import { motion } from "motion/react";
-import { Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
+import { motion } from "motion/react";
 
 interface LoaderProps {
   message?: string;
@@ -29,7 +29,7 @@ export function Loader({ message, size = "md", className }: LoaderProps) {
         animate={{ rotate: 360 }}
         transition={{
           duration: 1,
-          repeat: Infinity,
+          repeat: Number.POSITIVE_INFINITY,
           ease: "linear",
         }}
       >

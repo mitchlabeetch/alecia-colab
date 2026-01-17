@@ -13,5 +13,5 @@ export function formatFinancialValue(value: number | null | undefined): string {
     const thousands = Math.round(value / 1_000);
     return `${thousands} k€`;
   }
-  return `${value.toLocaleString('fr-FR')} €`;
+  return `${value.toLocaleString("fr-FR")} €`;
 }

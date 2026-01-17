@@ -1,20 +1,20 @@
 "use client";
 
-import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
-import { Separator } from "./ui/separator";
 import {
   Briefcase,
   Building,
-  FileText,
-  FolderOpen,
-  Search,
-  Plus,
-  TrendingUp,
   Calculator,
   ClipboardCheck,
+  FileText,
+  FolderOpen,
+  Plus,
+  Search,
+  TrendingUp,
 } from "lucide-react";
 import { useState } from "react";
+import { Button } from "./ui/button";
+import { ScrollArea } from "./ui/scroll-area";
+import { Separator } from "./ui/separator";
 
 interface DocumentCategory {
   id: string;

@@ -1,7 +1,7 @@
 "use client";
 
-import dynamicImport from "next/dynamic";
 import { Skeleton } from "@/components/tailwind/ui/skeleton";
+import dynamicImport from "next/dynamic";
 
 // Force dynamic rendering to avoid SSG issues with Clerk
 export const dynamic = "force-dynamic";

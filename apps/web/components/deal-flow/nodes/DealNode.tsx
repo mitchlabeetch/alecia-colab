@@ -1,8 +1,8 @@
 "use client";
 
-import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
-import { Building, DollarSign, TrendingUp, Calendar } from "lucide-react";
+import { Building, Calendar, DollarSign, TrendingUp } from "lucide-react";
+import { memo } from "react";
 import { Badge } from "../../tailwind/ui/badge";
 
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
