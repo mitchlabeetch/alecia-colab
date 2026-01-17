@@ -21,7 +21,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../tailwind/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../tailwind/ui/dialog";
 import { ScrollArea } from "../tailwind/ui/scroll-area";
 
-import DealFlowCanvas from "../deal-flow/DealFlowCanvas";
+import DealFlowCanvas from "./DealFlowCanvas";
 import { CalendarView } from "./CalendarView";
 import { TableView } from "./TableView";
 // Multi-view components
