@@ -239,6 +239,39 @@ export const fr = {
     website: "Site Web",
     viewAll: "Voir tout",
     recentFilesUnavailable: "Fichiers récents indisponibles en mode démo.",
+    quickAction: {
+      deal: "Deal",
+      document: "Document",
+      company: "Société",
+      contact: "Contact",
+      other: "Autre",
+    },
+  },
+
+  // Sidebar
+  sidebar: {
+    main: "Principal",
+    admin: "Admin",
+    files: "Fichiers",
+    dashboard: "Tableau de bord",
+    contacts: "Contacts",
+    companies: "Entreprises",
+  },
+
+  // Command Menu / Action Search
+  command: {
+    placeholder: "Que souhaitez-vous faire ?",
+    label: "Commandes",
+    press: "Appuyez sur",
+    toOpen: "pour ouvrir",
+    toCancel: "pour annuler",
+    actions: {
+      bookTickets: "Réserver des billets",
+      summarize: "Résumer",
+      screenStudio: "Studio d'écran",
+      talkToJarvis: "Parler à l'IA",
+      components: "Composants",
+    },
   },
 
   // Errors

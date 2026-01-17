@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Calendar as CalendarIcon, FileText, Home, LayoutDashboard, Presentation, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SidebarTree } from "@/components/ui/fancy/SidebarTree";
 import { useSidebar } from "./sidebar-provider";
 
 interface SidebarProps {
@@ -30,6 +31,15 @@ const colabSidebarSections = [
       { icon: Presentation, label: "Présentations", href: "/presentations" },
       { icon: CalendarIcon, label: "Calendrier", href: "/calendar" },
       { icon: Users, label: "Équipe", href: "/team" },
+    ],
+  },
+  {
+    title: "Admin",
+    collapsible: false,
+    items: [
+      { icon: LayoutDashboard, label: "Tableau de bord", href: "https://alecia.markets/admin/dashboard" },
+      { icon: Users, label: "Contacts", href: "https://alecia.markets/admin/crm/contacts" },
+      { icon: Users, label: "Entreprises", href: "https://alecia.markets/admin/crm/companies" },
     ],
   },
 ];
@@ -86,6 +96,7 @@ function SidebarContent() {
               </nav>
             </div>
           ))}
+          {!isCollapsed && <SidebarTree />}
         </div>
       </ScrollArea>
     </div>

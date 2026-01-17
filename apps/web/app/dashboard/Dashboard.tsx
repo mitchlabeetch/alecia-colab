@@ -12,6 +12,7 @@ import { Separator } from "@/components/tailwind/ui/separator";
 import { useDeals, useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { fr, t } from "@/lib/i18n";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useUser } from "@clerk/nextjs";
 import {
   ArrowRight,
@@ -23,6 +24,8 @@ import {
   Globe,
   LayoutDashboard,
   Users,
+  Plus,
+  MoreHorizontal,
 } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
@@ -31,27 +34,31 @@ import { useEffect, useMemo, useState } from "react";
 const quickActions = [
   {
     icon: Briefcase,
-    label: fr.actions.newDeal,
-    description: "Créer un nouveau deal dans le pipeline",
+    label: fr.dashboard.quickAction.deal,
     href: "/pipeline",
     color: "text-blue-500",
     bgColor: "bg-blue-500/10",
   },
   {
     icon: FileText,
-    label: fr.actions.newDocument,
-    description: "Créer un nouveau document de collaboration",
+    label: fr.dashboard.quickAction.document,
     href: "/documents",
     color: "text-green-500",
     bgColor: "bg-green-500/10",
   },
   {
     icon: Building,
-    label: fr.actions.newCompanyProfile,
-    description: "Ajouter un profil d'entreprise",
+    label: fr.dashboard.quickAction.company,
     href: "/companies",
     color: "text-purple-500",
     bgColor: "bg-purple-500/10",
+  },
+  {
+    icon: Users,
+    label: fr.dashboard.quickAction.contact,
+    href: "https://alecia.markets/admin/crm/contacts",
+    color: "text-orange-500",
+    bgColor: "bg-orange-500/10",
   },
 ];
 
@@ -197,7 +204,7 @@ function DashboardContent() {
     [activeDeals, activeDocuments, displayName, user?.id],
   );
 
-  const stats = [
+  const initialStats = [
     {
       id: "deals",
       label: fr.dashboard.stats.dealsInProgress,
@@ -244,7 +251,7 @@ function DashboardContent() {
     <DashboardUI
       isLoaded={isLoaded}
       user={user}
-      stats={stats}
+      initialStats={initialStats}
       recentDocuments={recentDocuments}
       activityFeed={activityFeed}
       isDocumentsLoading={isDocumentsLoading}
@@ -255,7 +262,7 @@ function DashboardContent() {
 
 // Mock content for dev/no-auth environment
 function DashboardContentMock() {
-  const stats = [
+  const initialStats = [
     {
       id: "deals",
       label: fr.dashboard.stats.dealsInProgress,
@@ -294,7 +301,7 @@ function DashboardContentMock() {
     <DashboardUI
       isLoaded={true}
       user={{ firstName: "Demo", username: "User" } as any}
-      stats={stats}
+      initialStats={initialStats}
       recentDocuments={[]}
       activityFeed={[]}
       isDocumentsLoading={false}
@@ -303,71 +310,90 @@ function DashboardContentMock() {
   );
 }
 
+const getGreeting = () => {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return "Bonjour";
+  if (hour >= 12 && hour < 14) return "Bon Appétit";
+  if (hour >= 14 && hour < 18) return "Bon après-midi";
+  if (hour >= 18 && hour < 22) return "Bonne soirée";
+  return "Bonne nuit";
+};
+
 // UI Component to share layout
-function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isDocumentsLoading, isDataLoading }: any) {
+function DashboardUI({ isLoaded, user, initialStats, recentDocuments, activityFeed, isDocumentsLoading, isDataLoading }: any) {
+  const [stats, setStats] = useState(initialStats);
+  const greeting = getGreeting();
+
+  useEffect(() => {
+    // Update stats when initialStats change (e.g. data loading)
+    // Only update values, preserve order
+    const updatedStats = stats.map(s => {
+      const newStat = initialStats.find((is: any) => is.id === s.id);
+      return newStat ? { ...s, ...newStat } : s;
+    });
+    setStats(updatedStats);
+  }, [initialStats]); // Careful with dependency loop, strictly we should use deep comparison or just ids
+
+  const onDragEnd = (result: any) => {
+    if (!result.destination) return;
+    const items = Array.from(stats);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setStats(items);
+  };
+
   return (
     <div className="space-y-8">
       {/* Welcome Section */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
         <h1 className="text-4xl font-bold">
-          {fr.dashboard.welcomeBack}
+          {greeting}
           {isLoaded && user && <span className="text-primary">, {user.firstName || user.username}</span>}
         </h1>
         <p className="mt-2 text-muted-foreground">{fr.dashboard.welcomeMessage}</p>
       </motion.div>
 
-      {/* Stats Grid */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
-      >
-        {stats.map((stat: any) => {
-          const Icon = stat.icon;
-          return (
-            <Card key={stat.id}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
-                <Icon className={`h-4 w-4 ${stat.color}`} />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <p className="text-xs text-muted-foreground">{stat.trend}</p>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </motion.div>
+      {/* Stats Grid (DnD) */}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="stats" direction="horizontal">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+            >
+              {stats.map((stat: any, index: number) => {
+                const Icon = stat.icon;
+                return (
+                  <Draggable key={stat.id} draggableId={stat.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                         <Card>
+                          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <CardTitle className="text-sm font-medium">{stat.label}</CardTitle>
+                            <Icon className={`h-4 w-4 ${stat.color}`} />
+                          </CardHeader>
+                          <CardContent>
+                            <div className="text-2xl font-bold">{stat.value}</div>
+                            <p className="text-xs text-muted-foreground">{stat.trend}</p>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
-      {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <h2 className="text-2xl font-bold mb-4">{fr.dashboard.quickActions}</h2>
-        <div className="grid gap-4 md:grid-cols-3">
-          {quickActions.map((action) => {
-            const Icon = action.icon;
-            return (
-              <Link key={action.href} href={action.href}>
-                <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
-                  <CardHeader>
-                    <div className={`w-12 h-12 rounded-lg ${action.bgColor} flex items-center justify-center mb-4`}>
-                      <Icon className={`h-6 w-6 ${action.color}`} />
-                    </div>
-                    <CardTitle>{action.label}</CardTitle>
-                    <CardDescription>{action.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-      </motion.div>
-
-      {/* Recent Files & Quick Navigation */}
+      {/* Recent Files & Quick Navigation - Moved ABOVE Quick Actions */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -381,9 +407,6 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
             <CardDescription>{fr.dashboard.recentDocumentsDescription}</CardDescription>
           </CardHeader>
           <CardContent>
-            {/* RecentFiles component also likely uses hooks, so we should mock it or be careful */}
-            {/* Assuming RecentFiles is safe or we wrap it. For now let's hope it handles missing auth or we mock it too */}
-            {/* Just to be safe, if we are in mock mode, we show placeholder */}
             {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? (
               <RecentFiles limit={5} showCreateButton={true} />
             ) : (
@@ -400,19 +423,19 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
           </CardHeader>
           <CardContent className="space-y-2">
             <Button variant="ghost" className="w-full justify-start" asChild>
-              <a href="/admin/dashboard" target="_blank" rel="noopener noreferrer">
+              <a href="https://alecia.markets/admin/dashboard" target="_blank" rel="noopener noreferrer">
                 <LayoutDashboard className="h-4 w-4 mr-2" />
                 {fr.dashboard.adminDashboard}
               </a>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>
-              <a href="/admin/crm/contacts" target="_blank" rel="noopener noreferrer">
+              <a href="https://alecia.markets/admin/crm/contacts" target="_blank" rel="noopener noreferrer">
                 <Users className="h-4 w-4 mr-2" />
                 {fr.dashboard.crmContacts}
               </a>
             </Button>
             <Button variant="ghost" className="w-full justify-start" asChild>
-              <a href="/admin/crm/companies" target="_blank" rel="noopener noreferrer">
+              <a href="https://alecia.markets/admin/crm/companies" target="_blank" rel="noopener noreferrer">
                 <Building className="h-4 w-4 mr-2" />
                 {fr.dashboard.companies}
               </a>
@@ -425,6 +448,36 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
             </Button>
           </CardContent>
         </Card>
+      </motion.div>
+
+      {/* Quick Actions - Revised: Smaller, No Title, More Comprehensive */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="flex gap-4 overflow-x-auto pb-2">
+          {quickActions.map((action) => {
+            const Icon = action.icon;
+            return (
+              <Link key={action.href} href={action.href}>
+                <div className="flex flex-col items-center gap-2 group cursor-pointer min-w-[80px]">
+                  <div className={`w-10 h-10 rounded-full ${action.bgColor} flex items-center justify-center transition-transform group-hover:scale-110`}>
+                    <Icon className={`h-5 w-5 ${action.color}`} />
+                  </div>
+                  <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground">{action.label}</span>
+                </div>
+              </Link>
+            );
+          })}
+          {/* Add more generic entry button */}
+           <div className="flex flex-col items-center gap-2 group cursor-pointer min-w-[80px]">
+              <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center transition-transform group-hover:scale-110">
+                <Plus className="h-5 w-5 text-muted-foreground" />
+              </div>
+              <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground">{fr.dashboard.quickAction.other}</span>
+          </div>
+        </div>
       </motion.div>
 
       {/* Main Content Grid */}
