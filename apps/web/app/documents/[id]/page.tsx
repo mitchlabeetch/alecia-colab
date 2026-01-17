@@ -26,7 +26,7 @@ export default function DocumentEditorPage() {
 
   return (
     <AppShell>
-      <TailwindAdvancedEditor documentId={documentId} />
+      <TailwindAdvancedEditor documentId={_documentId} />
     </AppShell>
   );
 }
