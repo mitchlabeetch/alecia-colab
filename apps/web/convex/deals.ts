@@ -18,22 +18,45 @@ export const list = query({
     stage: v.optional(dealStages),
   },
   handler: async (ctx, args) => {
-    // Fetch all deals and filter in memory for flexibility
-    const allDeals = await ctx.db.query("colab_deals").order("desc").collect();
+    // Optimization: Use indexes when possible to avoid full table scans
 
-    let deals = allDeals;
-
-    // Filter by stage if provided
-    if (args.stage) {
-      deals = deals.filter((d) => d.stage === args.stage);
-    }
-
-    // Filter by user if provided
     if (args.userId) {
-      return deals.filter((d) => d.userId === args.userId);
+      // Use 'by_user' index.
+      // Note: This index is ["userId"], so results are ordered by userId, then _creationTime.
+      // We want creation time desc.
+      // Convex allows efficient reverse order on index queries.
+      const deals = await ctx.db
+        .query("colab_deals")
+        .withIndex("by_user", (q) => q.eq("userId", args.userId!))
+        .order("desc")
+        .collect();
+
+      // Filter by stage if provided
+      if (args.stage) {
+        return deals.filter((d) => d.stage === args.stage);
+      }
+      return deals;
     }
 
-    return deals.filter((d) => !d.isArchived);
+    if (args.stage) {
+      // Use 'by_stage' index
+      const deals = await ctx.db
+        .query("colab_deals")
+        .withIndex("by_stage", (q) => q.eq("stage", args.stage!))
+        // 'by_stage' is ["stage"], so implicit second field is _creationTime.
+        // .order("desc") gives us _creationTime desc.
+        .order("desc")
+        .collect();
+
+      return deals.filter((d) => !d.isArchived);
+    }
+
+    // Fallback: Full scan but filter active deals in DB
+    return await ctx.db
+      .query("colab_deals")
+      .order("desc")
+      .filter((q) => q.neq(q.field("isArchived"), true))
+      .collect();
   },
 });
 
