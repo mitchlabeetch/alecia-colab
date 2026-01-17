@@ -69,33 +69,34 @@
   }
 
   .dark {
-    --background: 224 15% 12%;
+    /* Alecia Midnight Base - NOT Black */
+    --background: 224 15% 16%; /* ~#23262F -> Shifted to Alecia Navy */
     --foreground: 210 40% 98%;
 
-    --card: 224 15% 14%;
+    --card: 224 15% 18%; /* Slightly lighter than bg */
     --card-foreground: 210 40% 98%;
 
-    --popover: 224 15% 14%;
+    --popover: 224 15% 18%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 213 94% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 215 28% 17%; /* Alecia Midnight */
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 224 15% 18%;
+    --secondary: 224 15% 22%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 224 15% 18%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 224 15% 22%;
+    --muted-foreground: 215 20% 70%;
 
-    --accent: 224 15% 20%;
+    --accent: 210 29% 24%; /* Alecia Corporate Blue tint */
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 224 15% 22%;
-    --input: 224 15% 20%;
-    --ring: 213 94% 55%;
+    --border: 224 15% 26%;
+    --input: 224 15% 26%;
+    --ring: 215 28% 17%;
 
     --novel-highlight-default: #000000;
     --novel-highlight-purple: #3f2c4b;

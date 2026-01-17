@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const quickActions = [
   {
@@ -73,9 +73,39 @@ const getInitials = (name?: string) => {
 };
 
 export default function Dashboard() {
+  const [hasAuth, setHasAuth] = useState(false);
+
+  // Safe check for Clerk environment
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+      setHasAuth(true);
+    }
+  }, []);
+
+  return hasAuth ? <DashboardContent /> : <DashboardContentMock />;
+}
+
+function DashboardContent() {
   const { user, isLoaded } = useUser();
   const { documents, isLoading: documentsLoading, isConvexAvailable: isDocumentsAvailable } = useDocuments(user?.id);
   const { deals, isLoading: dealsLoading, isConvexAvailable: isDealsAvailable } = useDeals(user?.id);
+
+  // Reuse logic...
+  // To avoid duplicating huge code blocks, I should have extracted the main logic.
+  // But given constraints, I will keep it inline in this component
+  // and have a mock component that doesn't use hooks.
+  // Actually, I can just use a conditional hook call? No, that's illegal in React.
+  // So splitting is correct.
+
+  // Wait, duplicating the whole logic is bad.
+  // I will refactor DashboardContent to accept user/data as props or use hooks if auth is present.
+  // But useUser throws if not in provider.
+  // So DashboardContent MUST be a separate component that is only rendered if auth is present.
+
+  // However, I need to copy the logic.
+  // Since I can't easily extract all the logic without rewriting a lot,
+  // I will just use the existing logic for DashboardContent
+  // and create a simplified mock for the "no-auth" case (dev environment).
 
   const isDocumentsLoading = documentsLoading && isDocumentsAvailable;
   const isDealsLoading = dealsLoading && isDealsAvailable;
@@ -210,7 +240,68 @@ export default function Dashboard() {
     },
   ];
 
-  return (
+  return <DashboardUI
+      isLoaded={isLoaded}
+      user={user}
+      stats={stats}
+      recentDocuments={recentDocuments}
+      activityFeed={activityFeed}
+      isDocumentsLoading={isDocumentsLoading}
+      isDataLoading={isDataLoading}
+  />;
+}
+
+// Mock content for dev/no-auth environment
+function DashboardContentMock() {
+  const stats = [
+    {
+      id: "deals",
+      label: fr.dashboard.stats.dealsInProgress,
+      value: "12",
+      icon: Briefcase,
+      trend: `15 ${fr.common.total}`,
+      color: "text-blue-500",
+    },
+    {
+      id: "documents",
+      label: fr.dashboard.stats.documentsCreated,
+      value: "8",
+      icon: FileText,
+      trend: `${fr.dashboard.lastUpdate} 2h ago`,
+      color: "text-green-500",
+    },
+    {
+      id: "members",
+      label: fr.dashboard.stats.teamMembers,
+      value: "4",
+      icon: Users,
+      trend: fr.dashboard.activeTeam,
+      color: "text-purple-500",
+    },
+    {
+      id: "tasks",
+      label: fr.dashboard.stats.tasksCompleted,
+      value: "5",
+      icon: CheckCircle2,
+      trend: `5 ${fr.dashboard.dealsClosed}`,
+      color: "text-orange-500",
+    },
+  ];
+
+  return <DashboardUI
+      isLoaded={true}
+      user={{ firstName: "Demo", username: "User" } as any}
+      stats={stats}
+      recentDocuments={[]}
+      activityFeed={[]}
+      isDocumentsLoading={false}
+      isDataLoading={false}
+  />;
+}
+
+// UI Component to share layout
+function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isDocumentsLoading, isDataLoading }: any) {
+    return (
     <div className="space-y-8">
       {/* Welcome Section */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -228,7 +319,7 @@ export default function Dashboard() {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
       >
-        {stats.map((stat) => {
+        {stats.map((stat: any) => {
           const Icon = stat.icon;
           return (
             <Card key={stat.id}>
@@ -286,7 +377,14 @@ export default function Dashboard() {
             <CardDescription>Pick up where you left off</CardDescription>
           </CardHeader>
           <CardContent>
-            <RecentFiles limit={5} showCreateButton={true} />
+            {/* RecentFiles component also likely uses hooks, so we should mock it or be careful */}
+            {/* Assuming RecentFiles is safe or we wrap it. For now let's hope it handles missing auth or we mock it too */}
+            {/* Just to be safe, if we are in mock mode, we show placeholder */}
+            {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? (
+                <RecentFiles limit={5} showCreateButton={true} />
+            ) : (
+                <div className="text-sm text-muted-foreground">Recent files unavailable in demo mode.</div>
+            )}
           </CardContent>
         </Card>
 
@@ -352,7 +450,7 @@ export default function Dashboard() {
                 <p className="text-sm text-muted-foreground">{fr.nav.noRecentDocuments}</p>
               ) : (
                 <div className="space-y-4">
-                  {recentDocuments.map((doc, index) => (
+                  {recentDocuments.map((doc: any, index: number) => (
                     <div key={doc.id}>
                       <Link href={doc.href} className="block">
                         <div className="flex items-start justify-between">
@@ -406,7 +504,7 @@ export default function Dashboard() {
                 <p className="text-sm text-muted-foreground">{fr.dashboard.noRecentActivity}</p>
               ) : (
                 <div className="space-y-4">
-                  {activityFeed.map((activity) => {
+                  {activityFeed.map((activity: any) => {
                     const initials = getInitials(activity.user);
                     return (
                       <div key={activity.id} className="flex gap-3">
@@ -431,5 +529,5 @@ export default function Dashboard() {
         </motion.div>
       </div>
     </div>
-  );
+    )
 }
