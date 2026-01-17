@@ -1,10 +1,11 @@
 "use client";
 
+import { ActionSearchBar } from "@/components/ui/fancy/ActionSearchBar";
 import { Button } from "@/components/tailwind/ui/button";
-import { Input } from "@/components/tailwind/ui/input";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { Menu, PanelLeft, Search, User } from "lucide-react";
+import { Menu, PanelLeft, User } from "lucide-react";
+import Image from "next/image";
 import { ThemeToggle } from "./ThemeToggle";
 import { useSidebar } from "./sidebar-provider";
 
@@ -43,11 +44,20 @@ export function ColabHeader({ className }: ColabHeaderProps) {
           <span className="sr-only">Toggle menu</span>
         </Button>
 
-        {/* Desktop Sidebar Trigger */}
+        {/* Logo */}
+        <div className="flex items-center gap-2 mr-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg overflow-hidden">
+            {/* Using img tag to bypass next/image issues in dev environment if any */}
+            <img src="/images/logo.png" alt="Alecia Logo" width={32} height={32} className="object-cover" />
+          </div>
+          <span className="hidden sm:inline-block font-semibold">{t("app.name")}</span>
+        </div>
+
+        {/* Desktop Sidebar Trigger - Moved to right of logo */}
         <Button
           variant="ghost"
           size="icon"
-          className="hidden md:flex text-muted-foreground"
+          className="hidden md:flex text-muted-foreground mr-4"
           onClick={toggleCollapse}
           title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
@@ -55,24 +65,9 @@ export function ColabHeader({ className }: ColabHeaderProps) {
           <span className="sr-only">Toggle sidebar</span>
         </Button>
 
-        {/* Logo */}
-        <div className="flex items-center gap-2 mr-4">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
-            A
-          </div>
-          <span className="hidden sm:inline-block font-semibold">{t("app.name")}</span>
-        </div>
-
-        {/* Search bar (ActionSearchBar placeholder) */}
-        <div className="flex-1 max-w-md hidden md:flex">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={t("search.placeholder")}
-              className="pl-10 w-full bg-background border-input"
-            />
-          </div>
+        {/* Search bar */}
+        <div className="flex-1 max-w-md hidden md:block">
+          <ActionSearchBar />
         </div>
 
         {/* Right side actions */}

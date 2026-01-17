@@ -7,6 +7,7 @@
 
 import { cn } from "@/lib/utils";
 import { ColabBreadcrumbs } from "./ColabBreadcrumbs";
+import { Dock } from "@/components/navigation/Dock";
 import { ColabHeader } from "./ColabHeader";
 import { Sidebar } from "./Sidebar";
 import { SidebarProvider, useSidebar } from "./sidebar-provider";
@@ -35,9 +36,10 @@ function AppShellContent({ children, mode = "standalone", className }: AppShellP
 
   // Full standalone shell
   return (
-    <div className="relative min-h-screen">
+    <div className="relative min-h-screen pb-20">
       <ColabHeader />
       <Sidebar />
+      <Dock />
       <main
         className={cn(
           "min-h-[calc(100vh-3.5rem)]",

@@ -1,55 +1,57 @@
+import { defaultEditorContent as originalContent } from "./content";
+
 export const defaultEditorContent = {
   type: "doc",
   content: [
     {
       type: "heading",
       attrs: { level: 1 },
-      content: [{ type: "text", text: "Welcome to Alecia Colab" }],
+      content: [{ type: "text", text: "Bienvenue sur Alecia Colab" }],
     },
     {
       type: "paragraph",
       content: [
         {
           type: "text",
-          text: "Your comprehensive M&A knowledge base and collaboration platform. Streamline deal workflows, due diligence, and integration planning.",
+          text: "Votre base de connaissances complète et plateforme de collaboration M&A. Rationalisez les flux de travail des deals, la due diligence et la planification d'intégration.",
         },
       ],
     },
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [{ type: "text", text: "Quick Start Guide" }],
+      content: [{ type: "text", text: "Guide de Démarrage Rapide" }],
     },
     {
       type: "paragraph",
       content: [
         {
           type: "text",
-          text: "Use the ",
+          text: "Utilisez la commande ",
         },
         { type: "text", marks: [{ type: "code" }], text: "/" },
         {
           type: "text",
-          text: " command to access templates and formatting options. Type ",
+          text: " pour accéder aux modèles et aux options de formatage. Tapez ",
         },
         { type: "text", marks: [{ type: "code" }], text: "++" },
         {
           type: "text",
-          text: " to activate AI-powered suggestions.",
+          text: " pour activer les suggestions IA.",
         },
       ],
     },
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [{ type: "text", text: "M&A Templates" }],
+      content: [{ type: "text", text: "Modèles M&A" }],
     },
     {
       type: "paragraph",
       content: [
         {
           type: "text",
-          text: "Access specialized templates for your M&A workflow:",
+          text: "Accédez à des modèles spécialisés pour votre flux de travail M&A :",
         },
       ],
     },
@@ -65,30 +67,11 @@ export const defaultEditorContent = {
                 {
                   type: "text",
                   marks: [{ type: "bold" }],
-                  text: "Deal Pipeline",
+                  text: "Pipeline de Deals",
                 },
                 {
                   type: "text",
-                  text: " - Track opportunities from sourcing to closing",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          type: "listItem",
-          content: [
-            {
-              type: "paragraph",
-              content: [
-                {
-                  type: "text",
-                  marks: [{ type: "bold" }],
-                  text: "Due Diligence Checklist",
-                },
-                {
-                  type: "text",
-                  text: " - Comprehensive DD frameworks and questionnaires",
+                  text: " - Suivez les opportunités du sourcing à la clôture",
                 },
               ],
             },
@@ -103,11 +86,11 @@ export const defaultEditorContent = {
                 {
                   type: "text",
                   marks: [{ type: "bold" }],
-                  text: "Valuation Models",
+                  text: "Checklist Due Diligence",
                 },
                 {
                   type: "text",
-                  text: " - Financial modeling and analysis templates",
+                  text: " - Cadres de DD complets et questionnaires",
                 },
               ],
             },
@@ -122,11 +105,30 @@ export const defaultEditorContent = {
                 {
                   type: "text",
                   marks: [{ type: "bold" }],
-                  text: "Integration Planning",
+                  text: "Modèles de Valorisation",
                 },
                 {
                   type: "text",
-                  text: " - Post-merger integration checklists and timelines",
+                  text: " - Modélisation financière et modèles d'analyse",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: "listItem",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  marks: [{ type: "bold" }],
+                  text: "Planification d'Intégration",
+                },
+                {
+                  type: "text",
+                  text: " - Checklists et calendriers d'intégration post-fusion",
                 },
               ],
             },
@@ -138,7 +140,7 @@ export const defaultEditorContent = {
     {
       type: "heading",
       attrs: { level: 2 },
-      content: [{ type: "text", text: "Key Features" }],
+      content: [{ type: "text", text: "Fonctionnalités Clés" }],
     },
     {
       type: "taskList",
@@ -152,7 +154,7 @@ export const defaultEditorContent = {
               content: [
                 {
                   type: "text",
-                  text: "Rich text editing with slash commands and bubble menu",
+                  text: "Édition de texte enrichi avec commandes slash et menu contextuel",
                 },
               ],
             },
@@ -167,7 +169,7 @@ export const defaultEditorContent = {
               content: [
                 {
                   type: "text",
-                  text: "AI-powered content suggestions and autocompletion",
+                  text: "Suggestions de contenu et autocomplétion alimentées par IA",
                 },
               ],
             },
@@ -182,7 +184,7 @@ export const defaultEditorContent = {
               content: [
                 {
                   type: "text",
-                  text: "Image uploads via drag & drop or copy & paste",
+                  text: "Téléchargement d'images par glisser-déposer ou copier-coller",
                 },
               ],
             },
@@ -197,7 +199,7 @@ export const defaultEditorContent = {
               content: [
                 {
                   type: "text",
-                  text: "Mathematical formulas and LaTeX support for financial models",
+                  text: "Formules mathématiques et support LaTeX pour les modèles financiers",
                 },
               ],
             },
@@ -212,7 +214,7 @@ export const defaultEditorContent = {
               content: [
                 {
                   type: "text",
-                  text: "Document versioning and collaboration features (coming soon)",
+                  text: "Versionnage de documents et fonctionnalités de collaboration (bientôt disponible)",
                 },
               ],
             },
@@ -223,12 +225,12 @@ export const defaultEditorContent = {
     {
       type: "heading",
       attrs: { level: 3 },
-      content: [{ type: "text", text: "Example: Deal Summary Template" }],
+      content: [{ type: "text", text: "Exemple : Modèle de Résumé de Deal" }],
     },
     {
       type: "heading",
       attrs: { level: 4 },
-      content: [{ type: "text", text: "Target Company: [Company Name]" }],
+      content: [{ type: "text", text: "Société Cible : [Nom de la Société]" }],
     },
     {
       type: "paragraph",
@@ -236,20 +238,9 @@ export const defaultEditorContent = {
         {
           type: "text",
           marks: [{ type: "bold" }],
-          text: "Deal Stage:",
+          text: "Étape du Deal :",
         },
-        { type: "text", text: " [Sourcing / Due Diligence / Negotiation / Closing]" },
-      ],
-    },
-    {
-      type: "paragraph",
-      content: [
-        {
-          type: "text",
-          marks: [{ type: "bold" }],
-          text: "Deal Lead:",
-        },
-        { type: "text", text: " [Name]" },
+        { type: "text", text: " [Sourcing / Due Diligence / Négociation / Clôture]" },
       ],
     },
     {
@@ -258,9 +249,9 @@ export const defaultEditorContent = {
         {
           type: "text",
           marks: [{ type: "bold" }],
-          text: "Valuation:",
+          text: "Responsable du Deal :",
         },
-        { type: "text", text: " [Amount]" },
+        { type: "text", text: " [Nom]" },
       ],
     },
     {
@@ -269,7 +260,18 @@ export const defaultEditorContent = {
         {
           type: "text",
           marks: [{ type: "bold" }],
-          text: "Strategic Rationale:",
+          text: "Valorisation :",
+        },
+        { type: "text", text: " [Montant]" },
+      ],
+    },
+    {
+      type: "paragraph",
+      content: [
+        {
+          type: "text",
+          marks: [{ type: "bold" }],
+          text: "Raisonnement Stratégique :",
         },
       ],
     },
@@ -278,7 +280,7 @@ export const defaultEditorContent = {
       content: [
         {
           type: "text",
-          text: "• Market expansion opportunities",
+          text: "• Opportunités d'expansion de marché",
         },
       ],
     },
@@ -287,7 +289,7 @@ export const defaultEditorContent = {
       content: [
         {
           type: "text",
-          text: "• Technology and IP acquisition",
+          text: "• Acquisition de technologie et de propriété intellectuelle",
         },
       ],
     },
@@ -296,7 +298,7 @@ export const defaultEditorContent = {
       content: [
         {
           type: "text",
-          text: "• Synergies and cost optimization",
+          text: "• Synergies et optimisation des coûts",
         },
       ],
     },
