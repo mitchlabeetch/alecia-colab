@@ -30,8 +30,8 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://colab.alecia.markets"),
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
   },
 };
 
