@@ -102,6 +102,15 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
   const pathname = usePathname();
   const { setOpen } = useCommandMenu();
 
+  const handleAction = (action?: string) => {
+    if (action === "openSearch") {
+      setOpen(true);
+      if (onClose && window.innerWidth < 768) {
+        onClose();
+      }
+    }
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -151,11 +160,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                               key={item.label}
                               variant="ghost"
                               className="w-full justify-start"
-                              onClick={() => {
-                                if (item.action === "openSearch") {
-                                  setOpen(true);
-                                }
-                              }}
+                              onClick={() => handleAction(item.action)}
                             >
                               <Icon className="h-5 w-5" />
                               <span className="ml-3">{item.label}</span>
@@ -190,11 +195,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                         className="w-full justify-center px-2"
                         title={item.label}
                         aria-label={item.label}
-                        onClick={() => {
-                          if (item.action === "openSearch") {
-                            setOpen(true);
-                          }
-                        }}
+                        onClick={() => handleAction(item.action)}
                       >
                         <Icon className="h-5 w-5" />
                       </Button>
@@ -248,12 +249,7 @@ export function Sidebar({ isOpen = true, onClose, className }: SidebarProps) {
                             key={item.label}
                             variant="ghost"
                             className="w-full justify-start"
-                            onClick={() => {
-                              if (item.action === "openSearch") {
-                                setOpen(true);
-                                onClose?.();
-                              }
-                            }}
+                            onClick={() => handleAction(item.action)}
                           >
                             <Icon className="h-5 w-5" />
                             <span className="ml-3">{item.label}</span>
