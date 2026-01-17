@@ -31,9 +31,6 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/tailwind/ui/button";
-import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
-import { cn } from "@/lib/utils";
 import { useCommandMenu } from "@/components/command-menu-provider";
 import { CollapsibleSection } from "./CollapsibleSection";
 
