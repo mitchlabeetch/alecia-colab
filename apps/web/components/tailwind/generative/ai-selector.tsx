@@ -11,7 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/tailwind/u
 import type { Editor } from "@tiptap/core";
 import { useCompletion } from "ai/react";
 import { Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AI_ACTIONS } from "../ai/ai-actions";
 
@@ -61,6 +61,22 @@ export function AISelector({ editor, open, onOpenChange }: AISelectorProps) {
     toast.info(`IA: ${action.label}...`);
     onOpenChange(false);
   };
+
+  useEffect(() => {
+    const handleAIAction = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const { action, prompt } = customEvent.detail;
+      const aiAction = AI_ACTIONS.find((a) => a.value === action);
+      if (aiAction) {
+        handleAction(aiAction);
+      }
+    };
+
+    editor.view.dom.addEventListener("ai-action", handleAIAction);
+    return () => {
+      editor.view.dom.removeEventListener("ai-action", handleAIAction);
+    };
+  }, [editor, handleAction]);
 
   return (
     <Popover open={open} onOpenChange={onOpenChange}>

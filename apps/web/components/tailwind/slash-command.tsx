@@ -5,14 +5,17 @@ import {
   ClipboardCheck,
   Code,
   File,
+  Grid3X3,
   Heading1,
   Heading2,
   Heading3,
   ImageIcon,
+  KanbanSquare,
   List,
   ListOrdered,
   MessageSquare,
   Minus,
+  Table as TableIcon,
   Text,
   TextQuote,
   TrendingUp,
@@ -322,12 +325,30 @@ export const suggestionItems = createSuggestionItems([
     },
   },
   {
+    title: "Tableau",
+    description: "Insérer un tableau.",
+    searchTerms: ["tableau", "table"],
+    icon: <TableIcon size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+    },
+  },
+  {
+    title: "Kanban",
+    description: "Insérer une vue Kanban.",
+    searchTerms: ["kanban", "board", "tableau"],
+    icon: <KanbanSquare size={18} />,
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).setKanban().run();
+    },
+  },
+  {
     title: "Encadré (Callout)",
     description: "Mettre en avant une information importante.",
     searchTerms: ["callout", "encadré", "info", "attention"],
     icon: <MessageSquare size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).toggleBlockquote().run();
+      editor.chain().focus().deleteRange(range).setCallout().run();
     },
   },
   {

@@ -26,6 +26,12 @@ export const AI_ACTIONS = [
     prompt: "Traduis ce texte en anglais professionnel.",
   },
   {
+    value: "translate_fr",
+    label: "Traduire en Français",
+    icon: <Languages className="h-4 w-4" />,
+    prompt: "Traduis ce texte en français professionnel.",
+  },
+  {
     value: "simplify",
     label: "Simplifier",
     icon: <RefreshCw className="h-4 w-4" />,
