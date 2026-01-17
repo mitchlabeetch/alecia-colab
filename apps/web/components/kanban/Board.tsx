@@ -7,12 +7,13 @@ import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { useUser } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
-import { Plus } from "lucide-react";
+import { Calendar, Kanban, Plus } from "lucide-react";
 import { useState } from "react";
 import { DragDropContext, type DropResult } from "react-beautiful-dnd";
 import { CardModal } from "./CardModal";
 import { ListColumn } from "./ListColumn";
 import { StrictModeDroppable } from "./StrictModeDroppable";
+import { TimelineView } from "./TimelineView";
 
 interface KanbanBoardProps {
   board: {
@@ -57,6 +58,7 @@ export function KanbanBoard({ board, lists, cards, filters }: KanbanBoardProps) 
   const [targetListId, setTargetListId] = useState<string | null>(null);
   const [newCardTitle, setNewCardTitle] = useState("");
   const [newListTitle, setNewListTitle] = useState("");
+  const [view, setView] = useState<"kanban" | "timeline">("kanban");
 
   const filteredCards = cards.filter((card) => {
     if (filters?.labelId && !card.labelIds?.includes(filters.labelId as Id<"colab_labels">)) return false;
@@ -131,42 +133,69 @@ export function KanbanBoard({ board, lists, cards, filters }: KanbanBoardProps) 
   };
 
   return (
-    <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <StrictModeDroppable droppableId="board" direction="horizontal" type="LIST">
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="flex h-full gap-6 overflow-x-auto pb-4 items-start"
-            >
-              {lists.map((list, index) => (
-                <ListColumn
-                  key={list._id}
-                  list={list}
-                  index={index}
-                  cards={filteredCards.filter((c) => c.listId === list._id)}
-                  onAddCard={openCreateCardDialog}
-                  onCardClick={setSelectedCardId}
-                  boardLabels={board.labels || []}
-                />
-              ))}
-              {provided.placeholder}
+    <div className="flex flex-col h-full gap-4">
+      <div className="flex items-center gap-2">
+        <div className="bg-muted p-1 rounded-md flex items-center gap-1">
+          <Button
+            variant={view === "kanban" ? "secondary" : "ghost"}
+            size="sm"
+            onClick={() => setView("kanban")}
+            className="gap-2"
+          >
+            <Kanban className="h-4 w-4" />
+            Tableau
+          </Button>
+          <Button
+            variant={view === "timeline" ? "secondary" : "ghost"}
+            size="sm"
+            onClick={() => setView("timeline")}
+            className="gap-2"
+          >
+            <Calendar className="h-4 w-4" />
+            Chronologie
+          </Button>
+        </div>
+      </div>
 
-              <div className="w-80 flex-shrink-0">
-                <Button
-                  variant="outline"
-                  className="w-full h-12 border-dashed"
-                  onClick={() => setIsCreateListOpen(true)}
-                >
-                  <Plus className="mr-2 h-4 w-4" />
-                  Ajouter une liste
-                </Button>
+      {view === "kanban" ? (
+        <DragDropContext onDragEnd={onDragEnd}>
+          <StrictModeDroppable droppableId="board" direction="horizontal" type="LIST">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="flex h-full gap-6 overflow-x-auto pb-4 items-start"
+              >
+                {lists.map((list, index) => (
+                  <ListColumn
+                    key={list._id}
+                    list={list}
+                    index={index}
+                    cards={filteredCards.filter((c) => c.listId === list._id)}
+                    onAddCard={openCreateCardDialog}
+                    onCardClick={setSelectedCardId}
+                    boardLabels={board.labels || []}
+                  />
+                ))}
+                {provided.placeholder}
+
+                <div className="w-80 flex-shrink-0">
+                  <Button
+                    variant="outline"
+                    className="w-full h-12 border-dashed"
+                    onClick={() => setIsCreateListOpen(true)}
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Ajouter une liste
+                  </Button>
+                </div>
               </div>
-            </div>
-          )}
-        </StrictModeDroppable>
-      </DragDropContext>
+            )}
+          </StrictModeDroppable>
+        </DragDropContext>
+      ) : (
+        <TimelineView board={board} lists={lists} cards={filteredCards} />
+      )}
 
       {/* Create Card Dialog */}
       <Dialog open={isCreateCardOpen} onOpenChange={setIsCreateCardOpen}>
@@ -229,6 +258,6 @@ export function KanbanBoard({ board, lists, cards, filters }: KanbanBoardProps) 
           boardId={board._id}
         />
       )}
-    </>
+    </div>
   );
 }

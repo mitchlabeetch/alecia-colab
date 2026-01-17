@@ -79,7 +79,7 @@ export function ColabHeader({ className }: ColabHeaderProps) {
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
           <div className="h-8 flex items-center justify-center">
-             <CustomProfileButton />
+            <CustomProfileButton />
           </div>
         </div>
       </div>

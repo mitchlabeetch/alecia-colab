@@ -5,7 +5,6 @@ import {
   ClipboardCheck,
   Code,
   File,
-  Grid3X3,
   Heading1,
   Heading2,
   Heading3,

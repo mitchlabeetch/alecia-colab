@@ -37,12 +37,7 @@ export const CalloutComponent = ({ node }: NodeViewProps) => {
 
   return (
     <NodeViewWrapper className="my-4">
-      <div
-        className={cn(
-          "flex gap-3 rounded-r-lg border-l-4 p-4",
-          getBorderColor()
-        )}
-      >
+      <div className={cn("flex gap-3 rounded-r-lg border-l-4 p-4", getBorderColor())}>
         <div className="select-none" contentEditable={false}>
           {getIcon()}
         </div>

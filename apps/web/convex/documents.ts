@@ -43,7 +43,7 @@ export const get = query({
     // Only allow access if the document belongs to the user
     // In the future, we might check for shared access (e.g., workspaces/deals)
     if (doc.userId !== userId) {
-        throw new Error("Unauthorized");
+      throw new Error("Unauthorized");
     }
 
     return doc;
@@ -105,11 +105,11 @@ export const update = mutation({
 
     const doc = await ctx.db.get(id);
     if (!doc) {
-        throw new Error("Document not found");
+      throw new Error("Document not found");
     }
 
     if (doc.userId !== userId) {
-        throw new Error("Unauthorized");
+      throw new Error("Unauthorized");
     }
 
     return await ctx.db.patch(id, {
@@ -127,11 +127,11 @@ export const archive = mutation({
 
     const doc = await ctx.db.get(args.id);
     if (!doc) {
-        throw new Error("Document not found");
+      throw new Error("Document not found");
     }
 
     if (doc.userId !== userId) {
-        throw new Error("Unauthorized");
+      throw new Error("Unauthorized");
     }
 
     return await ctx.db.patch(args.id, {
@@ -149,11 +149,11 @@ export const remove = mutation({
 
     const doc = await ctx.db.get(args.id);
     if (!doc) {
-        throw new Error("Document not found");
+      throw new Error("Document not found");
     }
 
     if (doc.userId !== userId) {
-        throw new Error("Unauthorized");
+      throw new Error("Unauthorized");
     }
 
     return await ctx.db.delete(args.id);

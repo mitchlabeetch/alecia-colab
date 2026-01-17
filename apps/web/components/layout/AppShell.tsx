@@ -54,9 +54,9 @@ function AppShellContent({ children, mode = "standalone", className }: AppShellP
 
 // Wrapper to provide context
 export function AppShell(props: AppShellProps) {
-    return (
-        <SidebarProvider>
-            <AppShellContent {...props} />
-        </SidebarProvider>
-    )
+  return (
+    <SidebarProvider>
+      <AppShellContent {...props} />
+    </SidebarProvider>
+  );
 }

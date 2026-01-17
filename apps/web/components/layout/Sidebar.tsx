@@ -10,14 +10,7 @@ import { Button } from "@/components/tailwind/ui/button";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { Sheet, SheetContent } from "@/components/tailwind/ui/sheet";
 import { cn } from "@/lib/utils";
-import {
-  Calendar as CalendarIcon,
-  FileText,
-  Home,
-  LayoutDashboard,
-  Presentation,
-  Users,
-} from "lucide-react";
+import { Calendar as CalendarIcon, FileText, Home, LayoutDashboard, Presentation, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "./sidebar-provider";
@@ -51,11 +44,11 @@ function SidebarContent() {
         <div className="space-y-4">
           {colabSidebarSections.map((section, sectionIndex) => (
             <div key={section.title || sectionIndex}>
-               {!isCollapsed && section.title && (
-                  <h4 className="mb-2 px-4 text-xs font-semibold text-muted-foreground tracking-wider uppercase">
-                    {section.title}
-                  </h4>
-                )}
+              {!isCollapsed && section.title && (
+                <h4 className="mb-2 px-4 text-xs font-semibold text-muted-foreground tracking-wider uppercase">
+                  {section.title}
+                </h4>
+              )}
               <nav className="space-y-1">
                 {section.items.map((item) => {
                   const Icon = item.icon;
@@ -63,7 +56,7 @@ function SidebarContent() {
 
                   // Mobile or Expanded
                   if (!isCollapsed) {
-                     return (
+                    return (
                       <Link key={item.label} href={item.href || "#"} onClick={() => setMobileOpen(false)}>
                         <Button
                           variant={isActive ? "secondary" : "ghost"}
@@ -79,7 +72,7 @@ function SidebarContent() {
                   // Collapsed (Desktop only)
                   return (
                     <Link key={item.label} href={item.href || "#"}>
-                       <Button
+                      <Button
                         variant={isActive ? "secondary" : "ghost"}
                         className="w-full justify-center px-2 h-10" // Desktop collapsed stays h-10
                         title={item.label}
@@ -116,9 +109,9 @@ export function Sidebar({ className }: SidebarProps) {
     <>
       {/* Mobile Overlay & Drawer (Using Sheet) */}
       <Sheet open={isMobileOpen} onOpenChange={setMobileOpen}>
-          <SheetContent side="left" className="p-0 w-64">
-              <SidebarContent />
-          </SheetContent>
+        <SheetContent side="left" className="p-0 w-64">
+          <SidebarContent />
+        </SheetContent>
       </Sheet>
 
       {/* Desktop Sidebar */}
@@ -131,7 +124,7 @@ export function Sidebar({ className }: SidebarProps) {
           className,
         )}
       >
-         <SidebarContent />
+        <SidebarContent />
       </aside>
     </>
   );

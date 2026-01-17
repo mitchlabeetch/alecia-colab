@@ -1,10 +1,5 @@
-import { Button } from "@/components/tailwind/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/tailwind/ui/card";
+
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { DOCUMENTS_TEMPLATES } from "@/lib/templates";
 import { FilePlus, Loader2 } from "lucide-react";
@@ -20,9 +15,7 @@ export function TemplateSelector({ onSelect, isCreating }: TemplateSelectorProps
       <div className="w-full max-w-4xl space-y-6">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold tracking-tight">Créer un nouveau document</h1>
-          <p className="text-muted-foreground">
-            Choisissez un modèle pour commencer ou partez d'une page blanche.
-          </p>
+          <p className="text-muted-foreground">Choisissez un modèle pour commencer ou partez d'une page blanche.</p>
         </div>
 
         <ScrollArea className="h-[600px] w-full rounded-md border bg-background p-4 shadow-sm">
@@ -37,9 +30,7 @@ export function TemplateSelector({ onSelect, isCreating }: TemplateSelectorProps
                   <FilePlus className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle className="text-lg">Document vierge</CardTitle>
-                <CardDescription>
-                  Commencez avec une page blanche.
-                </CardDescription>
+                <CardDescription>Commencez avec une page blanche.</CardDescription>
               </CardHeader>
             </Card>
 
@@ -55,9 +46,7 @@ export function TemplateSelector({ onSelect, isCreating }: TemplateSelectorProps
                     <FilePlus className="h-6 w-6 text-muted-foreground" />
                   </div>
                   <CardTitle className="text-lg">{template.title}</CardTitle>
-                  <CardDescription className="line-clamp-2">
-                    {template.description}
-                  </CardDescription>
+                  <CardDescription className="line-clamp-2">{template.description}</CardDescription>
                 </CardHeader>
               </Card>
             ))}

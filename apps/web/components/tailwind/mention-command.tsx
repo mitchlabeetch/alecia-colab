@@ -51,18 +51,20 @@ export const mentionItems = createSuggestionItems(
       const event = new CustomEvent("ai-action", { detail: { action: action.value, prompt: action.prompt } });
       editor.view.dom.dispatchEvent(event);
     },
-  }))
+  })),
 );
 
 export const mentionCommand = Command.configure({
   suggestion: {
     char: "@",
     items: ({ query }) => {
-        // Filter for "alecia" or show all if query is empty/partial matches
-        if (query.toLowerCase().startsWith("ale")) {
-            return mentionItems.filter(item => item.title.toLowerCase().includes(query.toLowerCase()) || "alecia".includes(query.toLowerCase()));
-        }
-        return [];
+      // Filter for "alecia" or show all if query is empty/partial matches
+      if (query.toLowerCase().startsWith("ale")) {
+        return mentionItems.filter(
+          (item) => item.title.toLowerCase().includes(query.toLowerCase()) || "alecia".includes(query.toLowerCase()),
+        );
+      }
+      return [];
     },
     render: renderItems,
   },

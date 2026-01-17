@@ -240,7 +240,8 @@ function DashboardContent() {
     },
   ];
 
-  return <DashboardUI
+  return (
+    <DashboardUI
       isLoaded={isLoaded}
       user={user}
       stats={stats}
@@ -248,7 +249,8 @@ function DashboardContent() {
       activityFeed={activityFeed}
       isDocumentsLoading={isDocumentsLoading}
       isDataLoading={isDataLoading}
-  />;
+    />
+  );
 }
 
 // Mock content for dev/no-auth environment
@@ -288,7 +290,8 @@ function DashboardContentMock() {
     },
   ];
 
-  return <DashboardUI
+  return (
+    <DashboardUI
       isLoaded={true}
       user={{ firstName: "Demo", username: "User" } as any}
       stats={stats}
@@ -296,12 +299,13 @@ function DashboardContentMock() {
       activityFeed={[]}
       isDocumentsLoading={false}
       isDataLoading={false}
-  />;
+    />
+  );
 }
 
 // UI Component to share layout
 function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isDocumentsLoading, isDataLoading }: any) {
-    return (
+  return (
     <div className="space-y-8">
       {/* Welcome Section */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -381,9 +385,9 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
             {/* Assuming RecentFiles is safe or we wrap it. For now let's hope it handles missing auth or we mock it too */}
             {/* Just to be safe, if we are in mock mode, we show placeholder */}
             {process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ? (
-                <RecentFiles limit={5} showCreateButton={true} />
+              <RecentFiles limit={5} showCreateButton={true} />
             ) : (
-                <div className="text-sm text-muted-foreground">Recent files unavailable in demo mode.</div>
+              <div className="text-sm text-muted-foreground">Recent files unavailable in demo mode.</div>
             )}
           </CardContent>
         </Card>
@@ -529,5 +533,5 @@ function DashboardUI({ isLoaded, user, stats, recentDocuments, activityFeed, isD
         </motion.div>
       </div>
     </div>
-    )
+  );
 }

@@ -7,7 +7,7 @@ import { CommandMenuProvider } from "@/components/command-menu-provider";
 
 export function ClientProviders({ children }: { children: ReactNode }) {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  
+
   const content = (
     <CommandMenuProvider>
       {children}
@@ -20,6 +20,6 @@ export function ClientProviders({ children }: { children: ReactNode }) {
     // Components using Clerk hooks should use dynamic imports with ssr: false
     return content;
   }
-  
+
   return <ClerkProvider publishableKey={publishableKey}>{content}</ClerkProvider>;
 }
