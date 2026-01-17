@@ -2,8 +2,8 @@
 
 import { ClerkProvider } from "@clerk/nextjs";
 import type { ReactNode } from "react";
-import { CommandMenu } from "@/components/command-menu";
 import { CommandMenuProvider } from "@/components/command-menu-provider";
+import { CommandPalette } from "@/components/ui/fancy/CommandPalette";
 
 export function ClientProviders({ children }: { children: ReactNode }) {
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -11,7 +11,7 @@ export function ClientProviders({ children }: { children: ReactNode }) {
   const content = (
     <CommandMenuProvider>
       {children}
-      <CommandMenu />
+      <CommandPalette />
     </CommandMenuProvider>
   );
 
