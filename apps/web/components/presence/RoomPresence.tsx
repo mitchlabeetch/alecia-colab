@@ -5,10 +5,10 @@
  * Combinaison des avatars, curseurs et indicateurs de saisie
  */
 
-import { motion, AnimatePresence } from "motion/react";
-import { Users, Eye, Edit3 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/tailwind/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { Edit3, Eye, Users } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 interface RoomUser {
   id: string;

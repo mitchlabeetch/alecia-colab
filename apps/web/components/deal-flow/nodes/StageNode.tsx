@@ -1,7 +1,7 @@
 "use client";
 
-import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
+import { memo } from "react";
 
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
 

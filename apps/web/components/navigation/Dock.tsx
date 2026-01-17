@@ -5,18 +5,18 @@
  * Adapté pour Alecia Colab - Interface française
  */
 
+import { cn } from "@/lib/utils";
+import { Briefcase, FileText, Home, Settings } from "lucide-react";
 import {
-  motion,
+  AnimatePresence,
   type MotionValue,
+  type SpringOptions,
+  motion,
   useMotionValue,
   useSpring,
   useTransform,
-  type SpringOptions,
-  AnimatePresence,
 } from "motion/react";
 import React, { Children, cloneElement, useEffect, useMemo, useRef, useState } from "react";
-import { Home, Briefcase, FileText, Settings, type LucideIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export interface DockItemData {
   icon: React.ReactNode;
@@ -188,7 +188,7 @@ export default function Dock({
   panelHeight = 64,
   baseItemSize = 48,
 }: DockProps) {
-  const mouseX = useMotionValue(Infinity);
+  const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
   const isHovered = useMotionValue(0);
 
   const maxHeight = useMemo(
@@ -207,7 +207,7 @@ export default function Dock({
         }}
         onMouseLeave={() => {
           isHovered.set(0);
-          mouseX.set(Infinity);
+          mouseX.set(Number.POSITIVE_INFINITY);
         }}
         className={cn(
           "flex items-end gap-3 px-3 pb-2",

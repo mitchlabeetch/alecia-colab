@@ -1,11 +1,11 @@
-'use server';
+"use server";
 
-import { createStreamableValue } from 'ai/rsc';
-import { openai } from '@ai-sdk/openai';
-import { streamText } from 'ai';
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
+import { createStreamableValue } from "ai/rsc";
 
 export async function generateOutlineAction(prompt: string) {
-  const stream = createStreamableValue('');
+  const stream = createStreamableValue("");
 
   (async () => {
     try {
@@ -23,7 +23,7 @@ export async function generateOutlineAction(prompt: string) {
       Génère uniquement le contenu balisé, sans texte d'introduction ni de conclusion.`;
 
       const { textStream } = await streamText({
-        model: openai('gpt-4-turbo'),
+        model: openai("gpt-4-turbo"),
         system: systemPrompt,
         prompt: prompt,
         temperature: 0.7,
@@ -38,7 +38,9 @@ export async function generateOutlineAction(prompt: string) {
       console.error("Erreur lors de la génération de la présentation :", error);
       // We don't want to expose raw error objects to the stream in production usually,
       // but for debugging it helps. Let's send a friendly French message.
-      stream.update("\n<SLIDE><TITLE>Erreur</TITLE><BULLET>Une erreur est survenue lors de la génération.</BULLET></SLIDE>");
+      stream.update(
+        "\n<SLIDE><TITLE>Erreur</TITLE><BULLET>Une erreur est survenue lors de la génération.</BULLET></SLIDE>",
+      );
       stream.done();
     }
   })();

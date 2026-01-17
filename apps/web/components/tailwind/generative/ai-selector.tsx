@@ -1,13 +1,19 @@
-
-import type { Editor } from "@tiptap/core";
-import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/tailwind/ui/popover";
 import { Button } from "@/components/tailwind/ui/button";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/tailwind/ui/command";
-import { AI_ACTIONS } from "../ai/ai-actions";
-import { Sparkles } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/tailwind/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/tailwind/ui/popover";
+import type { Editor } from "@tiptap/core";
 import { useCompletion } from "ai/react";
+import { Sparkles } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { AI_ACTIONS } from "../ai/ai-actions";
 
 interface AISelectorProps {
   editor: Editor;
@@ -27,25 +33,21 @@ export function AISelector({ editor, open, onOpenChange }: AISelectorProps) {
     onError: (e) => {
       toast.error(e.message);
     },
-    onFinish: (prompt, completion) => {
-        // Replace selection with completion or handle it
-        // For now, we will just insert it.
-        // But novel usually handles this with completion updates.
-        // Let's insert it at selection
-        const selection = editor.state.selection;
-        editor.chain().focus().insertContentAt({ from: selection.from, to: selection.to }, completion).run();
-    }
+    onFinish: (_prompt, completion) => {
+      // Replace selection with completion or handle it
+      // For now, we will just insert it.
+      // But novel usually handles this with completion updates.
+      // Let's insert it at selection
+      const selection = editor.state.selection;
+      editor.chain().focus().insertContentAt({ from: selection.from, to: selection.to }, completion).run();
+    },
   });
 
   const [inputValue, setInputValue] = useState("");
 
-  const handleAction = async (action: typeof AI_ACTIONS[number]) => {
+  const handleAction = async (action: (typeof AI_ACTIONS)[number]) => {
     const selection = editor.state.selection;
-    const text = editor.state.doc.textBetween(
-      selection.from,
-      selection.to,
-      " "
-    );
+    const text = editor.state.doc.textBetween(selection.from, selection.to, " ");
 
     if (!text) {
       toast.error("Veuillez sélectionner du texte pour utiliser l'IA.");
@@ -74,12 +76,7 @@ export function AISelector({ editor, open, onOpenChange }: AISelectorProps) {
       </PopoverTrigger>
       <PopoverContent className="w-72 p-0" align="start">
         <Command>
-          <CommandInput
-            placeholder="Demander à l'IA..."
-            value={inputValue}
-            onValueChange={setInputValue}
-            autoFocus
-          />
+          <CommandInput placeholder="Demander à l'IA..." value={inputValue} onValueChange={setInputValue} autoFocus />
           <CommandList>
             <CommandEmpty>Aucune action trouvée.</CommandEmpty>
             <CommandGroup heading="Actions IA">

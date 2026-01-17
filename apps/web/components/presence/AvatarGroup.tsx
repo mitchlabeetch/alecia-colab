@@ -5,8 +5,8 @@
  * Adapté pour Alecia Colab - Intégration présence
  */
 
-import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/tailwind/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface AvatarData {
   id: string;

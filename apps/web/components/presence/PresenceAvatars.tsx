@@ -1,7 +1,7 @@
 "use client";
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../tailwind/ui/tooltip";
 import { Users } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../tailwind/ui/tooltip";
 
 interface PresenceUser {
   userId: string;

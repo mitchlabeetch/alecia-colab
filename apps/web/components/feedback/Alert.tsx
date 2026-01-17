@@ -5,9 +5,9 @@
  * Adapté pour Alecia Colab - Interface française
  */
 
-import { motion, AnimatePresence } from "motion/react";
-import { AlertCircle, CheckCircle2, Info, AlertTriangle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 type AlertVariant = "info" | "success" | "warning" | "error";

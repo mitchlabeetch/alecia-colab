@@ -5,10 +5,10 @@
  * Adapté pour Alecia Colab - Format français (500 m€)
  */
 
+import { cn } from "@/lib/utils";
 import { type MotionValue, motion, useSpring, useTransform } from "motion/react";
 import type React from "react";
 import { useEffect } from "react";
-import { cn } from "@/lib/utils";
 
 type PlaceValue = number | ".";
 
@@ -116,7 +116,7 @@ export default function Counter({
     const dotIndex = a.indexOf(".");
     const isInteger = dotIndex === -1;
     const exponent = isInteger ? a.length - i - 1 : i < dotIndex ? dotIndex - i - 1 : -(i - dotIndex);
-    return Math.pow(10, exponent);
+    return 10 ** exponent;
   });
 
   return (

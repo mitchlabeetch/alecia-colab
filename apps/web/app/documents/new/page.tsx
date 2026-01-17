@@ -1,7 +1,7 @@
 "use client";
 
-import dynamicImport from "next/dynamic";
 import { Loader2 } from "lucide-react";
+import dynamicImport from "next/dynamic";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";

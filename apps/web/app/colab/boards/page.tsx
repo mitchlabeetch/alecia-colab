@@ -1,15 +1,22 @@
-'use client';
+"use client";
 
-import { useQuery, useMutation } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { Button } from '@/components/tailwind/ui/button';
-import { useUser } from '@clerk/nextjs';
-import { Plus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/tailwind/ui/card';
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from '@/components/tailwind/ui/dialog';
-import { Input } from '@/components/tailwind/ui/input';
+import { Button } from "@/components/tailwind/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/tailwind/ui/dialog";
+import { Input } from "@/components/tailwind/ui/input";
+import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
+import { useMutation, useQuery } from "convex/react";
+import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function BoardsListPage() {
   // Safe use of useUser with fallback for environments without Clerk
@@ -21,9 +28,9 @@ export default function BoardsListPage() {
     user = clerk.user;
     isLoaded = clerk.isLoaded;
   } catch (_e) {
-    if (process.env.NODE_ENV === 'development') {
-       user = { id: "dev_user_mock" };
-       isLoaded = true;
+    if (process.env.NODE_ENV === "development") {
+      user = { id: "dev_user_mock" };
+      isLoaded = true;
     }
   }
 
@@ -76,8 +83,12 @@ export default function BoardsListPage() {
               />
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
-              <Button onClick={handleCreateBoard} disabled={!newBoardName.trim()}>Créer</Button>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                Annuler
+              </Button>
+              <Button onClick={handleCreateBoard} disabled={!newBoardName.trim()}>
+                Créer
+              </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -95,16 +106,16 @@ export default function BoardsListPage() {
             </CardHeader>
             <CardContent>
               <div className="text-sm text-muted-foreground">
-                Créé le {new Date(board.createdAt).toLocaleDateString('fr-FR')}
+                Créé le {new Date(board.createdAt).toLocaleDateString("fr-FR")}
               </div>
             </CardContent>
           </Card>
         ))}
 
         {boards?.length === 0 && (
-            <div className="col-span-3 text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
-                Aucun tableau pour le moment. Créez-en un pour commencer !
-            </div>
+          <div className="col-span-3 text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
+            Aucun tableau pour le moment. Créez-en un pour commencer !
+          </div>
         )}
       </div>
     </div>

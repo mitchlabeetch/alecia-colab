@@ -61,14 +61,12 @@ export const update = mutation({
             v.object({
               url: v.string(),
               query: v.string(),
-            })
+            }),
           ),
-        })
-      )
+        }),
+      ),
     ),
-    status: v.optional(
-      v.union(v.literal("draft"), v.literal("generating"), v.literal("complete"))
-    ),
+    status: v.optional(v.union(v.literal("draft"), v.literal("generating"), v.literal("complete"))),
     title: v.optional(v.string()),
     theme: v.optional(v.string()),
   },

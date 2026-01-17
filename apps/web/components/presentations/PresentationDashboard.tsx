@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useMutation, useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { useRouter } from 'next/navigation';
-import { readStreamableValue } from 'ai/rsc';
-import { generateOutlineAction } from '@/app/actions/presentation/generate';
-import { parsePresentationStream } from '@/lib/presentation-parser';
-import { Button } from '@/components/tailwind/ui/button';
-import { Textarea } from '@/components/tailwind/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/tailwind/ui/card';
-import { Loader2, Plus, Presentation } from 'lucide-react';
-import { useUser } from '@clerk/nextjs';
-import type { Slide } from '@/lib/presentation-parser';
+import { generateOutlineAction } from "@/app/actions/presentation/generate";
+import { Button } from "@/components/tailwind/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/tailwind/ui/card";
+import { Textarea } from "@/components/tailwind/ui/textarea";
+import { api } from "@/convex/_generated/api";
+import { parsePresentationStream } from "@/lib/presentation-parser";
+import type { Slide } from "@/lib/presentation-parser";
+import { useUser } from "@clerk/nextjs";
+import { readStreamableValue } from "ai/rsc";
+import { useMutation, useQuery } from "convex/react";
+import { Loader2, Plus, Presentation } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function PresentationDashboard() {
   const router = useRouter();
@@ -28,9 +28,9 @@ export function PresentationDashboard() {
   } catch (_e) {
     // If Clerk is not available (e.g. no provider), use a mock or null
     // In dev without keys, we might want to mock it to test UI
-    if (process.env.NODE_ENV === 'development') {
-       user = { id: "dev_user_mock" };
-       isLoaded = true;
+    if (process.env.NODE_ENV === "development") {
+      user = { id: "dev_user_mock" };
+      isLoaded = true;
     }
   }
 
@@ -39,7 +39,7 @@ export function PresentationDashboard() {
   // @ts-ignore
   const presentations = useQuery(api.presentations.list, isLoaded && user ? { userId: user.id } : "skip");
 
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewSlides, setPreviewSlides] = useState<Slide[]>([]);
 
@@ -52,7 +52,7 @@ export function PresentationDashboard() {
     try {
       // 1. Create draft presentation
       const presentationId = await createPresentation({
-        title: prompt.slice(0, 50) + (prompt.length > 50 ? '...' : ''),
+        title: prompt.slice(0, 50) + (prompt.length > 50 ? "..." : ""),
         userId: user.id,
         theme: "corporate",
         language: "fr-FR",
@@ -61,7 +61,7 @@ export function PresentationDashboard() {
       // 2. Start generation
       const { stream } = await generateOutlineAction(prompt);
 
-      let fullText = '';
+      let fullText = "";
       for await (const delta of readStreamableValue(stream)) {
         fullText += delta;
 
@@ -75,7 +75,7 @@ export function PresentationDashboard() {
       await updatePresentation({
         id: presentationId,
         slides,
-        status: "complete"
+        status: "complete",
       });
 
       router.push(`/presentations/${presentationId}`);
@@ -108,18 +108,14 @@ export function PresentationDashboard() {
               className="min-h-[150px]"
               disabled={isGenerating}
             />
-            <Button
-              onClick={handleGenerate}
-              disabled={isGenerating || !prompt.trim() || !user}
-              className="w-full"
-            >
+            <Button onClick={handleGenerate} disabled={isGenerating || !prompt.trim() || !user} className="w-full">
               {isGenerating ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Génération en cours ({previewSlides.length} slides)...
                 </>
               ) : (
-                'Générer la présentation'
+                "Générer la présentation"
               )}
             </Button>
 
@@ -131,8 +127,10 @@ export function PresentationDashboard() {
                   {previewSlides.map((slide, i) => (
                     // biome-ignore lint/suspicious/noArrayIndexKey: Index stable for preview
                     <li key={i} className="flex items-center gap-2">
-                       <span className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center text-[10px]">{i + 1}</span>
-                       <span className="truncate">{slide.title || "..."}</span>
+                      <span className="w-4 h-4 rounded-full bg-primary/20 flex items-center justify-center text-[10px]">
+                        {i + 1}
+                      </span>
+                      <span className="truncate">{slide.title || "..."}</span>
                     </li>
                   ))}
                 </ul>
@@ -154,15 +152,13 @@ export function PresentationDashboard() {
                     <Presentation className="h-5 w-5 text-primary" />
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    {new Date(p.createdAt).toLocaleDateString('fr-FR')}
+                    {new Date(p.createdAt).toLocaleDateString("fr-FR")}
                   </span>
                 </div>
               </CardHeader>
               <CardContent className="p-4 pt-0">
                 <h3 className="font-semibold line-clamp-2">{p.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {p.slides.length} diapositives
-                </p>
+                <p className="text-sm text-muted-foreground mt-1">{p.slides.length} diapositives</p>
               </CardContent>
             </Card>
           ))}

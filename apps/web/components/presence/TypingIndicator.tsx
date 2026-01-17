@@ -5,8 +5,8 @@
  * Inspiré des bonnes pratiques Liveblocks
  */
 
-import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "motion/react";
 
 interface TypingUser {
   id: string;
@@ -35,7 +35,7 @@ function TypingDots({ color }: { color: string }) {
           }}
           transition={{
             duration: 0.6,
-            repeat: Infinity,
+            repeat: Number.POSITIVE_INFINITY,
             delay: i * 0.1,
             ease: "easeInOut",
           }}

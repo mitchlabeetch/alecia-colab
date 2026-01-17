@@ -5,11 +5,11 @@
  * Adapté pour Alecia Colab - Interface française
  */
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { User, Settings, LogOut, Moon, Sun, ChevronDown, Building, Bell } from "lucide-react";
-import { useUser, useClerk } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { useClerk, useUser } from "@clerk/nextjs";
+import { Bell, Building, ChevronDown, LogOut, Moon, Settings, Sun, User } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
 interface ProfileDropdownProps {
   className?: string;
@@ -174,7 +174,7 @@ export default function ProfileDropdown({ className }: ProfileDropdownProps) {
 
             {/* Menu items */}
             <div className="py-1">
-              {menuItems.map((item, index) => (
+              {menuItems.map((item, _index) => (
                 <div key={item.label}>
                   <motion.button
                     className={cn(

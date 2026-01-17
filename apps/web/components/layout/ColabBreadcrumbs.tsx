@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface BreadcrumbItem {
   label: string;
@@ -29,7 +29,7 @@ export function ColabBreadcrumbs() {
   const breadcrumbs: BreadcrumbItem[] = [
     { label: "Colab", href: "/dashboard" },
     ...segments.map((segment, index) => {
-      const href = "/" + segments.slice(0, index + 1).join("/");
+      const href = `/${segments.slice(0, index + 1).join("/")}`;
       const label = routeLabels[segment] || segment;
       return { label, href };
     }),

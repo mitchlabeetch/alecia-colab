@@ -1,10 +1,10 @@
 "use client";
 
-import { Clock } from "lucide-react";
-import dynamicImport from "next/dynamic";
-import { fr } from "@/lib/i18n";
 import { AppShell } from "@/components/layout/AppShell";
 import { Skeleton } from "@/components/tailwind/ui/skeleton";
+import { fr } from "@/lib/i18n";
+import { Clock } from "lucide-react";
+import dynamicImport from "next/dynamic";
 
 // Prevent static generation
 export const dynamic = "force-dynamic";
@@ -22,7 +22,7 @@ const RecentFiles = dynamicImport(
         ))}
       </div>
     ),
-  }
+  },
 );
 
 export default function RecentPage() {

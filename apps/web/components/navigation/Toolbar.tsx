@@ -5,21 +5,21 @@
  * Adapté pour Alecia Colab - Interface française
  */
 
+import { cn } from "@/lib/utils";
 import {
-  Filter,
-  SortAsc,
   Download,
-  Share2,
-  History,
   Edit3,
   FileText,
+  Filter,
+  History,
   LayoutGrid,
-  Settings,
   type LucideIcon,
+  Settings,
+  Share2,
+  SortAsc,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import * as React from "react";
-import { cn } from "@/lib/utils";
 
 interface ToolbarItem {
   id: string;

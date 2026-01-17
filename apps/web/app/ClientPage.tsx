@@ -5,15 +5,15 @@
  * Contient toute la logique client-side (Clerk, Convex hooks)
  */
 
-import nextDynamic from "next/dynamic";
 import { Button } from "@/components/tailwind/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/tailwind/ui/dialog";
 import Menu from "@/components/tailwind/ui/menu";
 import { ScrollArea } from "@/components/tailwind/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tailwind/ui/tabs";
-import { BookOpen, Briefcase, FileText } from "lucide-react";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { fr } from "@/lib/i18n";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { BookOpen, Briefcase, FileText } from "lucide-react";
+import nextDynamic from "next/dynamic";
 
 // Dynamic imports to avoid SSR issues with Convex/Clerk hooks
 const TailwindAdvancedEditor = nextDynamic(() => import("@/components/tailwind/advanced-editor"), {

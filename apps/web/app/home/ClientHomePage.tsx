@@ -5,12 +5,12 @@
  * Route: colab.alecia.markets/home
  */
 
-import { useState } from "react";
-import nextDynamic from "next/dynamic";
 import { Button } from "@/components/tailwind/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/tailwind/ui/tabs";
-import { FileText, Briefcase, FolderOpen, Clock, Plus, Users, TrendingUp } from "lucide-react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { Briefcase, Clock, FileText, FolderOpen, Plus, TrendingUp, Users } from "lucide-react";
+import nextDynamic from "next/dynamic";
+import { useState } from "react";
 
 // Dynamic imports for heavy components
 const TailwindAdvancedEditor = nextDynamic(() => import("@/components/tailwind/advanced-editor"), {

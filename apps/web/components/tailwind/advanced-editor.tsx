@@ -1,5 +1,7 @@
 "use client";
 import { defaultEditorContent } from "@/lib/content";
+import { useMutation } from "convex/react";
+import { History, Save } from "lucide-react";
 import {
   EditorCommand,
   EditorCommandEmpty,
@@ -14,9 +16,8 @@ import {
   handleImageDrop,
   handleImagePaste,
 } from "novel";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { defaultExtensions } from "./extensions";
 import { ColorSelector } from "./selectors/color-selector";
@@ -24,16 +25,15 @@ import { LinkSelector } from "./selectors/link-selector";
 import { MathSelector } from "./selectors/math-selector";
 import { NodeSelector } from "./selectors/node-selector";
 import { Separator } from "./ui/separator";
-import { History, Save } from "lucide-react";
 
+import type { Id } from "../../convex/_generated/dataModel";
+import { usePresence } from "../../hooks/use-presence";
+import { PresenceIndicator } from "../presence/PresenceAvatars";
+import { VersionHistorySidebar } from "../version-history/VersionHistorySidebar";
 import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
-import { usePresence } from "../../hooks/use-presence";
-import { PresenceIndicator } from "../presence/PresenceAvatars";
-import { VersionHistorySidebar } from "../version-history/VersionHistorySidebar";
-import type { Id } from "../../convex/_generated/dataModel";
 
 const hljs = require("highlight.js");
 
@@ -86,8 +86,8 @@ const TailwindAdvancedEditor = () => {
       if (!isManual && now - lastVersionSaved < 5 * 60 * 1000) return;
 
       try {
-        const json = editor.getJSON();
-        const markdown = editor.storage.markdown?.getMarkdown() || "";
+        const _json = editor.getJSON();
+        const _markdown = editor.storage.markdown?.getMarkdown() || "";
 
         // Note: In production, use actual document ID from route
         // For now, this is a placeholder that won't work until you have real document IDs

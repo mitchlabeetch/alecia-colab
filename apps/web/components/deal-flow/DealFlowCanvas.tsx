@@ -1,30 +1,30 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
 import {
-  ReactFlow,
-  MiniMap,
-  Controls,
   Background,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  type Node,
-  type Edge,
-  type OnConnect,
   BackgroundVariant,
+  Controls,
+  type Edge,
+  MiniMap,
+  type Node,
+  type OnConnect,
   Panel,
+  ReactFlow,
+  addEdge,
+  useEdgesState,
+  useNodesState,
 } from "@xyflow/react";
+import { useCallback, useMemo, useState } from "react";
 import "@xyflow/react/dist/style.css";
 
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
 
+import { GitBranch, LayoutGrid, Loader2 } from "lucide-react";
+import { Button } from "../tailwind/ui/button";
 import DealNode from "./nodes/DealNode";
 import StageNode from "./nodes/StageNode";
-import { Button } from "../tailwind/ui/button";
-import { Loader2, LayoutGrid, GitBranch } from "lucide-react";
 
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
 
@@ -81,41 +81,40 @@ export default function DealFlowCanvas({ onDealClick }: DealFlowCanvasProps) {
       }));
 
       return { initialNodes: stageNodes, initialEdges: stageEdges };
-    } else {
-      // Deal-focused view: show individual deals
-      const dealsByStage = pipelineStages.reduce(
-        (acc, stage) => {
-          acc[stage] = deals.filter((d) => d.stage === stage);
-          return acc;
-        },
-        {} as Record<DealStage, typeof deals>,
-      );
+    }
+    // Deal-focused view: show individual deals
+    const dealsByStage = pipelineStages.reduce(
+      (acc, stage) => {
+        acc[stage] = deals.filter((d) => d.stage === stage);
+        return acc;
+      },
+      {} as Record<DealStage, typeof deals>,
+    );
 
-      const dealNodes: Node[] = [];
+    const dealNodes: Node[] = [];
 
-      pipelineStages.forEach((stage, stageIndex) => {
-        dealsByStage[stage].forEach((deal, dealIndex) => {
-          dealNodes.push({
-            id: deal._id,
-            type: "deal",
-            position: deal.nodePosition || {
-              x: stageIndex * 280,
-              y: 50 + dealIndex * 160,
-            },
-            data: {
-              company: deal.company,
-              stage: deal.stage,
-              valuation: deal.valuation,
-              lead: deal.lead,
-              priority: deal.priority,
-              createdAt: deal.createdAt,
-            },
-          });
+    pipelineStages.forEach((stage, stageIndex) => {
+      dealsByStage[stage].forEach((deal, dealIndex) => {
+        dealNodes.push({
+          id: deal._id,
+          type: "deal",
+          position: deal.nodePosition || {
+            x: stageIndex * 280,
+            y: 50 + dealIndex * 160,
+          },
+          data: {
+            company: deal.company,
+            stage: deal.stage,
+            valuation: deal.valuation,
+            lead: deal.lead,
+            priority: deal.priority,
+            createdAt: deal.createdAt,
+          },
         });
       });
+    });
 
-      return { initialNodes: dealNodes, initialEdges: [] };
-    }
+    return { initialNodes: dealNodes, initialEdges: [] };
   }, [deals, viewMode]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);

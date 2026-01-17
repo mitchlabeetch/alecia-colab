@@ -6,11 +6,11 @@
  * Adapté pour Alecia Colab avec Convex
  */
 
-import { useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import { cn } from "@/lib/utils";
+import { useMutation, useQuery } from "convex/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useCallback, useEffect, useRef } from "react";
+import { api } from "../../convex/_generated/api";
 
 interface CursorPosition {
   x: number;

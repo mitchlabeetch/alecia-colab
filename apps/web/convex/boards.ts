@@ -6,7 +6,7 @@ import { mutation, query } from "./_generated/server";
 export const createBoard = mutation({
   args: {
     name: v.string(),
-    visibility: v.union(v.literal('private'), v.literal('workspace'), v.literal('public')),
+    visibility: v.union(v.literal("private"), v.literal("workspace"), v.literal("public")),
     backgroundUrl: v.optional(v.string()),
     workspaceId: v.optional(v.string()),
     userId: v.string(),
@@ -23,14 +23,16 @@ export const createBoard = mutation({
 
     // Create default lists
     const defaultLists = ["À faire", "En cours", "Terminé"];
-    await Promise.all(defaultLists.map((name, index) =>
-      ctx.db.insert("colab_lists", {
-        name,
-        boardId,
-        order: index,
-        createdAt: Date.now(),
-      })
-    ));
+    await Promise.all(
+      defaultLists.map((name, index) =>
+        ctx.db.insert("colab_lists", {
+          name,
+          boardId,
+          index: index,
+          createdAt: Date.now(),
+        }),
+      ),
+    );
 
     return boardId;
   },
@@ -47,8 +49,8 @@ export const getBoard = query({
       .withIndex("by_board", (q) => q.eq("boardId", args.boardId))
       .collect();
 
-    // Sort lists by order
-    lists.sort((a, b) => a.order - b.order);
+    // Sort lists by index
+    lists.sort((a, b) => a.index - b.index);
 
     const cards = await Promise.all(
       lists.map(async (list) => {
@@ -57,15 +59,21 @@ export const getBoard = query({
           .withIndex("by_list", (q) => q.eq("listId", list._id))
           .collect();
         return listCards;
-      })
+      }),
     );
 
-    const flatCards = cards.flat().sort((a, b) => a.order - b.order);
+    const flatCards = cards.flat().sort((a, b) => a.index - b.index);
+
+    const labels = await ctx.db
+      .query("colab_labels")
+      .withIndex("by_board", (q) => q.eq("boardId", args.boardId))
+      .collect();
 
     return {
       ...board,
       lists,
       cards: flatCards,
+      labels,
     };
   },
 });
@@ -88,7 +96,7 @@ export const listBoards = query({
         .withIndex("by_workspace", (q) => q.eq("workspaceId", args.workspaceId!))
         .collect();
       // Merge unique boards (simple dedupe)
-      const boardIds = new Set(boards.map(b => b._id));
+      const boardIds = new Set(boards.map((b) => b._id));
       for (const b of workspaceBoards) {
         if (!boardIds.has(b._id)) {
           boards.push(b);
@@ -100,20 +108,19 @@ export const listBoards = query({
   },
 });
 
-
 // --- Lists ---
 
 export const createList = mutation({
   args: {
     name: v.string(),
     boardId: v.id("colab_boards"),
-    order: v.number(),
+    index: v.number(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("colab_lists", {
       name: args.name,
       boardId: args.boardId,
-      order: args.order,
+      index: args.index,
       createdAt: Date.now(),
     });
   },
@@ -122,16 +129,66 @@ export const createList = mutation({
 export const reorderList = mutation({
   args: {
     listId: v.id("colab_lists"),
-    newOrder: v.number(),
+    newIndex: v.number(),
   },
   handler: async (ctx, args) => {
-    // Simplified reordering: usually requires shifting other items
-    // For this implementation, we assume client sends correct order or we just update single item
-    // A robust implementation updates all affected items' indices
-    await ctx.db.patch(args.listId, { order: args.newOrder });
+    const list = await ctx.db.get(args.listId);
+    if (!list) throw new Error("List not found");
+
+    const lists = await ctx.db
+      .query("colab_lists")
+      .withIndex("by_board", (q) => q.eq("boardId", list.boardId))
+      .collect();
+
+    lists.sort((a, b) => a.index - b.index);
+
+    const currentIndex = lists.findIndex((l) => l._id === args.listId);
+    if (currentIndex === -1) return;
+
+    // Remove from current position
+    lists.splice(currentIndex, 1);
+    // Insert at new position
+    lists.splice(args.newIndex, 0, list);
+
+    // Update indices
+    await Promise.all(
+      lists.map((l, i) => {
+        if (l.index !== i) {
+          return ctx.db.patch(l._id, { index: i });
+        }
+      }),
+    );
   },
 });
 
+export const updateList = mutation({
+  args: {
+    listId: v.id("colab_lists"),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.listId, { name: args.name });
+  },
+});
+
+export const deleteList = mutation({
+  args: {
+    listId: v.id("colab_lists"),
+  },
+  handler: async (ctx, args) => {
+    // Delete cards in the list
+    const cards = await ctx.db
+      .query("colab_cards")
+      .withIndex("by_list", (q) => q.eq("listId", args.listId))
+      .collect();
+    for (const card of cards) {
+      await ctx.db.delete(card._id);
+      // We should also delete activities, checklists, etc. if we want a clean delete
+      // For now, let's just delete the card itself.
+    }
+    await ctx.db.delete(args.listId);
+  },
+});
 
 // --- Cards ---
 
@@ -139,14 +196,14 @@ export const createCard = mutation({
   args: {
     title: v.string(),
     listId: v.id("colab_lists"),
-    order: v.number(),
+    index: v.number(),
     createdBy: v.string(),
   },
   handler: async (ctx, args) => {
     const cardId = await ctx.db.insert("colab_cards", {
       title: args.title,
       listId: args.listId,
-      order: args.order,
+      index: args.index,
       createdBy: args.createdBy,
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -167,25 +224,99 @@ export const moveCard = mutation({
   args: {
     cardId: v.id("colab_cards"),
     newListId: v.id("colab_lists"),
-    newOrder: v.number(),
+    newIndex: v.number(),
     userId: v.string(),
   },
   handler: async (ctx, args) => {
     const card = await ctx.db.get(args.cardId);
     if (!card) throw new Error("Card not found");
 
-    await ctx.db.patch(args.cardId, {
-      listId: args.newListId,
-      order: args.newOrder,
-      updatedAt: Date.now(),
-    });
+    const oldListId = card.listId;
+    const newListId = args.newListId;
 
-    if (card.listId !== args.newListId) {
-       await ctx.db.insert("colab_card_activities", {
+    if (oldListId === newListId) {
+      // Reorder within the same list
+      const cards = await ctx.db
+        .query("colab_cards")
+        .withIndex("by_list", (q) => q.eq("listId", oldListId))
+        .collect();
+
+      cards.sort((a, b) => a.index - b.index);
+
+      const currentIndex = cards.findIndex((c) => c._id === args.cardId);
+      if (currentIndex === -1) return;
+
+      cards.splice(currentIndex, 1);
+      cards.splice(args.newIndex, 0, card);
+
+      await Promise.all(
+        cards.map((c, i) => {
+          if (c.index !== i) {
+            return ctx.db.patch(c._id, { index: i, updatedAt: Date.now() });
+          }
+        }),
+      );
+    } else {
+      // Move to a different list
+      // 1. Remove from old list and update indices there
+      const oldListCards = await ctx.db
+        .query("colab_cards")
+        .withIndex("by_list", (q) => q.eq("listId", oldListId))
+        .collect();
+      oldListCards.sort((a, b) => a.index - b.index);
+      const oldIndex = oldListCards.findIndex((c) => c._id === args.cardId);
+      oldListCards.splice(oldIndex, 1);
+
+      await Promise.all(
+        oldListCards.map((c, i) => {
+          if (c.index !== i) {
+            return ctx.db.patch(c._id, { index: i });
+          }
+        }),
+      );
+
+      // 2. Insert into new list and update indices there
+      const newListCards = await ctx.db
+        .query("colab_cards")
+        .withIndex("by_list", (q) => q.eq("listId", newListId))
+        .collect();
+      newListCards.sort((a, b) => a.index - b.index);
+
+      // Update the moving card
+      await ctx.db.patch(args.cardId, {
+        listId: newListId,
+        index: args.newIndex,
+        updatedAt: Date.now(),
+      });
+      // We need the updated card object for the splice, but we can just use the modified `card` object or fetch it again.
+      // Modifying `card` object to reflect new state for local array manipulation
+      const movedCard = { ...card, listId: newListId, index: args.newIndex };
+
+      newListCards.splice(args.newIndex, 0, movedCard);
+
+      await Promise.all(
+        newListCards.map((c, i) => {
+          // Skip the card we just moved/patched if index matches, but re-patching is safe
+          if (c._id !== args.cardId) {
+            if (c.index !== i) {
+              return ctx.db.patch(c._id, { index: i });
+            }
+          } else {
+            // For the moved card, we already patched it, but if splice moved it again (unlikely if we inserted at newIndex), we ensure index is correct
+            // Actually, since we inserted at `args.newIndex`, it should be at `i === args.newIndex`.
+            // But if `newListCards` had gaps or something, it might be different. Safest to patch.
+            if (c.index !== i) {
+              return ctx.db.patch(c._id, { index: i });
+            }
+          }
+        }),
+      );
+
+      await ctx.db.insert("colab_card_activities", {
         cardId: args.cardId,
         userId: args.userId,
         action: "a déplacé la carte",
-        details: { from: card.listId, to: args.newListId },
+        details: { from: oldListId, to: newListId },
         createdAt: Date.now(),
       });
     }
@@ -205,6 +336,7 @@ export const updateCard = mutation({
     title: v.optional(v.string()),
     description: v.optional(v.string()),
     dueDate: v.optional(v.number()),
+    labelIds: v.optional(v.array(v.id("colab_labels"))),
     userId: v.string(),
   },
   handler: async (ctx, args) => {
@@ -221,6 +353,17 @@ export const updateCard = mutation({
       details: Object.keys(updates),
       createdAt: Date.now(),
     });
+  },
+});
+
+export const deleteCard = mutation({
+  args: {
+    cardId: v.id("colab_cards"),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.cardId);
+    // Note: In a real app we'd delete activities, checklists, etc.
   },
 });
 
@@ -257,15 +400,20 @@ export const getChecklists = query({
       .withIndex("by_card", (q) => q.eq("cardId", args.cardId))
       .collect();
 
+    // Sort checklists by order (assumed if available, schema has order)
+    checklists.sort((a, b) => a.order - b.order);
+
     // Fetch items for each checklist
     const checklistsWithItems = await Promise.all(
-        checklists.map(async (checklist) => {
-            const items = await ctx.db
-                .query("colab_checklist_items")
-                .withIndex("by_checklist", (q) => q.eq("checklistId", checklist._id))
-                .collect();
-            return { ...checklist, items };
-        })
+      checklists.map(async (checklist) => {
+        const items = await ctx.db
+          .query("colab_checklist_items")
+          .withIndex("by_checklist", (q) => q.eq("checklistId", checklist._id))
+          .collect();
+        // Sort items
+        items.sort((a, b) => a.order - b.order);
+        return { ...checklist, items };
+      }),
     );
 
     return checklistsWithItems;
@@ -279,9 +427,24 @@ export const addChecklist = mutation({
   },
   handler: async (ctx, args) => {
     // get max order
-    const existing = await ctx.db.query("colab_checklists").withIndex("by_card", q => q.eq("cardId", args.cardId)).collect();
+    const existing = await ctx.db
+      .query("colab_checklists")
+      .withIndex("by_card", (q) => q.eq("cardId", args.cardId))
+      .collect();
     const order = existing.length;
     return await ctx.db.insert("colab_checklists", { ...args, order });
+  },
+});
+
+export const deleteChecklist = mutation({
+  args: { checklistId: v.id("colab_checklists") },
+  handler: async (ctx, args) => {
+    const items = await ctx.db
+      .query("colab_checklist_items")
+      .withIndex("by_checklist", (q) => q.eq("checklistId", args.checklistId))
+      .collect();
+    for (const item of items) await ctx.db.delete(item._id);
+    await ctx.db.delete(args.checklistId);
   },
 });
 
@@ -291,13 +454,16 @@ export const addChecklistItem = mutation({
     checklistId: v.id("colab_checklists"),
   },
   handler: async (ctx, args) => {
-    const existing = await ctx.db.query("colab_checklist_items").withIndex("by_checklist", q => q.eq("checklistId", args.checklistId)).collect();
+    const existing = await ctx.db
+      .query("colab_checklist_items")
+      .withIndex("by_checklist", (q) => q.eq("checklistId", args.checklistId))
+      .collect();
     const order = existing.length;
     return await ctx.db.insert("colab_checklist_items", {
-        content: args.content,
-        checklistId: args.checklistId,
-        completed: false,
-        order
+      content: args.content,
+      checklistId: args.checklistId,
+      completed: false,
+      order,
     });
   },
 });
@@ -309,5 +475,25 @@ export const toggleChecklistItem = mutation({
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.itemId, { completed: args.completed });
+  },
+});
+
+export const deleteChecklistItem = mutation({
+  args: { itemId: v.id("colab_checklist_items") },
+  handler: async (ctx, args) => {
+    await ctx.db.delete(args.itemId);
+  },
+});
+
+// --- Activities ---
+
+export const getCardActivities = query({
+  args: { cardId: v.id("colab_cards") },
+  handler: async (ctx, args) => {
+    const activities = await ctx.db
+      .query("colab_card_activities")
+      .withIndex("by_card", (q) => q.eq("cardId", args.cardId))
+      .collect();
+    return activities.sort((a, b) => b.createdAt - a.createdAt);
   },
 });

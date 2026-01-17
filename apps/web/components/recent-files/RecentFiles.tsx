@@ -1,14 +1,14 @@
 "use client";
 
-import { Clock, FileText, Plus } from "lucide-react";
-import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/tailwind/ui/button";
 import { Skeleton } from "@/components/tailwind/ui/skeleton";
 import { useDocuments } from "@/hooks/use-convex";
 import { formatRelativeTime } from "@/lib/format-relative-time";
 import { t } from "@/lib/i18n";
+import { useUser } from "@clerk/nextjs";
+import { Clock, FileText, Plus } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface RecentFilesProps {
   limit?: number;
@@ -16,7 +16,7 @@ interface RecentFilesProps {
 }
 
 export function RecentFiles({ limit = 5, showCreateButton = true }: RecentFilesProps) {
-  const [mounted, setMounted] = useState(false);
+  const [_mounted, setMounted] = useState(false);
   const { user } = useUser();
   const { documents, isLoading, isConvexAvailable } = useDocuments(user?.id);
 

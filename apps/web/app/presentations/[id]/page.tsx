@@ -1,6 +1,6 @@
-import { SlideEditor } from '@/components/presentations/SlideEditor';
-import type { Id } from '@/convex/_generated/dataModel';
-import React from 'react';
+import { SlideEditor } from "@/components/presentations/SlideEditor";
+import type { Id } from "@/convex/_generated/dataModel";
+import React from "react";
 
 interface PageProps {
   params: Promise<{

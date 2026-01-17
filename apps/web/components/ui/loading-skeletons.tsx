@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/tailwind/ui/skeleton";
 import { Card, CardContent, CardHeader } from "@/components/tailwind/ui/card";
+import { Skeleton } from "@/components/tailwind/ui/skeleton";
 
 export function DashboardSkeleton() {
   return (

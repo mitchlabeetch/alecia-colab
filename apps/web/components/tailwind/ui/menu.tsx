@@ -1,16 +1,16 @@
 "use client";
 
 import {
+  Briefcase,
+  Building,
   Check,
+  Download,
+  FileText,
   Menu as MenuIcon,
   Monitor,
   Moon,
-  SunDim,
-  FileText,
-  Briefcase,
-  Building,
-  Download,
   Share2,
+  SunDim,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "./button";
@@ -64,7 +64,7 @@ export default function Menu() {
   };
 
   const handleExport = () => {
-    const content = window.localStorage.getItem("novel-content");
+    const _content = window.localStorage.getItem("novel-content");
     const markdown = window.localStorage.getItem("markdown");
 
     if (markdown) {

@@ -1,21 +1,21 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import {
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  flexRender,
-  createColumnHelper,
-  type SortingState,
   type ColumnFiltersState,
+  type SortingState,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
+import { ArrowDown, ArrowUp, ArrowUpDown, Search } from "lucide-react";
+import { useMemo, useState } from "react";
 import type { Id } from "../../convex/_generated/dataModel";
 import { Badge } from "../tailwind/ui/badge";
 import { Button } from "../tailwind/ui/button";
 import { Input } from "../tailwind/ui/input";
-import { ArrowUpDown, ArrowUp, ArrowDown, Search } from "lucide-react";
 
 type DealStage = "sourcing" | "due-diligence" | "negotiation" | "closing" | "closed-won" | "closed-lost";
 type Priority = "high" | "medium" | "low";

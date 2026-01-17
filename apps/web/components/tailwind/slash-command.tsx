@@ -1,23 +1,22 @@
-
 import {
+  Briefcase,
+  Building,
   CheckSquare,
+  ClipboardCheck,
   Code,
+  File,
   Heading1,
   Heading2,
   Heading3,
   ImageIcon,
   List,
   ListOrdered,
-  Text,
-  TextQuote,
-  Briefcase,
-  ClipboardCheck,
-  TrendingUp,
-  Building,
-  Users,
   MessageSquare,
   Minus,
-  File,
+  Text,
+  TextQuote,
+  TrendingUp,
+  Users,
 } from "lucide-react";
 import { Command, createSuggestionItems, renderItems } from "novel";
 import { uploadFn } from "./image-upload";
@@ -30,19 +29,52 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["teaser", "cession", "m&a", "template"],
     icon: <Briefcase size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).insertContent([
-        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Teaser de Cession" }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Secteur : " }, { type: "text", text: "[Secteur d'activité]" }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Code Projet : " }, { type: "text", text: "[Nom de code]" }] },
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Points Clés d'Investissement" }] },
-        { type: "bulletList", content: [
-          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Position de leader sur le marché de niche" }] }] },
-          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Croissance du CA de +XX% par an" }] }] },
-          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "Technologie propriétaire brevetée" }] }] },
-        ]},
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Aperçu Financier" }] },
-        { type: "paragraph", content: [{ type: "text", text: "[Insérer tableau synthétique ici]" }] },
-      ]).run();
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent([
+          { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Teaser de Cession" }] },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "Secteur : " },
+              { type: "text", text: "[Secteur d'activité]" },
+            ],
+          },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "Code Projet : " },
+              { type: "text", text: "[Nom de code]" },
+            ],
+          },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Points Clés d'Investissement" }] },
+          {
+            type: "bulletList",
+            content: [
+              {
+                type: "listItem",
+                content: [
+                  { type: "paragraph", content: [{ type: "text", text: "Position de leader sur le marché de niche" }] },
+                ],
+              },
+              {
+                type: "listItem",
+                content: [{ type: "paragraph", content: [{ type: "text", text: "Croissance du CA de +XX% par an" }] }],
+              },
+              {
+                type: "listItem",
+                content: [
+                  { type: "paragraph", content: [{ type: "text", text: "Technologie propriétaire brevetée" }] },
+                ],
+              },
+            ],
+          },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Aperçu Financier" }] },
+          { type: "paragraph", content: [{ type: "text", text: "[Insérer tableau synthétique ici]" }] },
+        ])
+        .run();
     },
   },
   {
@@ -51,16 +83,21 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["im", "memorandum", "info", "m&a"],
     icon: <File size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).insertContent([
-        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Mémorandum d'Information" }] },
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Résumé Exécutif" }] },
-        { type: "paragraph", content: [{ type: "text", text: "[Synthèse de l'opportunité]" }] },
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Présentation de la Société" }] },
-        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Historique" }] },
-        { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Produits et Services" }] },
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Marché et Concurrence" }] },
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Plan Stratégique" }] },
-      ]).run();
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent([
+          { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Mémorandum d'Information" }] },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Résumé Exécutif" }] },
+          { type: "paragraph", content: [{ type: "text", text: "[Synthèse de l'opportunité]" }] },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Présentation de la Société" }] },
+          { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Historique" }] },
+          { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "Produits et Services" }] },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Marché et Concurrence" }] },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Plan Stratégique" }] },
+        ])
+        .run();
     },
   },
   {
@@ -69,15 +106,43 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["dd", "checklist", "diligence"],
     icon: <ClipboardCheck size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).insertContent([
-        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Checklist Due Diligence" }] },
-        { type: "taskList", content: [
-          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Statuts de la société à jour" }] }] },
-          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "États financiers (3 derniers exercices)" }] }] },
-          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Liste des contrats significatifs" }] }] },
-          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Organigramme juridique et fonctionnel" }] }] },
-        ]},
-      ]).run();
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent([
+          { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Checklist Due Diligence" }] },
+          {
+            type: "taskList",
+            content: [
+              {
+                type: "taskItem",
+                attrs: { checked: false },
+                content: [{ type: "paragraph", content: [{ type: "text", text: "Statuts de la société à jour" }] }],
+              },
+              {
+                type: "taskItem",
+                attrs: { checked: false },
+                content: [
+                  { type: "paragraph", content: [{ type: "text", text: "États financiers (3 derniers exercices)" }] },
+                ],
+              },
+              {
+                type: "taskItem",
+                attrs: { checked: false },
+                content: [{ type: "paragraph", content: [{ type: "text", text: "Liste des contrats significatifs" }] }],
+              },
+              {
+                type: "taskItem",
+                attrs: { checked: false },
+                content: [
+                  { type: "paragraph", content: [{ type: "text", text: "Organigramme juridique et fonctionnel" }] },
+                ],
+              },
+            ],
+          },
+        ])
+        .run();
     },
   },
   {
@@ -86,14 +151,30 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["integration", "pmi"],
     icon: <TrendingUp size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).insertContent([
-        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Plan d'Intégration (100 Jours)" }] },
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Communication" }] },
-        { type: "taskList", content: [
-          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Annonce aux employés" }] }] },
-          { type: "taskItem", attrs: { checked: false }, content: [{ type: "paragraph", content: [{ type: "text", text: "Communiqué de presse" }] }] },
-        ]},
-      ]).run();
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent([
+          { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Plan d'Intégration (100 Jours)" }] },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Communication" }] },
+          {
+            type: "taskList",
+            content: [
+              {
+                type: "taskItem",
+                attrs: { checked: false },
+                content: [{ type: "paragraph", content: [{ type: "text", text: "Annonce aux employés" }] }],
+              },
+              {
+                type: "taskItem",
+                attrs: { checked: false },
+                content: [{ type: "paragraph", content: [{ type: "text", text: "Communiqué de presse" }] }],
+              },
+            ],
+          },
+        ])
+        .run();
     },
   },
   {
@@ -102,13 +183,42 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["profil", "société", "cible"],
     icon: <Building size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).insertContent([
-        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Profil Société" }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Nom : " }, { type: "text", text: "..." }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Siège : " }, { type: "text", text: "..." }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "CA : " }, { type: "text", text: "..." }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "EBE : " }, { type: "text", text: "..." }] },
-      ]).run();
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent([
+          { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Profil Société" }] },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "Nom : " },
+              { type: "text", text: "..." },
+            ],
+          },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "Siège : " },
+              { type: "text", text: "..." },
+            ],
+          },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "CA : " },
+              { type: "text", text: "..." },
+            ],
+          },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "EBE : " },
+              { type: "text", text: "..." },
+            ],
+          },
+        ])
+        .run();
     },
   },
   {
@@ -117,15 +227,33 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["cr", "réunion", "notes"],
     icon: <Users size={18} />,
     command: ({ editor, range }) => {
-      editor.chain().focus().deleteRange(range).insertContent([
-        { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Compte-rendu de réunion" }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Date : " }, { type: "text", text: "..." }] },
-        { type: "paragraph", content: [{ type: "text", marks: [{ type: "bold" }], text: "Participants : " }, { type: "text", text: "..." }] },
-        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Points abordés" }] },
-        { type: "bulletList", content: [
-          { type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "..." }] }] },
-        ]},
-      ]).run();
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent([
+          { type: "heading", attrs: { level: 1 }, content: [{ type: "text", text: "Compte-rendu de réunion" }] },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "Date : " },
+              { type: "text", text: "..." },
+            ],
+          },
+          {
+            type: "paragraph",
+            content: [
+              { type: "text", marks: [{ type: "bold" }], text: "Participants : " },
+              { type: "text", text: "..." },
+            ],
+          },
+          { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "Points abordés" }] },
+          {
+            type: "bulletList",
+            content: [{ type: "listItem", content: [{ type: "paragraph", content: [{ type: "text", text: "..." }] }] }],
+          },
+        ])
+        .run();
     },
   },
 
@@ -199,7 +327,7 @@ export const suggestionItems = createSuggestionItems([
     searchTerms: ["callout", "encadré", "info", "attention"],
     icon: <MessageSquare size={18} />,
     command: ({ editor, range }) => {
-       editor.chain().focus().deleteRange(range).toggleBlockquote().run();
+      editor.chain().focus().deleteRange(range).toggleBlockquote().run();
     },
   },
   {

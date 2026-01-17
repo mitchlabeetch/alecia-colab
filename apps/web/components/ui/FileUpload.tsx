@@ -5,12 +5,12 @@
  * Drag and drop with French text
  */
 
-import { useState, useRef, type ChangeEvent, type DragEvent } from "react";
-import { Upload, File, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/tailwind/ui/button";
-import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
+import { File, Upload, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { type ChangeEvent, type DragEvent, useRef, useState } from "react";
 
 interface FileUploadProps {
   onFileSelect?: (file: File) => void;

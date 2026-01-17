@@ -3,7 +3,7 @@
  * Simple translation system for French-first interface
  */
 
-import { fr, type TranslationKeys } from "./fr";
+import { fr } from "./fr";
 
 // For Phase 1, we only support French
 export const translations = {

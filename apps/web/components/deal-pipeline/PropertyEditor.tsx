@@ -5,12 +5,12 @@
  * Adapté pour Alecia Colab - Interface française
  */
 
-import { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { X, Plus, GripVertical, Trash2, ChevronDown } from "lucide-react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import { cn } from "@/lib/utils";
+import { useMutation, useQuery } from "convex/react";
+import { ChevronDown, GripVertical, Plus, Trash2, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useCallback, useState } from "react";
+import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
 
 type PropertyType = "text" | "number" | "date" | "select" | "multiselect" | "checkbox";
@@ -66,7 +66,7 @@ export default function PropertyEditor({ isOpen, onClose }: PropertyEditorProps)
   const properties = useQuery(api.propertyDefinitions.listProperties, isConvexConfigured ? {} : "skip");
 
   const createProperty = useMutation(api.propertyDefinitions.createProperty);
-  const updateProperty = useMutation(api.propertyDefinitions.updateProperty);
+  const _updateProperty = useMutation(api.propertyDefinitions.updateProperty);
   const deleteProperty = useMutation(api.propertyDefinitions.deleteProperty);
   const addPropertyOption = useMutation(api.propertyDefinitions.addPropertyOption);
 
@@ -198,7 +198,6 @@ export default function PropertyEditor({ isOpen, onClose }: PropertyEditorProps)
                         value={newPropertyName}
                         onChange={(e) => setNewPropertyName(e.target.value)}
                         className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900"
-                        autoFocus
                       />
 
                       <select
